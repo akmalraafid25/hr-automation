@@ -3,6 +3,7 @@ import { DashboardSidebar } from "@/components/dashboard-sidebar"
 import { DashboardStats } from "@/components/dashboard-stats"
 import { DashboardCharts } from "@/components/dashboard-charts"
 import { DashboardTable } from "@/components/dashboard-table"
+import DataTableWithResizableColumns from "@/components/candidates-table"
 
 export default function DashboardPage() {
   return (
@@ -15,13 +16,12 @@ export default function DashboardPage() {
         <main className="flex-1 overflow-y-auto">
           <div className="container mx-auto p-6 space-y-6">
             <div>
-              <h2 className="text-3xl font-bold tracking-tight text-balance">Dashboard Overview</h2>
-              <p className="text-muted-foreground">Welcome back! Here's what's happening with your business today.</p>
+              <h2 className="text-3xl font-bold tracking-tight text-balance">Candidates List</h2>
             </div>
-
-            <DashboardStats />
-            <DashboardCharts />
-            <DashboardTable />
+            <div className="">
+                <DataTableWithResizableColumns/>
+                <DashboardTable />
+            </div>
           </div>
         </main>
       </div>
