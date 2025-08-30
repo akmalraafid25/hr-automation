@@ -14,20 +14,18 @@ import {
   ChevronLeft,
   ChevronRight,
   Bot,
-  XIcon,
-  MenuIcon,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 
 const sidebarItems = [
   { icon: Home, label: "Overview", href: "/", active: true },
-  { icon: Bot, label: "Job Creator", href: "/chatbot" },
   { icon: BarChart3, label: "Analytics", href: "/analytics" },
-  { icon: Users, label: "Candidates", href: "/candidates" },
+  { icon: Users, label: "Users", href: "/users" },
   { icon: TrendingUp, label: "Sales", href: "/sales" },
-  { icon: FileText, label: "Reports", href: "/reports" },
+  { icon: FileText, label: "Job Post", href: "/job-post" },
   { icon: Calendar, label: "Calendar", href: "/calendar" },
+  { icon: Bot, label: "Job Creator", href: "/chatbot" },
   { icon: Settings, label: "Settings", href: "/settings" },
 ]
 
@@ -43,9 +41,9 @@ export function DashboardSidebar() {
       )}
     >
       <div className="flex h-16 items-center justify-between px-4 border-b">
-        {!collapsed && <span className="text-2xl text-sidebar-foreground font-bold">Menu</span>}
+        {!collapsed && <span className="text-sidebar-foreground font-semibold">Navigation</span>}
         <Button variant="ghost" size="icon" onClick={() => setCollapsed(!collapsed)} className="h-8 w-8">
-          {collapsed ? <MenuIcon className="h-4 w-4" /> : <XIcon className="h-4 w-4" />}
+          {collapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
         </Button>
       </div>
 

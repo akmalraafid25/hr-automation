@@ -1,9 +1,6 @@
-"use client"
-
 import { Bell, Search, Settings, User } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { usePathname } from "next/navigation"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,27 +11,16 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
-const sidebarItems = [
-  { label: "Overview", href: "/", active: true },
-  { label: "Job Creator", href: "/chatbot" },
-  { label: "Analytics", href: "/analytics" },
-  { label: "Candidates", href: "/candidates" },
-  { label: "Sales", href: "/sales" },
-  { label: "Reports", href: "/reports" },
-  { label: "Calendar", href: "/calendar" },
-  { label: "Settings", href: "/settings" },
-]
-
 export function DashboardHeader() {
-  const pathname = usePathname()
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center justify-between px-6">
         <div className="flex items-center gap-6">
           <div className="flex items-center gap-2">
-            <h1 className="text-2xl font-bold text-balance">{sidebarItems.map((item) => (
-              pathname === item.href ? item.label : ""
-            ))}</h1>
+            <div className="h-8 w-8 rounded-lg bg-primary flex items-center justify-center">
+              <span className="text-primary-foreground font-bold text-sm">D</span>
+            </div>
+            <h1 className="text-xl font-bold text-balance">Dashboard</h1>
           </div>
         </div>
 
