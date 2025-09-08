@@ -18,15 +18,10 @@ export default function ChatbotPage() {
   return (
     <div className="flex h-screen bg-background">
           <DashboardSidebar />
-    
           <div className="flex-1 flex flex-col overflow-hidden">
             <DashboardHeader />
-    
             <main className="flex-1 overflow-y-auto">
               <div className="container mx-auto p-6 space-y-6">
-                <div>
-                  <h2 className="text-3xl font-bold tracking-tight text-balance">Posts</h2>
-                </div>
                 <div className="">
                     <SnowflakeTable/>
                 </div>

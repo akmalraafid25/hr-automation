@@ -1,6 +1,7 @@
 'use client'
 import { useEffect, useState } from "react";
-import { ScrollArea } from "@/components/ui/scroll-area"
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import ReactMarkdown from "react-markdown";
 import {
   Table,
@@ -73,77 +74,83 @@ export default function SnowflakeTable() {
     <div className="p-6">
       {/* Table Container */}
       <div className="border border-gray-300 rounded-xl overflow-hidden shadow-sm">
-        <Table>
-          <TableHeader>
-            <TableRow className="bg-gray-100">
-              <TableHead className="border">No</TableHead>
-              <TableHead className="border">Job Name</TableHead>
-              <TableHead className="border">Start Date</TableHead>
-              <TableHead className="border">End Date</TableHead>
-              <TableHead className="border">Date Created</TableHead>
-              <TableHead className="border">Details</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {currentData.map((row, index) => (
-              <TableRow key={index}>
-                <TableCell className="border">{startIndex + index + 1}</TableCell>
-                <TableCell className="border">{row.JOB_NAME}</TableCell>
-                <TableCell className="border">{row.START_DATE ?? "-"}</TableCell>
-                <TableCell className="border">{row.END_DATE ?? "-"}</TableCell>
-                <TableCell className="border">{row.DATE_CREATED ?? "-"}</TableCell>
-                <TableCell className="border max-w-[250px] truncate">
-                  <Dialog>
-                    <DialogTrigger className="p-2 rounded-md bg-neutral-600 text-white">
-                        See Details
-                    </DialogTrigger>
-                    <DialogContent className="w-max">
-                      <DialogHeader>
-                        <DialogTitle className="text-xl">{row.JOB_NAME}</DialogTitle>
-                        <div>
-                            <DialogDescription>
-                                Created On: {row.DATE_CREATED ?? "-"} 
-                            </DialogDescription>
-                            <DialogDescription>
-                                Start Date: {row.START_DATE ?? "-"}
-                            </DialogDescription>
-                            <DialogDescription>
-                                End Date: {row.END_DATE ?? "-"}
-                            </DialogDescription>
-                        </div>
-                      </DialogHeader>
-                      <ScrollArea className="h-[480px] w-[460px] text-sm rounded-md border p-4">
-                        <ReactMarkdown>{row.PROMPT}</ReactMarkdown>
-                      </ScrollArea>
-                    </DialogContent>
-                  </Dialog>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+        <Card className="p-6">
+            <CardHeader>
+              <CardTitle className="text-balance">Recent Posts</CardTitle>
+              <CardDescription>Recent Post Created.</CardDescription>
+            </CardHeader>
+            <Table>
+              <TableHeader>
+                <TableRow className="bg-gray-100">
+                  <TableHead className="border">No</TableHead>
+                  <TableHead className="border">Job Name</TableHead>
+                  <TableHead className="border">Start Date</TableHead>
+                  <TableHead className="border">End Date</TableHead>
+                  <TableHead className="border">Date Created</TableHead>
+                  <TableHead className="border">Details</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {currentData.map((row, index) => (
+                  <TableRow key={index}>
+                    <TableCell className="border">{startIndex + index + 1}</TableCell>
+                    <TableCell className="border">{row.JOB_NAME}</TableCell>
+                    <TableCell className="border">{row.START_DATE ?? "-"}</TableCell>
+                    <TableCell className="border">{row.END_DATE ?? "-"}</TableCell>
+                    <TableCell className="border">{row.DATE_CREATED ?? "-"}</TableCell>
+                    <TableCell className="border max-w-[250px] truncate">
+                      <Dialog>
+                        <DialogTrigger className="p-2 rounded-md bg-neutral-600 text-white">
+                            See Details
+                        </DialogTrigger>
+                        <DialogContent className="w-max">
+                          <DialogHeader>
+                            <DialogTitle className="text-xl">{row.JOB_NAME}</DialogTitle>
+                            <div>
+                                <DialogDescription>
+                                    Created On: {row.DATE_CREATED ?? "-"} 
+                                </DialogDescription>
+                                <DialogDescription>
+                                    Start Date: {row.START_DATE ?? "-"}
+                                </DialogDescription>
+                                <DialogDescription>
+                                    End Date: {row.END_DATE ?? "-"}
+                                </DialogDescription>
+                            </div>
+                          </DialogHeader>
+                          <ScrollArea className="h-[480px] w-[460px] text-sm rounded-md border p-4">
+                            <ReactMarkdown>{row.PROMPT}</ReactMarkdown>
+                          </ScrollArea>
+                        </DialogContent>
+                      </Dialog>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+            {/* Pagination Controls */}
+            <div className="flex items-center justify-between mt-4">
+              <Button
+                disabled={currentPage === 1}
+                onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
+              >
+                Previous
+              </Button>
+                    
+              <p className="text-sm">
+                Page {currentPage} of {totalPages}
+              </p>
+                    
+              <Button
+                disabled={currentPage === totalPages}
+                onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
+              >
+                Next
+              </Button>
+            </div>
+        </Card>
       </div>
 
-      {/* Pagination Controls */}
-      <div className="flex items-center justify-between mt-4">
-        <Button
-          disabled={currentPage === 1}
-          onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
-        >
-          Previous
-        </Button>
-
-        <p className="text-sm">
-          Page {currentPage} of {totalPages}
-        </p>
-
-        <Button
-          disabled={currentPage === totalPages}
-          onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
-        >
-          Next
-        </Button>
-      </div>
     </div>
   );
 }

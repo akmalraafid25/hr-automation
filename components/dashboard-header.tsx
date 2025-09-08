@@ -1,6 +1,7 @@
 import { Bell, Search, Settings, User } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import Image from "next/image"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -17,10 +18,7 @@ export function DashboardHeader() {
       <div className="container flex h-16 items-center justify-between px-6">
         <div className="flex items-center gap-6">
           <div className="flex items-center gap-2">
-            <div className="h-8 w-8 rounded-lg bg-primary flex items-center justify-center">
-              <span className="text-primary-foreground font-bold text-sm">D</span>
-            </div>
-            <h1 className="text-xl font-bold text-balance">Dashboard</h1>
+            <Image src="https://www.softwareone.com/-/media/images/logos/softwareone-logo-blk.svg?iar=0&hash=6A277FF39328B4D79A071F4A9F95F301" width={100} height={40} alt="Company Logo" />
           </div>
         </div>
 
