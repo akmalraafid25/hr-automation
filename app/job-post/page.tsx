@@ -5,6 +5,7 @@ import { DashboardHeader } from "@/components/dashboard-header"
 import { useEffect } from 'react';
 import '@n8n/chat/style.css';
 import { createChat } from '@n8n/chat';
+import SnowflakeTable from "@/components/snowflake-jobpost";
 
 export default function ChatbotPage() {
   useEffect(() => {
@@ -20,6 +21,7 @@ export default function ChatbotPage() {
 
       <div className="flex-1 flex flex-col overflow-hidden">
         <DashboardHeader />
+        <SnowflakeTable/>
         <main className="flex-1 p-6"></main>
       </div>
     </div>

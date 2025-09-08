@@ -4,6 +4,7 @@ import { DashboardStats } from "@/components/dashboard-stats"
 import { DashboardCharts } from "@/components/dashboard-charts"
 import { DashboardTable } from "@/components/dashboard-table"
 import DataTableWithResizableColumns from "@/components/candidates-table"
+import SnowflakeTable from "@/components/snowflake-candidate"
 
 export default function DashboardPage() {
   return (
@@ -19,8 +20,7 @@ export default function DashboardPage() {
               <h2 className="text-3xl font-bold tracking-tight text-balance">Candidates List</h2>
             </div>
             <div className="">
-                <DataTableWithResizableColumns/>
-                <DashboardTable />
+                <SnowflakeTable/>
             </div>
           </div>
         </main>

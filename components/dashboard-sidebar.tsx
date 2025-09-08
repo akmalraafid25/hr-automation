@@ -21,7 +21,7 @@ import { cn } from "@/lib/utils"
 const sidebarItems = [
   { icon: Home, label: "Overview", href: "/", active: true },
   { icon: BarChart3, label: "Analytics", href: "/analytics" },
-  { icon: Users, label: "Users", href: "/users" },
+  { icon: Users, label: "Candidates", href: "/candidates" },
   { icon: TrendingUp, label: "Sales", href: "/sales" },
   { icon: FileText, label: "Job Post", href: "/job-post" },
   { icon: Calendar, label: "Calendar", href: "/calendar" },
