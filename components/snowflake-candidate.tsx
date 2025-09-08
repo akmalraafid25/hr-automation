@@ -9,10 +9,14 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { Button } from "./ui/button";
+import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 
 export default function SnowflakeTable() {
   const [data, setData] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
+  const rowsPerPage = 5; // 👈 change this number as needed
 
   useEffect(() => {
     fetch("/api/query/candidates")
@@ -43,9 +47,15 @@ export default function SnowflakeTable() {
 
   if (loading) return <p>Loading...</p>;
 
+  // Pagination logic
+  const totalPages = Math.ceil(data.length / rowsPerPage);
+  const startIndex = (currentPage - 1) * rowsPerPage;
+  const endIndex = startIndex + rowsPerPage;
+  const currentData = data.slice(startIndex, endIndex);
+
   return (
     <div className="p-6">
-      {/* Table Container with border + rounded corners */}
+      {/* Table Container */}
       <div className="border border-gray-300 rounded-xl overflow-hidden shadow-sm">
         <Table>
           <TableHeader>
@@ -58,9 +68,9 @@ export default function SnowflakeTable() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {data.map((row, index) => (
+            {currentData.map((row, index) => (
               <TableRow key={index}>
-                <TableCell className="border">{index + 1}</TableCell>
+                <TableCell className="border">{startIndex + index + 1}</TableCell>
                 <TableCell className="border">{row.NAME}</TableCell>
                 <TableCell className="border">
                   <a
@@ -76,19 +86,47 @@ export default function SnowflakeTable() {
                     : row.PHONE}
                 </TableCell>
                 <TableCell className="border">
-                  <a
-                    href={row.LINKEDIN?.startsWith('linkedin')? "https://www." + row.LINKEDIN.slice(0):row.LINKEDIN}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-blue-600 underline"
-                  >
-                    Profile
-                  </a>
+                  <Button>
+                    <a
+                      href={
+                        row.LINKEDIN?.startsWith("linkedin")
+                          ? "https://www." + row.LINKEDIN
+                          : row.LINKEDIN
+                      }
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Profile
+                    </a>
+                  </Button>
                 </TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
+      </div>
+
+      {/* Pagination Controls */}
+      <div className="flex items-center justify-between mt-4">
+        <Button
+          variant="link"
+          disabled={currentPage === 1}
+          onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
+        >
+          <ChevronLeftIcon />Previous
+        </Button>
+
+        <p className="text-sm">
+          Page {currentPage} of {totalPages}
+        </p>
+
+        <Button
+          variant="link"
+          disabled={currentPage === totalPages}
+          onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
+        >
+          Next<ChevronRightIcon />
+        </Button>
       </div>
     </div>
   );
