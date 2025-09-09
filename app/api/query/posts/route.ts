@@ -36,7 +36,7 @@ export async function GET() {
             console.error("❌ Query failed:", err.message);
             resolve(NextResponse.json({ error: err.message }, { status: 500 }));
           } else {
-            console.log("✅ Query success:", rows);
+            console.log("✅ Query success:");
             resolve(NextResponse.json({ rows }, { status: 200 }));
           }
 

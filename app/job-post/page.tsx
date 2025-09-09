@@ -22,6 +22,9 @@ export default function ChatbotPage() {
             <DashboardHeader />
             <main className="flex-1 overflow-y-auto">
               <div className="container mx-auto p-6 space-y-6">
+                <div>
+                  <h2 className="text-3xl font-bold tracking-tight text-balance">Job Post</h2>
+                </div>
                 <div className="">
                     <SnowflakeTable/>
                 </div>

@@ -28,7 +28,7 @@ export async function GET() {
       console.log("✅ Connected to Snowflake, running query...");
 
       connection.execute({
-        sqlText: "SELECT * FROM CANDIDATE",
+        sqlText: "SELECT C.CANDIDATE_ID as CANDIDATE_ID, C.NAME, J.JOB_NAME as JOB_NAME, C.EMAIL, C.PHONE, C.LINKEDIN FROM CANDIDATE C LEFT JOIN JOB_POST j on c.job_id = j.job_id",
         complete: (err, stmt, rows) => {
           console.log("➡️ Query callback fired");
 
@@ -36,7 +36,7 @@ export async function GET() {
             console.error("❌ Query failed:", err.message);
             resolve(NextResponse.json({ error: err.message }, { status: 500 }));
           } else {
-            console.log("✅ Query success:", rows);
+            console.log("✅ Query success:");
             resolve(NextResponse.json({ rows }, { status: 200 }));
           }
 

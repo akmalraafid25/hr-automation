@@ -18,7 +18,9 @@ export function DashboardHeader() {
       <div className="container flex h-16 items-center justify-between px-6">
         <div className="flex items-center gap-6">
           <div className="flex items-center gap-2">
-            <Image src="https://www.softwareone.com/-/media/images/logos/softwareone-logo-blk.svg?iar=0&hash=6A277FF39328B4D79A071F4A9F95F301" width={100} height={40} alt="Company Logo" />
+            <a href="/">
+              <Image src="https://www.softwareone.com/-/media/images/logos/softwareone-logo-blk.svg?iar=0&hash=6A277FF39328B4D79A071F4A9F95F301" width={100} height={40} alt="Company Logo" />
+            </a>
           </div>
         </div>
 

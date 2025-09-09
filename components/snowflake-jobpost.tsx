@@ -20,6 +20,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { Button } from "./ui/button";
+import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 
 export default function SnowflakeTable() {
   const [data, setData] = useState<any[]>([]);
@@ -27,39 +28,32 @@ export default function SnowflakeTable() {
   const [currentPage, setCurrentPage] = useState(1);
   const rowsPerPage = 5; // 👈 change as needed
 
-  useEffect(() => {
-  async function fetchData() {
-    try {
-      const res = await fetch("/api/query/posts");
-      const d = await res.json();
-      let parsed;
-      if (typeof d === "string") {
-        try {
-          parsed = JSON.parse(d);
-        } catch {
-          parsed = [];
-        }
-      } else if (Array.isArray(d)) {
-        parsed = d;
-      } else if (d?.rows) {
-        parsed = d.rows;
-      } else {
-        parsed = [];
-      }
-      setData(parsed);
-    } catch (err) {
-      console.error("❌ Fetch error:", err);
-      setData([]);
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  fetchData(); // first load
-
-  const interval = setInterval(fetchData, 5000); // 👈 refresh every 5 seconds
-  return () => clearInterval(interval); // cleanup
-    }, []);
+    useEffect(() => {
+        fetch("/api/query/posts")
+          .then((res) => res.json())
+          .then((d) => {
+            let parsed;
+            if (typeof d === "string") {
+              try {
+                parsed = JSON.parse(d);
+              } catch {
+                parsed = [];
+              }
+            } else if (Array.isArray(d)) {
+              parsed = d;
+            } else if (d?.rows) {
+              parsed = d.rows;
+            } else {
+              parsed = [];
+            }
+            setData(parsed);
+          })
+          .catch((err) => {
+            console.error("❌ Fetch error:", err);
+            setData([]);
+          })
+          .finally(() => setLoading(false));
+      }, []);
 
 
   if (loading) return <p>Loading...</p>;
@@ -71,7 +65,7 @@ export default function SnowflakeTable() {
   const currentData = data.slice(startIndex, endIndex);
 
   return (
-    <div className="p-6">
+    <div>
       {/* Table Container */}
       <div className="border border-gray-300 rounded-xl overflow-hidden shadow-sm">
         <Card className="p-6">
@@ -131,10 +125,11 @@ export default function SnowflakeTable() {
             {/* Pagination Controls */}
             <div className="flex items-center justify-between mt-4">
               <Button
+                variant="link"
                 disabled={currentPage === 1}
                 onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
               >
-                Previous
+                <ChevronLeftIcon />Previous
               </Button>
                     
               <p className="text-sm">
@@ -142,10 +137,11 @@ export default function SnowflakeTable() {
               </p>
                     
               <Button
+                variant="link"
                 disabled={currentPage === totalPages}
                 onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
               >
-                Next
+                Next<ChevronRightIcon />
               </Button>
             </div>
         </Card>
