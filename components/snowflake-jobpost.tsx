@@ -94,8 +94,10 @@ export default function SnowflakeTable() {
                     <TableCell className="border">{row.DATE_CREATED ?? "-"}</TableCell>
                     <TableCell className="border max-w-[250px] truncate">
                       <Dialog>
-                        <DialogTrigger className="p-2 rounded-md bg-neutral-600 text-white">
-                            See Details
+                        <DialogTrigger asChild>
+                            <Button>
+                              See Details
+                            </Button>
                         </DialogTrigger>
                         <DialogContent className="w-max">
                           <DialogHeader>

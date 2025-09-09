@@ -20,7 +20,6 @@ import { cn } from "@/lib/utils"
 
 const sidebarItems = [
   { icon: Home, label: "Overview", href: "/", active: true },
-  { icon: BarChart3, label: "Analytics", href: "/analytics" },
   { icon: Users, label: "Application", href: "/application" },
   { icon: TrendingUp, label: "Sales", href: "/sales" },
   { icon: FileText, label: "Job Post", href: "/job-post" },

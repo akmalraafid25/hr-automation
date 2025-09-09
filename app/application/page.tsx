@@ -5,6 +5,8 @@ import { DashboardCharts } from "@/components/dashboard-charts"
 import { DashboardTable } from "@/components/dashboard-table"
 import DataTableWithResizableColumns from "@/components/candidates-table"
 import SnowflakeTable from "@/components/snowflake-candidate"
+import SnowflakeAnalysis from "@/components/snowflake-analysis"
+
 
 export default function DashboardPage() {
   return (
@@ -17,8 +19,9 @@ export default function DashboardPage() {
             <div>
               <h2 className="text-3xl font-bold tracking-tight text-balance">Application</h2>
             </div>
-            <div className="">
+            <div className="grid grid-row-1 gap-8">
                 <SnowflakeTable/>
+                <SnowflakeAnalysis/>
             </div>
           </div>
         </main>
