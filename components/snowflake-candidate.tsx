@@ -55,31 +55,31 @@ export default function SnowflakeTable() {
   const currentData = data.slice(startIndex, endIndex);
 
   return (
-    <Card className="p-6">
+    <Card>
       <CardHeader>
         <CardTitle className="text-balance">Candidates</CardTitle>
         <CardDescription>Candidates Information.</CardDescription>
       </CardHeader>
       <div className="p-6">
         {/* Table Container */}
-        <div className="border border-gray-300 rounded-xl overflow-hidden shadow-sm">
+        <div className="overflow-hidden">
           <Table>
             <TableHeader>
-              <TableRow className="bg-gray-100">
-                <TableHead className="border">No</TableHead>
-                <TableHead className="border">Name</TableHead>
-                <TableHead className="border">Email</TableHead>
-                <TableHead className="border">Phone</TableHead>
-                <TableHead className="border">Job Applied</TableHead>
-                <TableHead className="border">LinkedIn</TableHead>
+              <TableRow>
+                <TableHead>No</TableHead>
+                <TableHead>Name</TableHead>
+                <TableHead>Email</TableHead>
+                <TableHead>Phone</TableHead>
+                <TableHead>Job Applied</TableHead>
+                <TableHead>LinkedIn</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {currentData.map((row, index) => (
                 <TableRow key={index}>
-                  <TableCell className="border">{startIndex + index + 1}</TableCell>
-                  <TableCell className="border">{row.NAME}</TableCell>
-                  <TableCell className="border">
+                  <TableCell>{startIndex + index + 1}</TableCell>
+                  <TableCell>{row.NAME}</TableCell>
+                  <TableCell>
                     <a
                       href={`mailto:${row.EMAIL}`}
                       className="text-blue-600 underline"
@@ -87,13 +87,13 @@ export default function SnowflakeTable() {
                       {row.EMAIL}
                     </a>
                   </TableCell>
-                  <TableCell className="border">
+                  <TableCell>
                     {row.PHONE?.startsWith("0")
                       ? "+62" + row.PHONE.slice(1)
                       : row.PHONE}
                   </TableCell>
-                  <TableCell className="border">{row.JOB_NAME}</TableCell>
-                  <TableCell className="border">
+                  <TableCell>{row.JOB_NAME}</TableCell>
+                  <TableCell>
                     <Button>
                       <a
                         href={

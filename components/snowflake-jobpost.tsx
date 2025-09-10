@@ -75,24 +75,24 @@ export default function SnowflakeTable() {
             </CardHeader>
             <Table>
               <TableHeader>
-                <TableRow className="bg-gray-100">
-                  <TableHead className="border">No</TableHead>
-                  <TableHead className="border">Job Name</TableHead>
-                  <TableHead className="border">Start Date</TableHead>
-                  <TableHead className="border">End Date</TableHead>
-                  <TableHead className="border">Date Created</TableHead>
-                  <TableHead className="border">Details</TableHead>
+                <TableRow>
+                  <TableHead>No</TableHead>
+                  <TableHead>Job Name</TableHead>
+                  <TableHead>Start Date</TableHead>
+                  <TableHead>End Date</TableHead>
+                  <TableHead>Date Created</TableHead>
+                  <TableHead>Details</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {currentData.map((row, index) => (
                   <TableRow key={index}>
-                    <TableCell className="border">{startIndex + index + 1}</TableCell>
-                    <TableCell className="border">{row.JOB_NAME}</TableCell>
-                    <TableCell className="border">{row.START_DATE ?? "-"}</TableCell>
-                    <TableCell className="border">{row.END_DATE ?? "-"}</TableCell>
-                    <TableCell className="border">{row.DATE_CREATED ?? "-"}</TableCell>
-                    <TableCell className="border max-w-[250px] truncate">
+                    <TableCell>{startIndex + index + 1}</TableCell>
+                    <TableCell>{row.JOB_NAME}</TableCell>
+                    <TableCell>{row.START_DATE ?? "-"}</TableCell>
+                    <TableCell>{row.END_DATE ?? "-"}</TableCell>
+                    <TableCell>{row.DATE_CREATED ?? "-"}</TableCell>
+                    <TableCell className="max-w-[250px] truncate">
                       <Dialog>
                         <DialogTrigger asChild>
                             <Button>

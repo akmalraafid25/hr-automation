@@ -59,7 +59,7 @@ export default function CalendarPage() {
     {
       id: uid(),
       title: "Sprint Planning",
-      date: format(today, "dd-MM-yyyy"),
+      date: format(today, "yyyy-MM-dd"),
       time: "10:00",
       location: "Zoom",
       tag: "Work",
@@ -68,7 +68,7 @@ export default function CalendarPage() {
     {
       id: uid(),
       title: "Coffee with Dina",
-      date: format(addMonths(today, 0), "dd-MM-yyyy"),
+      date: format(addMonths(today, 0), "yyyy-MM-dd"),
       time: "15:30",
       location: "Kopi Kenangan",
       tag: "Personal",
@@ -77,7 +77,7 @@ export default function CalendarPage() {
     {
       id: uid(),
       title: "Product Demo",
-      date: format(addMonths(today, 0), "dd-MM-yyyy"),
+      date: format(addMonths(today, 0), "yyyy-MM-dd"),
       time: "19:00",
       location: "Office",
       tag: "Client",
@@ -96,12 +96,12 @@ export default function CalendarPage() {
   // New event dialog state
   const [open, setOpen] = React.useState(false)
   const [form, setForm] = React.useState<Partial<CalendarEvent>>({
-    date: format(selectedDate, "dd-MM-yyyy"),
+    date: format(selectedDate, "yyyy-MM-dd"),
     color: "default",
   })
 
   React.useEffect(() => {
-    setForm((f) => ({ ...f, date: format(selectedDate, "dd-MM-yyyy") }))
+    setForm((f) => ({ ...f, date: format(selectedDate, "yyyy-MM-dd") }))
   }, [selectedDate])
 
   function addEvent(e: React.FormEvent) {
@@ -121,7 +121,7 @@ export default function CalendarPage() {
       },
     ])
     setOpen(false)
-    setForm({ date: format(selectedDate, "dd-MM-yyyy"), color: "default" })
+    setForm({ date: format(selectedDate, "yyyy-MM-dd"), color: "default" })
   }
 
   function deleteEvent(id: string) {
