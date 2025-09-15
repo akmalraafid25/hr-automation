@@ -67,7 +67,7 @@ export default function SnowflakeAnalysis() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-balance">Candidate Analysis</CardTitle>
+        <CardTitle className="text-balance">Shortlisted Candidate</CardTitle>
         <CardDescription>Analysis based on resume.</CardDescription>
       </CardHeader>
       <div className="p-6">
@@ -106,9 +106,6 @@ export default function SnowflakeAnalysis() {
                                     Job Applied: {row.JOB_NAME ?? "-"} 
                                 </DialogDescription>
                                 <DialogDescription>
-                                    Certifications: {row.CERTIFICATION ?? "-"} 
-                                </DialogDescription>
-                                <DialogDescription>
                                     Match: {row.SIMILARITY ? row.SIMILARITY +"%" : "-" }
                                 </DialogDescription>
                             </div>
@@ -133,7 +130,7 @@ export default function SnowflakeAnalysis() {
                         </DialogTrigger>
                         <DialogContent className="w-max">
                           <DialogHeader>
-                            <DialogTitle className="text-xl">{row.JOB_NAME}</DialogTitle>
+                            <DialogTitle className="text-xl">{row.NAME}</DialogTitle>
                             <div>
                                 <DialogDescription>
                                     Job Applied: {row.JOB_NAME ?? "-"} 
@@ -143,13 +140,8 @@ export default function SnowflakeAnalysis() {
                                 </DialogDescription>
                             </div>
                           </DialogHeader>
-                          <ScrollArea className="h-[400px] w-[460px] text-sm rounded-md border p-4">
-                            <h1 className="font-bold">Analysis:</h1><ReactMarkdown>{row.ANALYSIS}</ReactMarkdown>
-                            <br/>
-                            <h1 className="font-bold">Pros:</h1>{row.PROS ?? "-"}
-                            <br/>
-                            <br/>
-                            <h1 className="font-bold">Cons:</h1>{row.CONS ?? "-"}
+                          <ScrollArea className="h-[200px] w-[460px] text-sm rounded-md border p-4">
+                            <h1 className="font-bold">Certification:</h1><ReactMarkdown>{row.CERTIFICATION}</ReactMarkdown>
                           </ScrollArea>
                         </DialogContent>
                       </Dialog>

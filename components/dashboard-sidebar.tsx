@@ -23,7 +23,7 @@ const sidebarItems = [
   { icon: Users, label: "Application", href: "/application" },
   { icon: TrendingUp, label: "Sales", href: "/sales" },
   { icon: FileText, label: "Job Post", href: "/job-post" },
-  { icon: Calendar, label: "Calendar", href: "/calendar" },
+  { icon: Calendar, label: "Calendly", href: "https://calendly.com/app/scheduling/meeting_types/user/me" },
   { icon: Settings, label: "Settings", href: "/settings" },
 ]
 
