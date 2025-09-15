@@ -80,13 +80,8 @@ export function DashboardHeader() {
                   <span>Settings</span>
                 </DropdownMenuItem>
               </Link>
-              {/* --- MODIFIED SECTION END --- */}
               <DropdownMenuSeparator />
-<<<<<<< HEAD
               <DropdownMenuItem onClick={handleLogout}>Log out</DropdownMenuItem>
-=======
-              <DropdownMenuItem className="cursor-pointer">Log out</DropdownMenuItem>
->>>>>>> 666e1c347418ba00c6cb812371de468728b0b5de
             </DropdownMenuContent>
           </DropdownMenu>
         </div>

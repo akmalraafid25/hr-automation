@@ -6,17 +6,11 @@ export default function AccountPage() {
   return (
     <div className="flex min-h-screen">
       <DashboardSidebar />
-<<<<<<< HEAD
       <main className="flex-1">
         <DashboardHeader/>
         <div className="p-8">
           <SnowflakeAccount/>
         </div>
-=======
-      <main className="flex-1 p-8">
-        <DashboardHeader />
-        <SnowflakeAccount />
->>>>>>> 666e1c347418ba00c6cb812371de468728b0b5de
       </main>
     </div>
   );
