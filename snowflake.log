@@ -13640,3 +13640,238 @@
 {"level":"INFO","message":"[3:05:48.874 PM]: Connection[id: 88f75794-9fb9-4656-83d1-269ed623ba59] - connecting. Associated Snowflake domain: GLOBAL"}
 {"level":"INFO","message":"[3:05:48.878 PM]: Connection[id: 88f75794-9fb9-4656-83d1-269ed623ba59] - authentication successful using: SNOWFLAKE_JWT"}
 {"level":"INFO","message":"[3:05:48.879 PM]: Connection[id: 88f75794-9fb9-4656-83d1-269ed623ba59] - connected successfully after 4.8445999994874 milliseconds"}
+<<<<<<< Updated upstream
+=======
+>>>>>>> 4939096b71df23ef849b0e174246d5e271a834c9
+{"level":"INFO","message":"[3:56:33.415 PM]: Creating new connection object"}
+{"level":"INFO","message":"[3:58:10.609 PM]: Creating new connection object"}
+{"level":"INFO","message":"[4:07:46.743 PM]: Creating new connection object"}
+{"level":"INFO","message":"[4:09:04.149 PM]: Creating new connection object"}
+{"level":"INFO","message":"[4:10:03.310 PM]: Creating new connection object"}
+{"level":"INFO","message":"[4:11:18.039 PM]: Creating new connection object"}
+{"level":"INFO","message":"[4:13:11.891 PM]: Creating new connection object"}
+{"level":"INFO","message":"[4:14:05.846 PM]: Creating new connection object"}
+{"level":"INFO","message":"[4:14:05.851 PM]: Creating Connection[id: ccbda845-9d2c-4af3-ab85-21baa6479ecb] with host: A5725842678961-SOFTWAREONE_SANDBOX.snowflakecomputing.com, account: A5725842678961-SOFTWAREONE_SANDBOX, accessUrl: https://A5725842678961-SOFTWAREONE_SANDBOX.snowflakecomputing.com, user: AKMAL_T, role: sysadmin, database: HR_Automation, schema: PUBLIC, warehouse: MY_WH_RIDHO, proxy was not configured, password is not provided, region: undefined, authenticator: SNOWFLAKE_JWT, ocsp mode: FAIL_OPEN, os: win32, os version: 10."}
+{"level":"INFO","message":"[4:14:05.852 PM]: Connection[id: ccbda845-9d2c-4af3-ab85-21baa6479ecb] additional details: passcode in password is provided, passcode is not provided, private key is provided, application: undefined, client name: snowflake-sdk, client version: 2.2.0, retry timeout: 300, private key path: undefined, private key pass is not provided, client store temporary credential: false, browser response timeout: 120000"}
+{"level":"INFO","message":"[4:14:05.852 PM]: Connection[id: ccbda845-9d2c-4af3-ab85-21baa6479ecb] - connection object created successfully."}
+{"level":"INFO","message":"[4:14:05.860 PM]: Connection[id: ccbda845-9d2c-4af3-ab85-21baa6479ecb] - connecting. Associated Snowflake domain: GLOBAL"}
+{"level":"INFO","message":"[4:14:05.865 PM]: Connection[id: ccbda845-9d2c-4af3-ab85-21baa6479ecb] - authentication successful using: SNOWFLAKE_JWT"}
+{"level":"INFO","message":"[4:14:05.866 PM]: Trying to initialize Easy Logging"}
+{"level":"INFO","message":"[4:14:05.869 PM]: No client config detected."}
+{"level":"INFO","message":"[4:14:05.870 PM]: No config file path found. Client config will not be used."}
+{"level":"INFO","message":"[4:14:05.871 PM]: Easy Logging is disabled as no config has been found"}
+{"level":"INFO","message":"[4:14:05.874 PM]: Connection[id: ccbda845-9d2c-4af3-ab85-21baa6479ecb] - connected successfully after 14.588400000007823 milliseconds"}
+{"level":"INFO","message":"[4:14:23.910 PM]: Connection[id: ccbda845-9d2c-4af3-ab85-21baa6479ecb] - connecting. Associated Snowflake domain: GLOBAL"}
+{"level":"INFO","message":"[4:14:23.913 PM]: Connection[id: ccbda845-9d2c-4af3-ab85-21baa6479ecb] - authentication successful using: SNOWFLAKE_JWT"}
+{"level":"INFO","message":"[4:14:23.914 PM]: Connection[id: ccbda845-9d2c-4af3-ab85-21baa6479ecb] - connected successfully after 3.7185000000026776 milliseconds"}
+{"level":"INFO","message":"[4:15:39.629 PM]: Creating new connection object"}
+{"level":"INFO","message":"[4:16:18.810 PM]: Creating new connection object"}
+{"level":"INFO","message":"[4:16:18.815 PM]: Creating Connection[id: 0f4262dd-efa3-4df3-9e6e-45def983b4ae] with host: A5725842678961-SOFTWAREONE_SANDBOX.snowflakecomputing.com, account: A5725842678961-SOFTWAREONE_SANDBOX, accessUrl: https://A5725842678961-SOFTWAREONE_SANDBOX.snowflakecomputing.com, user: AKMAL_T, role: sysadmin, database: HR_Automation, schema: PUBLIC, warehouse: MY_WH_RIDHO, proxy was not configured, password is not provided, region: undefined, authenticator: SNOWFLAKE_JWT, ocsp mode: FAIL_OPEN, os: win32, os version: 10."}
+{"level":"INFO","message":"[4:16:18.816 PM]: Connection[id: 0f4262dd-efa3-4df3-9e6e-45def983b4ae] additional details: passcode in password is provided, passcode is not provided, private key is provided, application: undefined, client name: snowflake-sdk, client version: 2.2.0, retry timeout: 300, private key path: undefined, private key pass is not provided, client store temporary credential: false, browser response timeout: 120000"}
+{"level":"INFO","message":"[4:16:18.817 PM]: Connection[id: 0f4262dd-efa3-4df3-9e6e-45def983b4ae] - connection object created successfully."}
+{"level":"INFO","message":"[4:16:18.825 PM]: Connection[id: 0f4262dd-efa3-4df3-9e6e-45def983b4ae] - connecting. Associated Snowflake domain: GLOBAL"}
+{"level":"INFO","message":"[4:16:18.830 PM]: Connection[id: 0f4262dd-efa3-4df3-9e6e-45def983b4ae] - authentication successful using: SNOWFLAKE_JWT"}
+{"level":"INFO","message":"[4:16:18.831 PM]: Trying to initialize Easy Logging"}
+{"level":"INFO","message":"[4:16:18.833 PM]: No client config detected."}
+{"level":"INFO","message":"[4:16:18.834 PM]: No config file path found. Client config will not be used."}
+{"level":"INFO","message":"[4:16:18.834 PM]: Easy Logging is disabled as no config has been found"}
+{"level":"INFO","message":"[4:16:18.838 PM]: Connection[id: 0f4262dd-efa3-4df3-9e6e-45def983b4ae] - connected successfully after 12.493699999991804 milliseconds"}
+{"level":"INFO","message":"[4:17:44.601 PM]: Creating new connection object"}
+{"level":"INFO","message":"[4:17:44.605 PM]: Creating Connection[id: 66bea36f-da0b-4ca8-93b5-4c072248e42c] with host: A5725842678961-SOFTWAREONE_SANDBOX.snowflakecomputing.com, account: A5725842678961-SOFTWAREONE_SANDBOX, accessUrl: https://A5725842678961-SOFTWAREONE_SANDBOX.snowflakecomputing.com, user: AKMAL_T, role: sysadmin, database: HR_Automation, schema: PUBLIC, warehouse: MY_WH_RIDHO, proxy was not configured, password is not provided, region: undefined, authenticator: SNOWFLAKE_JWT, ocsp mode: FAIL_OPEN, os: win32, os version: 10."}
+{"level":"INFO","message":"[4:17:44.606 PM]: Connection[id: 66bea36f-da0b-4ca8-93b5-4c072248e42c] additional details: passcode in password is provided, passcode is not provided, private key is provided, application: undefined, client name: snowflake-sdk, client version: 2.2.0, retry timeout: 300, private key path: undefined, private key pass is not provided, client store temporary credential: false, browser response timeout: 120000"}
+{"level":"INFO","message":"[4:17:44.606 PM]: Connection[id: 66bea36f-da0b-4ca8-93b5-4c072248e42c] - connection object created successfully."}
+{"level":"INFO","message":"[4:17:44.621 PM]: Connection[id: 66bea36f-da0b-4ca8-93b5-4c072248e42c] - connecting. Associated Snowflake domain: GLOBAL"}
+{"level":"INFO","message":"[4:17:44.625 PM]: Connection[id: 66bea36f-da0b-4ca8-93b5-4c072248e42c] - authentication successful using: SNOWFLAKE_JWT"}
+{"level":"INFO","message":"[4:17:44.626 PM]: Trying to initialize Easy Logging"}
+{"level":"INFO","message":"[4:17:44.628 PM]: No client config detected."}
+{"level":"INFO","message":"[4:17:44.628 PM]: No config file path found. Client config will not be used."}
+{"level":"INFO","message":"[4:17:44.628 PM]: Easy Logging is disabled as no config has been found"}
+{"level":"INFO","message":"[4:17:44.629 PM]: Connection[id: 66bea36f-da0b-4ca8-93b5-4c072248e42c] - connected successfully after 8.586399999971036 milliseconds"}
+{"level":"INFO","message":"[4:18:09.028 PM]: Creating new connection object"}
+{"level":"INFO","message":"[4:18:09.030 PM]: Creating Connection[id: 8535021b-ecae-43f5-9075-18dd368f08b6] with host: A5725842678961-SOFTWAREONE_SANDBOX.snowflakecomputing.com, account: A5725842678961-SOFTWAREONE_SANDBOX, accessUrl: https://A5725842678961-SOFTWAREONE_SANDBOX.snowflakecomputing.com, user: AKMAL_T, role: sysadmin, database: HR_Automation, schema: PUBLIC, warehouse: MY_WH_RIDHO, proxy was not configured, password is not provided, region: undefined, authenticator: SNOWFLAKE_JWT, ocsp mode: FAIL_OPEN, os: win32, os version: 10."}
+{"level":"INFO","message":"[4:18:09.030 PM]: Connection[id: 8535021b-ecae-43f5-9075-18dd368f08b6] additional details: passcode in password is provided, passcode is not provided, private key is provided, application: undefined, client name: snowflake-sdk, client version: 2.2.0, retry timeout: 300, private key path: undefined, private key pass is not provided, client store temporary credential: false, browser response timeout: 120000"}
+{"level":"INFO","message":"[4:18:09.030 PM]: Connection[id: 8535021b-ecae-43f5-9075-18dd368f08b6] - connection object created successfully."}
+{"level":"INFO","message":"[4:18:09.034 PM]: Connection[id: 8535021b-ecae-43f5-9075-18dd368f08b6] - connecting. Associated Snowflake domain: GLOBAL"}
+{"level":"INFO","message":"[4:18:09.037 PM]: Connection[id: 8535021b-ecae-43f5-9075-18dd368f08b6] - authentication successful using: SNOWFLAKE_JWT"}
+{"level":"INFO","message":"[4:18:09.037 PM]: Trying to initialize Easy Logging"}
+{"level":"INFO","message":"[4:18:09.044 PM]: No client config detected."}
+{"level":"INFO","message":"[4:18:09.044 PM]: No config file path found. Client config will not be used."}
+{"level":"INFO","message":"[4:18:09.044 PM]: Easy Logging is disabled as no config has been found"}
+{"level":"INFO","message":"[4:18:09.046 PM]: Connection[id: 8535021b-ecae-43f5-9075-18dd368f08b6] - connected successfully after 11.976900000008754 milliseconds"}
+{"level":"INFO","message":"[4:18:30.956 PM]: Connection[id: 8535021b-ecae-43f5-9075-18dd368f08b6] - connecting. Associated Snowflake domain: GLOBAL"}
+{"level":"INFO","message":"[4:18:30.959 PM]: Connection[id: 8535021b-ecae-43f5-9075-18dd368f08b6] - authentication successful using: SNOWFLAKE_JWT"}
+{"level":"INFO","message":"[4:18:30.960 PM]: Connection[id: 8535021b-ecae-43f5-9075-18dd368f08b6] - connected successfully after 3.9403000000165775 milliseconds"}
+{"level":"INFO","message":"[4:18:34.631 PM]: Connection[id: 8535021b-ecae-43f5-9075-18dd368f08b6] - connecting. Associated Snowflake domain: GLOBAL"}
+{"level":"INFO","message":"[4:18:34.635 PM]: Connection[id: 8535021b-ecae-43f5-9075-18dd368f08b6] - authentication successful using: SNOWFLAKE_JWT"}
+{"level":"INFO","message":"[4:18:34.635 PM]: Connection[id: 8535021b-ecae-43f5-9075-18dd368f08b6] - connected successfully after 3.9188999999896623 milliseconds"}
+{"level":"INFO","message":"[4:19:03.030 PM]: Creating new connection object"}
+{"level":"INFO","message":"[4:19:03.042 PM]: Creating Connection[id: 189418d0-7406-4219-ad8f-d6ed43beedcb] with host: A5725842678961-SOFTWAREONE_SANDBOX.snowflakecomputing.com, account: A5725842678961-SOFTWAREONE_SANDBOX, accessUrl: https://A5725842678961-SOFTWAREONE_SANDBOX.snowflakecomputing.com, user: AKMAL_T, role: sysadmin, database: HR_Automation, schema: PUBLIC, warehouse: MY_WH_RIDHO, proxy was not configured, password is not provided, region: undefined, authenticator: SNOWFLAKE_JWT, ocsp mode: FAIL_OPEN, os: win32, os version: 10."}
+{"level":"INFO","message":"[4:19:03.043 PM]: Connection[id: 189418d0-7406-4219-ad8f-d6ed43beedcb] additional details: passcode in password is provided, passcode is not provided, private key is provided, application: undefined, client name: snowflake-sdk, client version: 2.2.0, retry timeout: 300, private key path: undefined, private key pass is not provided, client store temporary credential: false, browser response timeout: 120000"}
+{"level":"INFO","message":"[4:19:03.044 PM]: Connection[id: 189418d0-7406-4219-ad8f-d6ed43beedcb] - connection object created successfully."}
+{"level":"INFO","message":"[4:19:03.060 PM]: Connection[id: 189418d0-7406-4219-ad8f-d6ed43beedcb] - connecting. Associated Snowflake domain: GLOBAL"}
+{"level":"INFO","message":"[4:19:03.066 PM]: Connection[id: 189418d0-7406-4219-ad8f-d6ed43beedcb] - authentication successful using: SNOWFLAKE_JWT"}
+{"level":"INFO","message":"[4:19:03.066 PM]: Trying to initialize Easy Logging"}
+{"level":"INFO","message":"[4:19:03.068 PM]: No client config detected."}
+{"level":"INFO","message":"[4:19:03.069 PM]: No config file path found. Client config will not be used."}
+{"level":"INFO","message":"[4:19:03.069 PM]: Easy Logging is disabled as no config has been found"}
+{"level":"INFO","message":"[4:19:03.073 PM]: Connection[id: 189418d0-7406-4219-ad8f-d6ed43beedcb] - connected successfully after 12.606700000000274 milliseconds"}
+{"level":"INFO","message":"[4:21:20.225 PM]: Connection[id: 189418d0-7406-4219-ad8f-d6ed43beedcb] - connecting. Associated Snowflake domain: GLOBAL"}
+{"level":"INFO","message":"[4:21:20.228 PM]: Connection[id: 189418d0-7406-4219-ad8f-d6ed43beedcb] - authentication successful using: SNOWFLAKE_JWT"}
+{"level":"INFO","message":"[4:21:20.228 PM]: Connection[id: 189418d0-7406-4219-ad8f-d6ed43beedcb] - connected successfully after 3.4902000000001863 milliseconds"}
+{"level":"INFO","message":"[4:21:47.321 PM]: Connection[id: 189418d0-7406-4219-ad8f-d6ed43beedcb] - connecting. Associated Snowflake domain: GLOBAL"}
+{"level":"INFO","message":"[4:21:47.324 PM]: Connection[id: 189418d0-7406-4219-ad8f-d6ed43beedcb] - authentication successful using: SNOWFLAKE_JWT"}
+{"level":"INFO","message":"[4:21:47.325 PM]: Connection[id: 189418d0-7406-4219-ad8f-d6ed43beedcb] - connected successfully after 3.5939000000071246 milliseconds"}
+{"level":"INFO","message":"[4:21:51.443 PM]: Connection[id: 189418d0-7406-4219-ad8f-d6ed43beedcb] - connecting. Associated Snowflake domain: GLOBAL"}
+{"level":"INFO","message":"[4:21:51.447 PM]: Connection[id: 189418d0-7406-4219-ad8f-d6ed43beedcb] - authentication successful using: SNOWFLAKE_JWT"}
+{"level":"INFO","message":"[4:21:51.447 PM]: Connection[id: 189418d0-7406-4219-ad8f-d6ed43beedcb] - connected successfully after 3.6595000000088476 milliseconds"}
+{"level":"INFO","message":"[4:22:10.522 PM]: Creating new connection object"}
+{"level":"INFO","message":"[4:22:10.538 PM]: Creating Connection[id: 07abd061-64f3-4bcb-9086-2591b81e7c33] with host: A5725842678961-SOFTWAREONE_SANDBOX.snowflakecomputing.com, account: A5725842678961-SOFTWAREONE_SANDBOX, accessUrl: https://A5725842678961-SOFTWAREONE_SANDBOX.snowflakecomputing.com, user: AKMAL_T, role: sysadmin, database: HR_Automation, schema: PUBLIC, warehouse: MY_WH_RIDHO, proxy was not configured, password is not provided, region: undefined, authenticator: SNOWFLAKE_JWT, ocsp mode: FAIL_OPEN, os: win32, os version: 10."}
+{"level":"INFO","message":"[4:22:10.539 PM]: Connection[id: 07abd061-64f3-4bcb-9086-2591b81e7c33] additional details: passcode in password is provided, passcode is not provided, private key is provided, application: undefined, client name: snowflake-sdk, client version: 2.2.0, retry timeout: 300, private key path: undefined, private key pass is not provided, client store temporary credential: false, browser response timeout: 120000"}
+{"level":"INFO","message":"[4:22:10.540 PM]: Connection[id: 07abd061-64f3-4bcb-9086-2591b81e7c33] - connection object created successfully."}
+{"level":"INFO","message":"[4:22:10.549 PM]: Connection[id: 07abd061-64f3-4bcb-9086-2591b81e7c33] - connecting. Associated Snowflake domain: GLOBAL"}
+{"level":"INFO","message":"[4:22:10.556 PM]: Connection[id: 07abd061-64f3-4bcb-9086-2591b81e7c33] - authentication successful using: SNOWFLAKE_JWT"}
+{"level":"INFO","message":"[4:22:10.557 PM]: Trying to initialize Easy Logging"}
+{"level":"INFO","message":"[4:22:10.567 PM]: No client config detected."}
+{"level":"INFO","message":"[4:22:10.568 PM]: No config file path found. Client config will not be used."}
+{"level":"INFO","message":"[4:22:10.569 PM]: Easy Logging is disabled as no config has been found"}
+{"level":"INFO","message":"[4:22:10.572 PM]: Connection[id: 07abd061-64f3-4bcb-9086-2591b81e7c33] - connected successfully after 22.799199999999473 milliseconds"}
+{"level":"INFO","message":"[4:23:48.053 PM]: Creating new connection object"}
+{"level":"INFO","message":"[4:23:48.057 PM]: Creating Connection[id: 392baf4a-30cf-44df-8167-5bd843b09ec6] with host: A5725842678961-SOFTWAREONE_SANDBOX.snowflakecomputing.com, account: A5725842678961-SOFTWAREONE_SANDBOX, accessUrl: https://A5725842678961-SOFTWAREONE_SANDBOX.snowflakecomputing.com, user: AKMAL_T, role: sysadmin, database: HR_Automation, schema: PUBLIC, warehouse: MY_WH_RIDHO, proxy was not configured, password is not provided, region: undefined, authenticator: SNOWFLAKE_JWT, ocsp mode: FAIL_OPEN, os: win32, os version: 10."}
+{"level":"INFO","message":"[4:23:48.057 PM]: Connection[id: 392baf4a-30cf-44df-8167-5bd843b09ec6] additional details: passcode in password is provided, passcode is not provided, private key is provided, application: undefined, client name: snowflake-sdk, client version: 2.2.0, retry timeout: 300, private key path: undefined, private key pass is not provided, client store temporary credential: false, browser response timeout: 120000"}
+{"level":"INFO","message":"[4:23:48.057 PM]: Connection[id: 392baf4a-30cf-44df-8167-5bd843b09ec6] - connection object created successfully."}
+{"level":"INFO","message":"[4:23:48.062 PM]: Connection[id: 392baf4a-30cf-44df-8167-5bd843b09ec6] - connecting. Associated Snowflake domain: GLOBAL"}
+{"level":"INFO","message":"[4:23:48.066 PM]: Connection[id: 392baf4a-30cf-44df-8167-5bd843b09ec6] - authentication successful using: SNOWFLAKE_JWT"}
+{"level":"INFO","message":"[4:23:48.066 PM]: Trying to initialize Easy Logging"}
+{"level":"INFO","message":"[4:23:48.074 PM]: No client config detected."}
+{"level":"INFO","message":"[4:23:48.075 PM]: No config file path found. Client config will not be used."}
+{"level":"INFO","message":"[4:23:48.075 PM]: Easy Logging is disabled as no config has been found"}
+{"level":"INFO","message":"[4:23:48.077 PM]: Connection[id: 392baf4a-30cf-44df-8167-5bd843b09ec6] - connected successfully after 15.551399999996647 milliseconds"}
+{"level":"INFO","message":"[4:23:51.386 PM]: Connection[id: 392baf4a-30cf-44df-8167-5bd843b09ec6] - connecting. Associated Snowflake domain: GLOBAL"}
+{"level":"INFO","message":"[4:23:51.389 PM]: Connection[id: 392baf4a-30cf-44df-8167-5bd843b09ec6] - authentication successful using: SNOWFLAKE_JWT"}
+{"level":"INFO","message":"[4:23:51.389 PM]: Connection[id: 392baf4a-30cf-44df-8167-5bd843b09ec6] - connected successfully after 3.073499999998603 milliseconds"}
+{"level":"INFO","message":"[4:24:12.551 PM]: Creating new connection object"}
+{"level":"INFO","message":"[4:24:12.561 PM]: Creating Connection[id: 862725ab-587a-40b0-8cdf-a49d30bb4650] with host: A5725842678961-SOFTWAREONE_SANDBOX.snowflakecomputing.com, account: A5725842678961-SOFTWAREONE_SANDBOX, accessUrl: https://A5725842678961-SOFTWAREONE_SANDBOX.snowflakecomputing.com, user: AKMAL_T, role: sysadmin, database: HR_Automation, schema: PUBLIC, warehouse: MY_WH_RIDHO, proxy was not configured, password is not provided, region: undefined, authenticator: SNOWFLAKE_JWT, ocsp mode: FAIL_OPEN, os: win32, os version: 10."}
+{"level":"INFO","message":"[4:24:12.562 PM]: Connection[id: 862725ab-587a-40b0-8cdf-a49d30bb4650] additional details: passcode in password is provided, passcode is not provided, private key is provided, application: undefined, client name: snowflake-sdk, client version: 2.2.0, retry timeout: 300, private key path: undefined, private key pass is not provided, client store temporary credential: false, browser response timeout: 120000"}
+{"level":"INFO","message":"[4:24:12.562 PM]: Connection[id: 862725ab-587a-40b0-8cdf-a49d30bb4650] - connection object created successfully."}
+{"level":"INFO","message":"[4:24:12.568 PM]: Connection[id: 862725ab-587a-40b0-8cdf-a49d30bb4650] - connecting. Associated Snowflake domain: GLOBAL"}
+{"level":"INFO","message":"[4:24:12.573 PM]: Connection[id: 862725ab-587a-40b0-8cdf-a49d30bb4650] - authentication successful using: SNOWFLAKE_JWT"}
+{"level":"INFO","message":"[4:24:12.574 PM]: Trying to initialize Easy Logging"}
+{"level":"INFO","message":"[4:24:12.579 PM]: No client config detected."}
+{"level":"INFO","message":"[4:24:12.580 PM]: No config file path found. Client config will not be used."}
+{"level":"INFO","message":"[4:24:12.581 PM]: Easy Logging is disabled as no config has been found"}
+{"level":"INFO","message":"[4:24:12.584 PM]: Connection[id: 862725ab-587a-40b0-8cdf-a49d30bb4650] - connected successfully after 15.037700000000768 milliseconds"}
+{"level":"INFO","message":"[4:24:24.441 PM]: Connection[id: 862725ab-587a-40b0-8cdf-a49d30bb4650] - connecting. Associated Snowflake domain: GLOBAL"}
+{"level":"INFO","message":"[4:24:24.444 PM]: Connection[id: 862725ab-587a-40b0-8cdf-a49d30bb4650] - authentication successful using: SNOWFLAKE_JWT"}
+{"level":"INFO","message":"[4:24:24.445 PM]: Connection[id: 862725ab-587a-40b0-8cdf-a49d30bb4650] - connected successfully after 3.446800000001531 milliseconds"}
+{"level":"INFO","message":"[4:25:32.811 PM]: Creating new connection object"}
+{"level":"INFO","message":"[4:25:32.822 PM]: Creating Connection[id: 16f6d0b2-8a4b-48bb-b068-1ddfe7cda911] with host: A5725842678961-SOFTWAREONE_SANDBOX.snowflakecomputing.com, account: A5725842678961-SOFTWAREONE_SANDBOX, accessUrl: https://A5725842678961-SOFTWAREONE_SANDBOX.snowflakecomputing.com, user: AKMAL_T, role: sysadmin, database: HR_Automation, schema: PUBLIC, warehouse: MY_WH_RIDHO, proxy was not configured, password is not provided, region: undefined, authenticator: SNOWFLAKE_JWT, ocsp mode: FAIL_OPEN, os: win32, os version: 10."}
+{"level":"INFO","message":"[4:25:32.822 PM]: Connection[id: 16f6d0b2-8a4b-48bb-b068-1ddfe7cda911] additional details: passcode in password is provided, passcode is not provided, private key is provided, application: undefined, client name: snowflake-sdk, client version: 2.2.0, retry timeout: 300, private key path: undefined, private key pass is not provided, client store temporary credential: false, browser response timeout: 120000"}
+{"level":"INFO","message":"[4:25:32.823 PM]: Connection[id: 16f6d0b2-8a4b-48bb-b068-1ddfe7cda911] - connection object created successfully."}
+{"level":"INFO","message":"[4:25:32.823 PM]: Connection[id: 16f6d0b2-8a4b-48bb-b068-1ddfe7cda911] - connecting. Associated Snowflake domain: GLOBAL"}
+{"level":"INFO","message":"[4:25:32.828 PM]: Connection[id: 16f6d0b2-8a4b-48bb-b068-1ddfe7cda911] - authentication successful using: SNOWFLAKE_JWT"}
+{"level":"INFO","message":"[4:25:32.828 PM]: Trying to initialize Easy Logging"}
+{"level":"INFO","message":"[4:25:32.831 PM]: No client config detected."}
+{"level":"INFO","message":"[4:25:32.831 PM]: No config file path found. Client config will not be used."}
+{"level":"INFO","message":"[4:25:32.832 PM]: Easy Logging is disabled as no config has been found"}
+{"level":"INFO","message":"[4:25:32.834 PM]: Connection[id: 16f6d0b2-8a4b-48bb-b068-1ddfe7cda911] - connected successfully after 10.997400000000198 milliseconds"}
+{"level":"INFO","message":"[4:25:34.607 PM]: Creating new connection object"}
+{"level":"INFO","message":"[4:25:34.609 PM]: Creating Connection[id: bb6cd34d-2380-48e6-9605-a7ca4ac487df] with host: A5725842678961-SOFTWAREONE_SANDBOX.snowflakecomputing.com, account: A5725842678961-SOFTWAREONE_SANDBOX, accessUrl: https://A5725842678961-SOFTWAREONE_SANDBOX.snowflakecomputing.com, user: AKMAL_T, role: sysadmin, database: HR_Automation, schema: PUBLIC, warehouse: MY_WH_RIDHO, proxy was not configured, password is not provided, region: undefined, authenticator: SNOWFLAKE_JWT, ocsp mode: FAIL_OPEN, os: win32, os version: 10."}
+{"level":"INFO","message":"[4:25:34.610 PM]: Connection[id: bb6cd34d-2380-48e6-9605-a7ca4ac487df] additional details: passcode in password is provided, passcode is not provided, private key is provided, application: undefined, client name: snowflake-sdk, client version: 2.2.0, retry timeout: 300, private key path: undefined, private key pass is not provided, client store temporary credential: false, browser response timeout: 120000"}
+{"level":"INFO","message":"[4:25:34.610 PM]: Connection[id: bb6cd34d-2380-48e6-9605-a7ca4ac487df] - connection object created successfully."}
+{"level":"INFO","message":"[4:25:34.610 PM]: Connection[id: bb6cd34d-2380-48e6-9605-a7ca4ac487df] - connecting. Associated Snowflake domain: GLOBAL"}
+{"level":"INFO","message":"[4:25:34.613 PM]: Connection[id: bb6cd34d-2380-48e6-9605-a7ca4ac487df] - authentication successful using: SNOWFLAKE_JWT"}
+{"level":"INFO","message":"[4:25:34.614 PM]: Connection[id: bb6cd34d-2380-48e6-9605-a7ca4ac487df] - connected successfully after 3.757300000000214 milliseconds"}
+{"level":"INFO","message":"[4:25:38.072 PM]: Creating new connection object"}
+{"level":"INFO","message":"[4:25:38.073 PM]: Creating Connection[id: 66257932-74a3-4615-b3fb-ea80cf6aaf04] with host: A5725842678961-SOFTWAREONE_SANDBOX.snowflakecomputing.com, account: A5725842678961-SOFTWAREONE_SANDBOX, accessUrl: https://A5725842678961-SOFTWAREONE_SANDBOX.snowflakecomputing.com, user: AKMAL_T, role: sysadmin, database: HR_Automation, schema: PUBLIC, warehouse: MY_WH_RIDHO, proxy was not configured, password is not provided, region: undefined, authenticator: SNOWFLAKE_JWT, ocsp mode: FAIL_OPEN, os: win32, os version: 10."}
+{"level":"INFO","message":"[4:25:38.073 PM]: Connection[id: 66257932-74a3-4615-b3fb-ea80cf6aaf04] additional details: passcode in password is provided, passcode is not provided, private key is provided, application: undefined, client name: snowflake-sdk, client version: 2.2.0, retry timeout: 300, private key path: undefined, private key pass is not provided, client store temporary credential: false, browser response timeout: 120000"}
+{"level":"INFO","message":"[4:25:38.073 PM]: Connection[id: 66257932-74a3-4615-b3fb-ea80cf6aaf04] - connection object created successfully."}
+{"level":"INFO","message":"[4:25:38.074 PM]: Connection[id: 66257932-74a3-4615-b3fb-ea80cf6aaf04] - connecting. Associated Snowflake domain: GLOBAL"}
+{"level":"INFO","message":"[4:25:38.076 PM]: Connection[id: 66257932-74a3-4615-b3fb-ea80cf6aaf04] - authentication successful using: SNOWFLAKE_JWT"}
+{"level":"INFO","message":"[4:25:38.077 PM]: Connection[id: 66257932-74a3-4615-b3fb-ea80cf6aaf04] - connected successfully after 3.119800000000396 milliseconds"}
+{"level":"INFO","message":"[4:25:48.007 PM]: Creating new connection object"}
+{"level":"INFO","message":"[4:25:48.009 PM]: Creating Connection[id: 088fbe1c-11b5-412b-b205-270b36d5e301] with host: A5725842678961-SOFTWAREONE_SANDBOX.snowflakecomputing.com, account: A5725842678961-SOFTWAREONE_SANDBOX, accessUrl: https://A5725842678961-SOFTWAREONE_SANDBOX.snowflakecomputing.com, user: AKMAL_T, role: sysadmin, database: HR_Automation, schema: PUBLIC, warehouse: MY_WH_RIDHO, proxy was not configured, password is not provided, region: undefined, authenticator: SNOWFLAKE_JWT, ocsp mode: FAIL_OPEN, os: win32, os version: 10."}
+{"level":"INFO","message":"[4:25:48.009 PM]: Connection[id: 088fbe1c-11b5-412b-b205-270b36d5e301] additional details: passcode in password is provided, passcode is not provided, private key is provided, application: undefined, client name: snowflake-sdk, client version: 2.2.0, retry timeout: 300, private key path: undefined, private key pass is not provided, client store temporary credential: false, browser response timeout: 120000"}
+{"level":"INFO","message":"[4:25:48.009 PM]: Connection[id: 088fbe1c-11b5-412b-b205-270b36d5e301] - connection object created successfully."}
+{"level":"INFO","message":"[4:25:48.009 PM]: Connection[id: 088fbe1c-11b5-412b-b205-270b36d5e301] - connecting. Associated Snowflake domain: GLOBAL"}
+{"level":"INFO","message":"[4:25:48.012 PM]: Connection[id: 088fbe1c-11b5-412b-b205-270b36d5e301] - authentication successful using: SNOWFLAKE_JWT"}
+{"level":"INFO","message":"[4:25:48.013 PM]: Connection[id: 088fbe1c-11b5-412b-b205-270b36d5e301] - connected successfully after 3.706399999999121 milliseconds"}
+{"level":"INFO","message":"[4:27:21.448 PM]: Creating new connection object"}
+{"level":"INFO","message":"[4:27:21.459 PM]: Creating Connection[id: c8292eea-cef8-45f9-bfb4-61002c2fe070] with host: A5725842678961-SOFTWAREONE_SANDBOX.snowflakecomputing.com, account: A5725842678961-SOFTWAREONE_SANDBOX, accessUrl: https://A5725842678961-SOFTWAREONE_SANDBOX.snowflakecomputing.com, user: AKMAL_T, role: sysadmin, database: HR_Automation, schema: PUBLIC, warehouse: MY_WH_RIDHO, proxy was not configured, password is not provided, region: undefined, authenticator: SNOWFLAKE_JWT, ocsp mode: FAIL_OPEN, os: win32, os version: 10."}
+{"level":"INFO","message":"[4:27:21.459 PM]: Connection[id: c8292eea-cef8-45f9-bfb4-61002c2fe070] additional details: passcode in password is provided, passcode is not provided, private key is provided, application: undefined, client name: snowflake-sdk, client version: 2.2.0, retry timeout: 300, private key path: undefined, private key pass is not provided, client store temporary credential: false, browser response timeout: 120000"}
+{"level":"INFO","message":"[4:27:21.460 PM]: Connection[id: c8292eea-cef8-45f9-bfb4-61002c2fe070] - connection object created successfully."}
+{"level":"INFO","message":"[4:27:21.460 PM]: Connection[id: c8292eea-cef8-45f9-bfb4-61002c2fe070] - connecting. Associated Snowflake domain: GLOBAL"}
+{"level":"INFO","message":"[4:27:21.464 PM]: Connection[id: c8292eea-cef8-45f9-bfb4-61002c2fe070] - authentication successful using: SNOWFLAKE_JWT"}
+{"level":"INFO","message":"[4:27:21.465 PM]: Trying to initialize Easy Logging"}
+{"level":"INFO","message":"[4:27:21.474 PM]: No client config detected."}
+{"level":"INFO","message":"[4:27:21.474 PM]: No config file path found. Client config will not be used."}
+{"level":"INFO","message":"[4:27:21.475 PM]: Easy Logging is disabled as no config has been found"}
+{"level":"INFO","message":"[4:27:21.479 PM]: Connection[id: c8292eea-cef8-45f9-bfb4-61002c2fe070] - connected successfully after 18.191300000005867 milliseconds"}
+{"level":"INFO","message":"[4:27:31.213 PM]: Creating new connection object"}
+{"level":"INFO","message":"[4:27:31.214 PM]: Creating Connection[id: 895a1cb7-df40-4a3e-b4df-f153a7d47f04] with host: A5725842678961-SOFTWAREONE_SANDBOX.snowflakecomputing.com, account: A5725842678961-SOFTWAREONE_SANDBOX, accessUrl: https://A5725842678961-SOFTWAREONE_SANDBOX.snowflakecomputing.com, user: AKMAL_T, role: sysadmin, database: HR_Automation, schema: PUBLIC, warehouse: MY_WH_RIDHO, proxy was not configured, password is not provided, region: undefined, authenticator: SNOWFLAKE_JWT, ocsp mode: FAIL_OPEN, os: win32, os version: 10."}
+{"level":"INFO","message":"[4:27:31.214 PM]: Connection[id: 895a1cb7-df40-4a3e-b4df-f153a7d47f04] additional details: passcode in password is provided, passcode is not provided, private key is provided, application: undefined, client name: snowflake-sdk, client version: 2.2.0, retry timeout: 300, private key path: undefined, private key pass is not provided, client store temporary credential: false, browser response timeout: 120000"}
+{"level":"INFO","message":"[4:27:31.215 PM]: Connection[id: 895a1cb7-df40-4a3e-b4df-f153a7d47f04] - connection object created successfully."}
+{"level":"INFO","message":"[4:27:31.215 PM]: Connection[id: 895a1cb7-df40-4a3e-b4df-f153a7d47f04] - connecting. Associated Snowflake domain: GLOBAL"}
+{"level":"INFO","message":"[4:27:31.217 PM]: Connection[id: 895a1cb7-df40-4a3e-b4df-f153a7d47f04] - authentication successful using: SNOWFLAKE_JWT"}
+{"level":"INFO","message":"[4:27:31.218 PM]: Connection[id: 895a1cb7-df40-4a3e-b4df-f153a7d47f04] - connected successfully after 3.55460000000312 milliseconds"}
+{"level":"INFO","message":"[4:27:36.785 PM]: Creating new connection object"}
+{"level":"INFO","message":"[4:27:36.787 PM]: Creating Connection[id: 5b56754b-0067-487b-889b-fcbc83bd13e4] with host: A5725842678961-SOFTWAREONE_SANDBOX.snowflakecomputing.com, account: A5725842678961-SOFTWAREONE_SANDBOX, accessUrl: https://A5725842678961-SOFTWAREONE_SANDBOX.snowflakecomputing.com, user: AKMAL_T, role: sysadmin, database: HR_Automation, schema: PUBLIC, warehouse: MY_WH_RIDHO, proxy was not configured, password is not provided, region: undefined, authenticator: SNOWFLAKE_JWT, ocsp mode: FAIL_OPEN, os: win32, os version: 10."}
+{"level":"INFO","message":"[4:27:36.787 PM]: Connection[id: 5b56754b-0067-487b-889b-fcbc83bd13e4] additional details: passcode in password is provided, passcode is not provided, private key is provided, application: undefined, client name: snowflake-sdk, client version: 2.2.0, retry timeout: 300, private key path: undefined, private key pass is not provided, client store temporary credential: false, browser response timeout: 120000"}
+{"level":"INFO","message":"[4:27:36.788 PM]: Connection[id: 5b56754b-0067-487b-889b-fcbc83bd13e4] - connection object created successfully."}
+{"level":"INFO","message":"[4:27:36.788 PM]: Connection[id: 5b56754b-0067-487b-889b-fcbc83bd13e4] - connecting. Associated Snowflake domain: GLOBAL"}
+{"level":"INFO","message":"[4:27:36.791 PM]: Connection[id: 5b56754b-0067-487b-889b-fcbc83bd13e4] - authentication successful using: SNOWFLAKE_JWT"}
+{"level":"INFO","message":"[4:27:36.792 PM]: Connection[id: 5b56754b-0067-487b-889b-fcbc83bd13e4] - connected successfully after 3.8316999999951804 milliseconds"}
+{"level":"INFO","message":"[4:28:01.348 PM]: Creating new connection object"}
+{"level":"INFO","message":"[4:28:01.362 PM]: Creating Connection[id: 36a02a0d-5b7c-40b0-86ff-cd234a111323] with host: A5725842678961-SOFTWAREONE_SANDBOX.snowflakecomputing.com, account: A5725842678961-SOFTWAREONE_SANDBOX, accessUrl: https://A5725842678961-SOFTWAREONE_SANDBOX.snowflakecomputing.com, user: AKMAL_T, role: sysadmin, database: HR_Automation, schema: PUBLIC, warehouse: MY_WH_RIDHO, proxy was not configured, password is not provided, region: undefined, authenticator: SNOWFLAKE_JWT, ocsp mode: FAIL_OPEN, os: win32, os version: 10."}
+{"level":"INFO","message":"[4:28:01.363 PM]: Connection[id: 36a02a0d-5b7c-40b0-86ff-cd234a111323] additional details: passcode in password is provided, passcode is not provided, private key is provided, application: undefined, client name: snowflake-sdk, client version: 2.2.0, retry timeout: 300, private key path: undefined, private key pass is not provided, client store temporary credential: false, browser response timeout: 120000"}
+{"level":"INFO","message":"[4:28:01.363 PM]: Connection[id: 36a02a0d-5b7c-40b0-86ff-cd234a111323] - connection object created successfully."}
+{"level":"INFO","message":"[4:28:01.364 PM]: Connection[id: 36a02a0d-5b7c-40b0-86ff-cd234a111323] - connecting. Associated Snowflake domain: GLOBAL"}
+{"level":"INFO","message":"[4:28:01.369 PM]: Connection[id: 36a02a0d-5b7c-40b0-86ff-cd234a111323] - authentication successful using: SNOWFLAKE_JWT"}
+{"level":"INFO","message":"[4:28:01.370 PM]: Trying to initialize Easy Logging"}
+{"level":"INFO","message":"[4:28:01.372 PM]: No client config detected."}
+{"level":"INFO","message":"[4:28:01.373 PM]: No config file path found. Client config will not be used."}
+{"level":"INFO","message":"[4:28:01.373 PM]: Easy Logging is disabled as no config has been found"}
+{"level":"INFO","message":"[4:28:01.378 PM]: Connection[id: 36a02a0d-5b7c-40b0-86ff-cd234a111323] - connected successfully after 13.92960000000312 milliseconds"}
+{"level":"INFO","message":"[4:28:27.023 PM]: Creating new connection object"}
+{"level":"INFO","message":"[4:28:27.033 PM]: Creating Connection[id: 877b517d-3f18-4fa8-b84f-18c391eea4a9] with host: A5725842678961-SOFTWAREONE_SANDBOX.snowflakecomputing.com, account: A5725842678961-SOFTWAREONE_SANDBOX, accessUrl: https://A5725842678961-SOFTWAREONE_SANDBOX.snowflakecomputing.com, user: AKMAL_T, role: sysadmin, database: HR_Automation, schema: PUBLIC, warehouse: MY_WH_RIDHO, proxy was not configured, password is not provided, region: undefined, authenticator: SNOWFLAKE_JWT, ocsp mode: FAIL_OPEN, os: win32, os version: 10."}
+{"level":"INFO","message":"[4:28:27.033 PM]: Connection[id: 877b517d-3f18-4fa8-b84f-18c391eea4a9] additional details: passcode in password is provided, passcode is not provided, private key is provided, application: undefined, client name: snowflake-sdk, client version: 2.2.0, retry timeout: 300, private key path: undefined, private key pass is not provided, client store temporary credential: false, browser response timeout: 120000"}
+{"level":"INFO","message":"[4:28:27.034 PM]: Connection[id: 877b517d-3f18-4fa8-b84f-18c391eea4a9] - connection object created successfully."}
+{"level":"INFO","message":"[4:28:27.035 PM]: Connection[id: 877b517d-3f18-4fa8-b84f-18c391eea4a9] - connecting. Associated Snowflake domain: GLOBAL"}
+{"level":"INFO","message":"[4:28:27.039 PM]: Connection[id: 877b517d-3f18-4fa8-b84f-18c391eea4a9] - authentication successful using: SNOWFLAKE_JWT"}
+{"level":"INFO","message":"[4:28:27.040 PM]: Trying to initialize Easy Logging"}
+{"level":"INFO","message":"[4:28:27.046 PM]: No client config detected."}
+{"level":"INFO","message":"[4:28:27.047 PM]: No config file path found. Client config will not be used."}
+{"level":"INFO","message":"[4:28:27.047 PM]: Easy Logging is disabled as no config has been found"}
+{"level":"INFO","message":"[4:28:27.050 PM]: Connection[id: 877b517d-3f18-4fa8-b84f-18c391eea4a9] - connected successfully after 15.170099999988452 milliseconds"}
+{"level":"INFO","message":"[4:29:03.294 PM]: Creating new connection object"}
+{"level":"INFO","message":"[4:29:03.303 PM]: Creating Connection[id: 9f386e62-d60a-439d-9a5c-3f312f294a1a] with host: A5725842678961-SOFTWAREONE_SANDBOX.snowflakecomputing.com, account: A5725842678961-SOFTWAREONE_SANDBOX, accessUrl: https://A5725842678961-SOFTWAREONE_SANDBOX.snowflakecomputing.com, user: AKMAL_T, role: sysadmin, database: HR_Automation, schema: PUBLIC, warehouse: MY_WH_RIDHO, proxy was not configured, password is not provided, region: undefined, authenticator: SNOWFLAKE_JWT, ocsp mode: FAIL_OPEN, os: win32, os version: 10."}
+{"level":"INFO","message":"[4:29:03.304 PM]: Connection[id: 9f386e62-d60a-439d-9a5c-3f312f294a1a] additional details: passcode in password is provided, passcode is not provided, private key is provided, application: undefined, client name: snowflake-sdk, client version: 2.2.0, retry timeout: 300, private key path: undefined, private key pass is not provided, client store temporary credential: false, browser response timeout: 120000"}
+{"level":"INFO","message":"[4:29:03.304 PM]: Connection[id: 9f386e62-d60a-439d-9a5c-3f312f294a1a] - connection object created successfully."}
+{"level":"INFO","message":"[4:29:03.305 PM]: Connection[id: 9f386e62-d60a-439d-9a5c-3f312f294a1a] - connecting. Associated Snowflake domain: GLOBAL"}
+{"level":"INFO","message":"[4:29:03.308 PM]: Connection[id: 9f386e62-d60a-439d-9a5c-3f312f294a1a] - authentication successful using: SNOWFLAKE_JWT"}
+{"level":"INFO","message":"[4:29:03.309 PM]: Trying to initialize Easy Logging"}
+{"level":"INFO","message":"[4:29:03.312 PM]: No client config detected."}
+{"level":"INFO","message":"[4:29:03.312 PM]: No config file path found. Client config will not be used."}
+{"level":"INFO","message":"[4:29:03.313 PM]: Easy Logging is disabled as no config has been found"}
+{"level":"INFO","message":"[4:29:03.315 PM]: Connection[id: 9f386e62-d60a-439d-9a5c-3f312f294a1a] - connected successfully after 10.675499999983003 milliseconds"}
+{"level":"INFO","message":"[4:29:15.150 PM]: Creating new connection object"}
+{"level":"INFO","message":"[4:29:15.151 PM]: Creating Connection[id: 0a7daf5e-e172-46df-a21d-aada0d2f4298] with host: A5725842678961-SOFTWAREONE_SANDBOX.snowflakecomputing.com, account: A5725842678961-SOFTWAREONE_SANDBOX, accessUrl: https://A5725842678961-SOFTWAREONE_SANDBOX.snowflakecomputing.com, user: AKMAL_T, role: sysadmin, database: HR_Automation, schema: PUBLIC, warehouse: MY_WH_RIDHO, proxy was not configured, password is not provided, region: undefined, authenticator: SNOWFLAKE_JWT, ocsp mode: FAIL_OPEN, os: win32, os version: 10."}
+{"level":"INFO","message":"[4:29:15.151 PM]: Connection[id: 0a7daf5e-e172-46df-a21d-aada0d2f4298] additional details: passcode in password is provided, passcode is not provided, private key is provided, application: undefined, client name: snowflake-sdk, client version: 2.2.0, retry timeout: 300, private key path: undefined, private key pass is not provided, client store temporary credential: false, browser response timeout: 120000"}
+{"level":"INFO","message":"[4:29:15.151 PM]: Connection[id: 0a7daf5e-e172-46df-a21d-aada0d2f4298] - connection object created successfully."}
+{"level":"INFO","message":"[4:29:15.151 PM]: Connection[id: 0a7daf5e-e172-46df-a21d-aada0d2f4298] - connecting. Associated Snowflake domain: GLOBAL"}
+{"level":"INFO","message":"[4:29:15.154 PM]: Connection[id: 0a7daf5e-e172-46df-a21d-aada0d2f4298] - authentication successful using: SNOWFLAKE_JWT"}
+{"level":"INFO","message":"[4:29:15.155 PM]: Connection[id: 0a7daf5e-e172-46df-a21d-aada0d2f4298] - connected successfully after 3.7463999999745283 milliseconds"}
+{"level":"INFO","message":"[4:30:25.152 PM]: Creating new connection object"}
+{"level":"INFO","message":"[4:30:25.153 PM]: Creating Connection[id: c627f871-78a6-40c2-8b7a-2f4a067d6c06] with host: A5725842678961-SOFTWAREONE_SANDBOX.snowflakecomputing.com, account: A5725842678961-SOFTWAREONE_SANDBOX, accessUrl: https://A5725842678961-SOFTWAREONE_SANDBOX.snowflakecomputing.com, user: AKMAL_T, role: sysadmin, database: HR_Automation, schema: PUBLIC, warehouse: MY_WH_RIDHO, proxy was not configured, password is not provided, region: undefined, authenticator: SNOWFLAKE_JWT, ocsp mode: FAIL_OPEN, os: win32, os version: 10."}
+{"level":"INFO","message":"[4:30:25.154 PM]: Connection[id: c627f871-78a6-40c2-8b7a-2f4a067d6c06] additional details: passcode in password is provided, passcode is not provided, private key is provided, application: undefined, client name: snowflake-sdk, client version: 2.2.0, retry timeout: 300, private key path: undefined, private key pass is not provided, client store temporary credential: false, browser response timeout: 120000"}
+{"level":"INFO","message":"[4:30:25.154 PM]: Connection[id: c627f871-78a6-40c2-8b7a-2f4a067d6c06] - connection object created successfully."}
+{"level":"INFO","message":"[4:30:25.154 PM]: Connection[id: c627f871-78a6-40c2-8b7a-2f4a067d6c06] - connecting. Associated Snowflake domain: GLOBAL"}
+{"level":"INFO","message":"[4:30:25.157 PM]: Connection[id: c627f871-78a6-40c2-8b7a-2f4a067d6c06] - authentication successful using: SNOWFLAKE_JWT"}
+{"level":"INFO","message":"[4:30:25.158 PM]: Connection[id: c627f871-78a6-40c2-8b7a-2f4a067d6c06] - connected successfully after 4.196200000005774 milliseconds"}
+{"level":"INFO","message":"[4:30:30.425 PM]: Creating new connection object"}
+{"level":"INFO","message":"[4:30:30.426 PM]: Creating Connection[id: 5335a2be-5fac-4435-b1fd-7fca793aa984] with host: A5725842678961-SOFTWAREONE_SANDBOX.snowflakecomputing.com, account: A5725842678961-SOFTWAREONE_SANDBOX, accessUrl: https://A5725842678961-SOFTWAREONE_SANDBOX.snowflakecomputing.com, user: AKMAL_T, role: sysadmin, database: HR_Automation, schema: PUBLIC, warehouse: MY_WH_RIDHO, proxy was not configured, password is not provided, region: undefined, authenticator: SNOWFLAKE_JWT, ocsp mode: FAIL_OPEN, os: win32, os version: 10."}
+{"level":"INFO","message":"[4:30:30.427 PM]: Connection[id: 5335a2be-5fac-4435-b1fd-7fca793aa984] additional details: passcode in password is provided, passcode is not provided, private key is provided, application: undefined, client name: snowflake-sdk, client version: 2.2.0, retry timeout: 300, private key path: undefined, private key pass is not provided, client store temporary credential: false, browser response timeout: 120000"}
+{"level":"INFO","message":"[4:30:30.427 PM]: Connection[id: 5335a2be-5fac-4435-b1fd-7fca793aa984] - connection object created successfully."}
+{"level":"INFO","message":"[4:30:30.427 PM]: Connection[id: 5335a2be-5fac-4435-b1fd-7fca793aa984] - connecting. Associated Snowflake domain: GLOBAL"}
+{"level":"INFO","message":"[4:30:30.431 PM]: Connection[id: 5335a2be-5fac-4435-b1fd-7fca793aa984] - authentication successful using: SNOWFLAKE_JWT"}
+{"level":"INFO","message":"[4:30:30.432 PM]: Connection[id: 5335a2be-5fac-4435-b1fd-7fca793aa984] - connected successfully after 4.941899999976158 milliseconds"}
+>>>>>>> Stashed changes
