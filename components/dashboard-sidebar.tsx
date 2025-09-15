@@ -5,6 +5,10 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import {
   BarChart3,
+  Briefcase,
+  LineChart,
+  User,
+  LogOut,
   FileText,
   Home,
   Settings,
@@ -23,6 +27,7 @@ const sidebarItems = [
   { icon: Users, label: "Application", href: "/application" },
   { icon: TrendingUp, label: "Sales", href: "/sales" },
   { icon: FileText, label: "Job Post", href: "/job-post" },
+  { icon: User, label: "Account", href: "/account" }, // <-- THIS LINE IS ADDED
   { icon: Calendar, label: "Calendly", href: "https://calendly.com/app/scheduling/meeting_types/user/me" },
   { icon: Settings, label: "Settings", href: "/settings" },
 ]
