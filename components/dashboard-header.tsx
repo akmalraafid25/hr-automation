@@ -1,3 +1,4 @@
+"use client"
 import { Bell, Search, Settings, User } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -10,16 +11,31 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 
 export function DashboardHeader() {
+  async function handleLogout() {
+    try {
+      await fetch("/api/logout", { method: "POST", credentials: "include" })
+      // Force full page reload so middleware sees cookie cleared
+      window.location.href = "/login"
+    } catch (err) {
+      console.error("Logout failed:", err)
+    }
+  }
+
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center justify-between px-6">
         <div className="flex items-center gap-6">
           <div className="flex items-center gap-2">
             <a href="/">
-              <Image src="https://www.softwareone.com/-/media/images/logos/softwareone-logo-blk.svg?iar=0&hash=6A277FF39328B4D79A071F4A9F95F301" width={100} height={40} alt="Company Logo" />
+              <Image
+                src="https://www.softwareone.com/-/media/images/logos/softwareone-logo-blk.svg?iar=0&hash=6A277FF39328B4D79A071F4A9F95F301"
+                width={100}
+                height={40}
+                alt="Company Logo"
+              />
             </a>
           </div>
         </div>
@@ -59,7 +75,7 @@ export function DashboardHeader() {
                 <span>Settings</span>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>Log out</DropdownMenuItem>
+              <DropdownMenuItem onClick={handleLogout}>Log out</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>

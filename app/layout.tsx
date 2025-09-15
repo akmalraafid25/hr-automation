@@ -2,14 +2,8 @@ import type React from "react"
 import type { Metadata } from "next"
 import { GeistSans } from "geist/font/sans"
 import { GeistMono } from "geist/font/mono"
-import { DM_Sans } from "next/font/google"
+import { POPPINS } from "./fonts/poppins";
 import "./globals.css"
-
-const dmSans = DM_Sans({
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--font-dm-sans",
-})
 
 export const metadata: Metadata = {
   title: "Dashboard",
@@ -24,7 +18,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`font-sans ${GeistSans.variable} ${GeistMono.variable} ${dmSans.variable}`}>{children}</body>
+      <body className={`font-sans ${GeistSans.variable} ${GeistMono.variable} ${POPPINS.variable}`}>{children}</body>
     </html>
   )
 }

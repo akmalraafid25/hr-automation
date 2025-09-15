@@ -1,33 +1,37 @@
-import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
-import jwt from "jsonwebtoken";
+import { NextResponse } from "next/server"
+import type { NextRequest } from "next/server"
+import { jwtVerify } from "jose"
 
-export function middleware(req: NextRequest) {
-  const { pathname } = req.nextUrl;
+export async function middleware(req: NextRequest) {
+  const { pathname } = req.nextUrl
 
-  // Allow public routes
-  if (
-    pathname.startsWith("/login") ||
-    pathname.startsWith("/register") ||
-    pathname.startsWith("/api")
-  ) {
-    return NextResponse.next();
+  // Public paths that don't require authentication
+  const publicPaths = ["/login", "/api/login", "/_next", "/favicon.ico"]
+  if (publicPaths.some((p) => pathname.startsWith(p))) {
+    return NextResponse.next()
   }
 
-  const token = req.cookies.get("token")?.value;
-
+  // Get token from cookies
+  const token = req.cookies.get("token")?.value
   if (!token) {
-    return NextResponse.redirect(new URL("/login", req.url));
+    console.log("🛑 No token found, redirecting to /login")
+    return NextResponse.redirect(new URL("/login", req.url))
   }
 
   try {
-    jwt.verify(token, process.env.JWT_SECRET!);
-    return NextResponse.next();
-  } catch {
-    return NextResponse.redirect(new URL("/login", req.url));
+    // Decode JWT using jose
+    const secret = new TextEncoder().encode(process.env.JWT_SECRET)
+    const { payload } = await jwtVerify(token, secret)
+    
+    console.log("✅ Token is valid:", payload)
+    return NextResponse.next()
+  } catch (err) {
+    console.error("❌ JWT verification failed:", err)
+    return NextResponse.redirect(new URL("/login", req.url))
   }
 }
 
+// Apply middleware to all routes except static, _next, favicon
 export const config = {
   matcher: ["/((?!_next/static|_next/image|favicon.ico).*)"],
-};
+}
