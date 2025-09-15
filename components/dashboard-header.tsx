@@ -3,6 +3,7 @@ import { Bell, Search, Settings, User } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import Image from "next/image"
+import Link from "next/link" // <-- IMPORT ADDED
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -66,16 +67,26 @@ export function DashboardHeader() {
                 </div>
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>
-                <User className="mr-2 h-4 w-4" />
-                <span>Profile</span>
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Settings className="mr-2 h-4 w-4" />
-                <span>Settings</span>
-              </DropdownMenuItem>
+              {/* --- MODIFIED SECTION START --- */}
+              <Link href="/account">
+                <DropdownMenuItem className="cursor-pointer">
+                  <User className="mr-2 h-4 w-4" />
+                  <span>Profile</span>
+                </DropdownMenuItem>
+              </Link>
+              <Link href="/account">
+                <DropdownMenuItem className="cursor-pointer">
+                  <Settings className="mr-2 h-4 w-4" />
+                  <span>Settings</span>
+                </DropdownMenuItem>
+              </Link>
+              {/* --- MODIFIED SECTION END --- */}
               <DropdownMenuSeparator />
+<<<<<<< HEAD
               <DropdownMenuItem onClick={handleLogout}>Log out</DropdownMenuItem>
+=======
+              <DropdownMenuItem className="cursor-pointer">Log out</DropdownMenuItem>
+>>>>>>> 666e1c347418ba00c6cb812371de468728b0b5de
             </DropdownMenuContent>
           </DropdownMenu>
         </div>

@@ -27,7 +27,7 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
       window.location.href = "/"  // <--- this triggers real browser navigation
     } else {
       setLoading(false)
-      alert("Your password is incorrect or account doesn't exists!")
+      alert("Your password is incorrect or account doesn't exists")
     }
   }
 
