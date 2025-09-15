@@ -13874,4 +13874,7 @@
 {"level":"INFO","message":"[4:30:30.427 PM]: Connection[id: 5335a2be-5fac-4435-b1fd-7fca793aa984] - connecting. Associated Snowflake domain: GLOBAL"}
 {"level":"INFO","message":"[4:30:30.431 PM]: Connection[id: 5335a2be-5fac-4435-b1fd-7fca793aa984] - authentication successful using: SNOWFLAKE_JWT"}
 {"level":"INFO","message":"[4:30:30.432 PM]: Connection[id: 5335a2be-5fac-4435-b1fd-7fca793aa984] - connected successfully after 4.941899999976158 milliseconds"}
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
