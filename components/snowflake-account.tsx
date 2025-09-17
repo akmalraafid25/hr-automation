@@ -21,6 +21,11 @@ interface Account {
   PHONE: string | number;
 }
 
+interface ApiResponse {
+  ok: boolean;
+  data: Account;
+}
+
 export default function SnowflakeAccount() {
   const [account, setAccount] = useState<Account | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -32,26 +37,24 @@ export default function SnowflakeAccount() {
         const res = await fetch("/api/Account/me");
         console.log("Response status:", res.status);
 
-        const raw = await res.text();
-        console.log("Raw response text:", raw);
+        const json: ApiResponse = await res.json();
+        console.log("Parsed data:", json);
 
-        const data = JSON.parse(raw);
-        console.log("Parsed data:", data);
-
-        setAccount(Array.isArray(data) ? data[0] : data);
+        setAccount(json.data); // ✅ <-- FIX: use json.data
       } catch (err) {
         console.error("Fetch error:", err);
         setError("Failed to fetch");
       } finally {
         setIsLoading(false);
-        console.log("Account data:", account);
-
       }
     };
 
     fetchAccount();
   }, []);
 
+  useEffect(() => {
+    console.log("Account state updated:", account);
+  }, [account]);
 
   if (isLoading) return <div>Loading account information...</div>;
   if (error) return <div className="text-red-500">Error: {error}</div>;
