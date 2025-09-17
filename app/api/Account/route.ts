@@ -1,65 +1,108 @@
-import { NextRequest, NextResponse } from "next/server";
-import snowflake from "snowflake-sdk";
+import { NextResponse, NextRequest } from "next/server";
+import { connect } from "@/lib/snowflake";
+import jwt from "jsonwebtoken";
+
+async function getUsernameFromToken(req: NextRequest) {
+  const token = req.cookies.get("token")?.value;
+  if (!token) return null;
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET!) as { username: string };
+    return decoded.username;
+  } catch (error) {
+    return null;
+  }
+}
 
 export async function GET(req: NextRequest) {
+  let connection: any;
   try {
-    const connection = snowflake.createConnection({
-      account: process.env.SNOWFLAKE_ACCOUNT!,
-      username: process.env.SNOWFLAKE_USER!,
-      privateKey: process.env.SNOWFLAKE_PRIVATE_KEY,
-      privateKeyPass: process.env.SNOWFLAKE_PRIVATE_KEY_PASSPHRASE,
-      warehouse: process.env.SNOWFLAKE_WAREHOUSE,
-      database: process.env.SNOWFLAKE_DATABASE,
-      schema: process.env.SNOWFLAKE_SCHEMA,
-      role: process.env.SNOWFLAKE_ROLE,
-    });
+    const username = await getUsernameFromToken(req);
+    if (!username) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
 
-    await new Promise<void>((resolve, reject) => {
-      connection.connect((err, conn) => {
-        if (err) {
-          console.error("Unable to connect to Snowflake:", err);
-          reject(err);
-        } else {
-          console.log("Successfully connected to Snowflake.");
-          resolve();
-        }
-      });
-    });
-
-    const query = "SELECT * FROM account;";
+    connection = await connect();
+    const query = `
+      SELECT "ID", "USERNAME", "EMAIL", "NAME", "PHONE", "CREATED_AT", "UPDATED_AT" 
+      FROM "ACCOUNT_TEST" 
+      WHERE UPPER("USERNAME") = UPPER(?);
+    `;
+    
+    // Corrected execute call
     const rows = await new Promise<any[]>((resolve, reject) => {
-      connection.execute({
-        sqlText: query,
-        complete: (err, stmt, rows) => {
-          if (err) {
-            console.error("Failed to execute statement:", err);
-            reject(err);
-          } else {
-            console.log("Successfully executed statement.");
-            resolve(rows);
-          }
-        },
-      });
+        connection.execute({
+            sqlText: query,
+            binds: [username],
+            complete: (err: any, stmt: any, rows: any) => {
+                if (err) reject(err);
+                else resolve(rows);
+            }
+        });
     });
 
+    if (rows.length === 0) {
+      return NextResponse.json({ error: "User not found" }, { status: 404 });
+    }
+
+    return NextResponse.json(rows[0], { status: 200 });
+  } catch (error: any) {
+    console.error("GET Account Error:", error.message);
+    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+  } finally {
+    if (connection) {
+      await connection.destroy();
+    }
+  }
+}
+
+export async function PATCH(req: NextRequest) {
+  let connection: any;
+  try {
+    const username = await getUsernameFromToken(req);
+    if (!username) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    const { name, phone } = await req.json();
+    if (!name && !phone) {
+      return NextResponse.json({ error: "No fields to update" }, { status: 400 });
+    }
+
+    connection = await connect();
+    let query = `UPDATE "ACCOUNT_TEST" SET `;
+    const binds = [];
+
+    if (name) {
+      query += `"NAME" = ?, `;
+      binds.push(name);
+    }
+    if (phone) {
+      query += `"PHONE" = ?, `;
+      binds.push(phone);
+    }
+
+    query += `"UPDATED_AT" = CURRENT_TIMESTAMP() WHERE UPPER("USERNAME") = UPPER(?);`;
+    binds.push(username);
+
+    // Corrected execute call
     await new Promise<void>((resolve, reject) => {
-      connection.destroy((err, conn) => {
-        if (err) {
-          console.error("Unable to disconnect from Snowflake:", err);
-          reject(err);
-        } else {
-          console.log("Successfully disconnected from Snowflake.");
-          resolve();
-        }
-      });
+        connection.execute({
+            sqlText: query,
+            binds: binds,
+            complete: (err: any) => {
+                if(err) reject(err);
+                else resolve();
+            }
+        });
     });
 
-    return NextResponse.json(rows, { status: 200 });
-  } catch (error) {
-    console.error("Error:", error);
-    return NextResponse.json(
-      { error: "Internal Server Error" },
-      { status: 500 }
-    );
+    return NextResponse.json({ message: "Account updated successfully" }, { status: 200 });
+  } catch (error: any) {
+    console.error("PATCH Account Error:", error.message);
+    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+  } finally {
+    if (connection) {
+      await connection.destroy();
+    }
   }
 }
