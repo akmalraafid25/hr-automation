@@ -1,9 +1,11 @@
-import { NextResponse } from "next/server"
-import type { NextRequest } from "next/server"
-import { jwtVerify } from "jose"
-
-export async function middleware(req: NextRequest) {
+import { NextResponse } from 'next/server'
+import type { NextRequest } from 'next/server'
+ 
+export function middleware(req: NextRequest) {
+  const token = req.cookies.get('token')?.value
   const { pathname } = req.nextUrl
+ 
+  const isPublicPath = pathname === '/login' || pathname === '/register';
 
   // Public paths that don't require authentication
   const publicPaths = ["/login", "/api/login", "/_next", "/favicon.ico"]
@@ -47,9 +49,19 @@ export async function middleware(req: NextRequest) {
   } catch (err) {
     return NextResponse.redirect(new URL("/login", req.url))
   }
+ 
+  return NextResponse.next()
 }
-
-// Apply middleware to all routes except static, _next, favicon
+ 
 export const config = {
-  matcher: ["/((?!_next/static|_next/image|favicon.ico).*)"],
+  matcher: [
+    /*
+     * Match all request paths except for:
+     * 1. API routes (paths starting with /api/)
+     * 2. Static files (_next/static)
+     * 3. Image optimization files (_next/image)
+     * 4. Favicon (favicon.ico)
+     */
+    '/((?!api/|_next/static|_next/image|favicon.ico).*)',
+  ],
 }

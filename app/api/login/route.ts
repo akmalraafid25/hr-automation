@@ -1,101 +1,85 @@
-import { NextResponse } from "next/server"
-import jwt from "jsonwebtoken"
-import snowflake from "snowflake-sdk"
-import crypto from "crypto"
-import bcrypt from "bcryptjs"
+import { NextResponse, NextRequest } from "next/server";
+import { connect } from "@/lib/snowflake";
+import jwt from "jsonwebtoken";
+import bcryptjs from "bcryptjs";
 
-function createConnection() {
-  const privateKey = crypto.createPrivateKey({
-    key: process.env.SNOWFLAKE_PRIVATE_KEY!,
-    format: "pem",
-    type: "pkcs8",
-  })
-
-  return snowflake.createConnection({
-    account: process.env.SNOWFLAKE_ACCOUNT,
-    username: process.env.SNOWFLAKE_USER,
-    authenticator: "SNOWFLAKE_JWT",
-    privateKey: process.env.SNOWFLAKE_PRIVATE_KEY,
-    warehouse: process.env.SNOWFLAKE_WAREHOUSE,
-    database: process.env.SNOWFLAKE_DATABASE,
-    schema: process.env.SNOWFLAKE_SCHEMA,
-  })
-}
-
-function connectAsync(conn: snowflake.Connection): Promise<void> {
-  return new Promise((resolve, reject) => {
-    conn.connect((err) => {
-      if (err) reject(err)
-      else resolve()
-    })
-  })
-}
-
-function executeAsync(conn: snowflake.Connection, sql: string, binds: any[]): Promise<any[]> {
-  return new Promise((resolve, reject) => {
-    conn.execute({
-      sqlText: sql,
-      binds,
-      complete: (err, stmt, rows) => {
-        if (err) reject(err)
-        else resolve(rows)
-      },
-    })
-  })
-}
-
-export async function POST(req: Request) {
-  const formData = await req.formData()
-  const username = formData.get("username")?.toString() || ""
-  const password = formData.get("password")?.toString() || ""
-
-  const conn = createConnection()
-
+export async function POST(req: NextRequest) {
+  let connection: any;
   try {
-    await connectAsync(conn)
+    
+    const formData = await req.formData();
+    const username = formData.get("username")?.toString();
+    const password = formData.get("password")?.toString();
+    const ip_address = req.headers.get('x-forwarded-for') ?? req.ip; 
 
-    const rows = await executeAsync(
-      conn,
-      `SELECT ID, NAME, USERNAME, PASSWORD_HASH, EMAIL, PHONE, ROLE
-       FROM ACCOUNT_TEST
-       WHERE USERNAME = ?`,
-      [username]
-    )
+    if (!username || !password) {
+      return new NextResponse("Missing username or password", { status: 400 });
+    }
+
+    connection = await connect();
+    
+    const userQuery = `SELECT * FROM "ACCOUNT_TEST" WHERE UPPER("USERNAME") = UPPER(?);`;
+    
+    // This is the corrected way to execute the query
+    const rows = await new Promise<any[]>((resolve, reject) => {
+      connection.execute({
+        sqlText: userQuery,
+        binds: [username],
+        complete: (err: any, stmt: any, rows: any) => {
+          if (err) {
+            reject(err);
+          } else {
+            resolve(rows);
+          }
+        },
+      });
+    });
 
     if (rows.length === 0) {
-      return new NextResponse("Unauthorized", { status: 401 })
+      return new NextResponse("Unauthorized: Invalid credentials", { status: 401 });
     }
 
-    const user = rows[0]
+    const user = rows[0] as any;
 
-    const isValid = await bcrypt.compare(password, user.PASSWORD_HASH)
-
-    console.log("Password match result:", isValid)
-
-    if (!isValid) {
-      return new NextResponse("Unauthorized", { status: 401 })
+    const passwordMatch = await bcryptjs.compare(password, user.PASSWORD_HASH);
+    if (!passwordMatch) {
+      await connection.execute({
+        sqlText: `INSERT INTO "LOGIN_ATTEMPTS_TEST" ("ACCOUNT_ID", "IS_SUCCESSFUL", "IP_ADDRESS") VALUES (?, ?, ?);`,
+        binds: [user.ID, false, ip_address] 
+      });
+      return new NextResponse("Unauthorized: Invalid credentials", { status: 401 });
     }
-
+    
     const token = jwt.sign(
       { id: user.ID, username: user.USERNAME, name: user.NAME, email: user.EMAIL, role: user.ROLE },
       process.env.JWT_SECRET!,
       { expiresIn: "1h" }
-    )
+    );
 
     // Redirect based on role
     const redirectUrl = user.ROLE === 'ADMIN' ? "/" : "/jobs"
     const res = NextResponse.redirect(new URL(redirectUrl, req.url))
+    
     res.cookies.set("token", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       path: "/",
-    })
+      maxAge: 60 * 60,
+    });
+    
+    await connection.execute({
+      sqlText: `INSERT INTO "LOGIN_ATTEMPTS_TEST" ("ACCOUNT_ID", "IS_SUCCESSFUL", "IP_ADDRESS") VALUES (?, ?, ?);`,
+      binds: [user.ID, true, ip_address]
+    });
+    
+    return res;
 
-    return res
-  } catch (error) {
-    console.error("Snowflake login error:", error)
-    return new NextResponse("Internal Server Error", { status: 500 })
+  } catch (error: any) {
+    console.error("Login API Error:", error.message);
+    return new NextResponse("Internal Server Error", { status: 500 });
   } finally {
-    conn.destroy((err) => err && console.error("Disconnect error:", err))
+    if (connection) {
+      await connection.destroy();
+    }
   }
 }
