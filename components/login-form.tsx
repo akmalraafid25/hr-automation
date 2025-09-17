@@ -6,9 +6,12 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { Dialog, DialogContent } from "@/components/ui/dialog"
+import { RegisterForm } from "@/components/register-form"
 
 export function LoginForm({ className, ...props }: React.ComponentProps<"div">) {
   const [loading, setLoading] = useState(false)
+  const [showRegister, setShowRegister] = useState(false)
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -69,6 +72,12 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
               <Button type="submit" className="w-full" disabled={loading}>
                 {loading ? "Logging in..." : "Login"}
               </Button>
+              <div className="text-center text-sm">
+                Don't have an account?{" "}
+                <Button variant="link" className="p-0" onClick={() => setShowRegister(true)}>
+                  Register Now
+                </Button>
+              </div>
             </div>
           </form>
 
@@ -81,6 +90,12 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
           </div>
         </CardContent>
       </Card>
+      
+      <Dialog open={showRegister} onOpenChange={setShowRegister}>
+        <DialogContent className="max-w-md">
+          <RegisterForm onClose={() => setShowRegister(false)} />
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }

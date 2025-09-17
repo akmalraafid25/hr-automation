@@ -8,6 +8,10 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { User, LogOut, FileText, Briefcase } from "lucide-react"
 
 export function ApplicantNavbar() {
+  const handleLogout = async () => {
+    await fetch("/api/logout", { method: "POST" })
+    window.location.href = "/login"
+  }
   return (
     <nav className="border-b bg-background">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -23,10 +27,10 @@ export function ApplicantNavbar() {
             </a>
             <div className="hidden md:flex space-x-6">
               <Link href="/jobs" className="flex items-center space-x-2 text-sm font-medium hover:text-primary">
-                <span className="font-bold">Jobs</span>
+                <span>Jobs</span>
               </Link>
               <Link href="/my-applications" className="flex items-center space-x-2 text-sm font-medium hover:text-primary">
-                <span className="font-bold">My Applications</span>
+                <span>My Applications</span>
               </Link>
             </div>
           </div>
@@ -48,7 +52,7 @@ export function ApplicantNavbar() {
                     Profile
                   </Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem>
+                <DropdownMenuItem onClick={handleLogout}>
                   <LogOut className="mr-2 h-4 w-4" />
                   Logout
                 </DropdownMenuItem>

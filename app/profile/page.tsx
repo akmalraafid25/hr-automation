@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -11,19 +11,55 @@ import { ApplicantNavbar } from "@/components/applicant-navbar"
 
 export default function ProfilePage() {
   const [isEditing, setIsEditing] = useState(false)
+  const [loading, setLoading] = useState(true)
   const [profile, setProfile] = useState({
-    name: "John Doe",
-    email: "john.doe@email.com",
-    phone: "+1 (555) 123-4567",
-    linkedin: "linkedin.com/in/johndoe",
-    skills: "JavaScript, React, Node.js, Python",
-    experience: "5 years of software development experience",
-    education: "Bachelor's in Computer Science"
+    name: "",
+    email: "",
+    phone: "",
+    linkedin: "",
+    skills: "",
+    experience: "",
+    education: ""
   })
 
-  const handleSave = () => {
-    setIsEditing(false)
-    // Add API call to save profile
+  useEffect(() => {
+    fetch("/api/Account")
+      .then(res => res.json())
+      .then(data => {
+        if (data.NAME) {
+          setProfile({
+            name: data.NAME || "",
+            email: data.EMAIL || "",
+            phone: data.PHONE || "",
+            linkedin: "",
+            skills: "",
+            experience: "",
+            education: ""
+          })
+        }
+      })
+      .catch(err => console.error("Error fetching profile:", err))
+      .finally(() => setLoading(false))
+  }, [])
+
+  const handleSave = async () => {
+    try {
+      const res = await fetch("/api/Account", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: profile.name,
+          phone: profile.phone
+        })
+      })
+      if (res.ok) {
+        setIsEditing(false)
+      } else {
+        alert("Failed to update profile")
+      }
+    } catch (err) {
+      alert("Error updating profile")
+    }
   }
 
   return (
@@ -31,12 +67,16 @@ export default function ProfilePage() {
       <ApplicantNavbar />
       
       <div className="max-w-4xl mx-auto p-8">
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold">My Profile</h1>
-          <p className="text-muted-foreground mt-2">Manage your personal information and preferences</p>
-        </div>
+        {loading ? (
+          <div className="text-center py-8">Loading profile...</div>
+        ) : (
+          <>
+            <div className="mb-8">
+              <h1 className="text-4xl font-bold">My Profile</h1>
+              <p className="text-muted-foreground mt-2">Manage your personal information and preferences</p>
+            </div>
 
-        <div className="grid gap-6">
+            <div className="grid gap-6">
           <Card>
             <CardHeader>
               <div className="flex items-center justify-between">
@@ -144,7 +184,9 @@ export default function ProfilePage() {
               </div>
             </CardContent>
           </Card>
-        </div>
+            </div>
+          </>
+        )}
       </div>
     </div>
   )
