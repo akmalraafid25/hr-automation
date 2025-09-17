@@ -7,16 +7,47 @@ export function middleware(req: NextRequest) {
  
   const isPublicPath = pathname === '/login' || pathname === '/register';
 
-  // If user has no token AND is not on the login or register page
-  if (!token && !isPublicPath) {
-    const loginUrl = new URL('/login', req.url)
-    return NextResponse.redirect(loginUrl);
+  // Public paths that don't require authentication
+  const publicPaths = ["/login", "/api/login", "/_next", "/favicon.ico"]
+  if (publicPaths.some((p) => pathname.startsWith(p))) {
+    return NextResponse.next()
   }
- 
-  // If user HAS a token and is trying to access login/register, send them to homepage
-  if (token && isPublicPath) {
-    const homeUrl = new URL('/', req.url)
-    return NextResponse.redirect(homeUrl);
+
+  // Get token from cookies
+  const token = req.cookies.get("token")?.value
+  if (!token) {
+    return NextResponse.redirect(new URL("/login", req.url))
+  }
+
+  try {
+    // Decode JWT using jose
+    const secret = new TextEncoder().encode(process.env.JWT_SECRET)
+    const { payload } = await jwtVerify(token, secret)
+    
+    const userRole = payload.role as string
+    
+    // ADMIN-only routes
+    const adminRoutes = ["/dashboard", "/application", "/job-post", "/account"]
+    // USER-only routes  
+    const userRoutes = ["/jobs", "/my-applications", "/profile"]
+    
+    if (adminRoutes.some(route => pathname.startsWith(route)) && userRole !== 'ADMIN') {
+      return NextResponse.redirect(new URL("/jobs", req.url))
+    }
+    
+    if (userRoutes.some(route => pathname.startsWith(route)) && userRole === 'ADMIN') {
+      return NextResponse.redirect(new URL("/dashboard", req.url))
+    }
+    
+    // Redirect root based on role
+    if (pathname === "/") {
+      const redirectUrl = userRole === 'ADMIN' ? "/dashboard" : "/jobs"
+      return NextResponse.redirect(new URL(redirectUrl, req.url))
+    }
+    
+    return NextResponse.next()
+  } catch (err) {
+    return NextResponse.redirect(new URL("/login", req.url))
   }
  
   return NextResponse.next()

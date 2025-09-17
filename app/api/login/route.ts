@@ -6,6 +6,7 @@ import bcryptjs from "bcryptjs";
 export async function POST(req: NextRequest) {
   let connection: any;
   try {
+    
     const formData = await req.formData();
     const username = formData.get("username")?.toString();
     const password = formData.get("password")?.toString();
@@ -50,12 +51,15 @@ export async function POST(req: NextRequest) {
     }
     
     const token = jwt.sign(
-      { id: user.ID, username: user.USERNAME, email: user.EMAIL }, 
-      process.env.JWT_SECRET!, 
+      { id: user.ID, username: user.USERNAME, name: user.NAME, email: user.EMAIL, role: user.ROLE },
+      process.env.JWT_SECRET!,
       { expiresIn: "1h" }
     );
 
-    const res = NextResponse.redirect(new URL("/", req.url), 303);
+    // Redirect based on role
+    const redirectUrl = user.ROLE === 'ADMIN' ? "/" : "/jobs"
+    const res = NextResponse.redirect(new URL(redirectUrl, req.url))
+    
     res.cookies.set("token", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
