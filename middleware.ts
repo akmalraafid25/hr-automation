@@ -1,11 +1,9 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
+import { jwtVerify } from 'jose'
  
-export function middleware(req: NextRequest) {
-  const token = req.cookies.get('token')?.value
+export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl
- 
-  const isPublicPath = pathname === '/login' || pathname === '/register';
 
   // Public paths that don't require authentication
   const publicPaths = ["/login", "/api/login", "/_next", "/favicon.ico"]
@@ -49,8 +47,6 @@ export function middleware(req: NextRequest) {
   } catch (err) {
     return NextResponse.redirect(new URL("/login", req.url))
   }
- 
-  return NextResponse.next()
 }
  
 export const config = {
