@@ -16,22 +16,19 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
     
     const formData = new FormData(e.currentTarget)
     
-    const res = await fetch("/api/login", {
+    const res = await fetch("/api/login", { 
       method: "POST",
       body: formData,
-      credentials: "include", // make sure cookie is set
+      credentials: "include", 
     })
   
     if (res.ok || res.status === 303 || res.status === 307) {
-      // 🔹 Force full page navigation so middleware sees cookie
-      window.location.href = "/"  // <--- this triggers real browser navigation
+      window.location.href = "/"  
     } else {
       setLoading(false)
       alert("Your password is incorrect or account doesn't exists")
     }
   }
-
-
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
@@ -53,6 +50,7 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
                   type="text"
                   placeholder="Username"
                   required
+                  disabled={loading}
                 />
               </div>
               <div className="grid gap-3">
@@ -63,7 +61,9 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
                   id="password"
                   name="password"
                   type="password"
+                  placeholder="••••••••"
                   required
+                  disabled={loading}
                 />
               </div>
               <Button type="submit" className="w-full" disabled={loading}>

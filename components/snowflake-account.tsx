@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, FormEvent } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -13,90 +13,105 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-// This interface defines the structure of the account data
 interface Account {
   ID: number;
   USERNAME: string;
   EMAIL: string;
-  ROLE: string;
+  NAME: string;
+  PHONE: string;
   CREATED_AT: string;
   UPDATED_AT: string;
 }
 
 export default function SnowflakeAccount() {
-  // State to hold the account data and loading status
-  const [account, setAccount] = useState<Account | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [message, setMessage] = useState<string | null>(null);
 
   useEffect(() => {
-    // --- DUMMY DATA FOR TESTING ---
-    const dummyAccount: Account = {
-      ID: 1,
-      USERNAME: "testuser",
-      EMAIL: "test@example.com",
-      ROLE: "admin",
-      CREATED_AT: new Date().toISOString(),
-      UPDATED_AT: new Date().toISOString(),
-    };
-
-    setAccount(dummyAccount);
-    setIsLoading(false);
-    // --- END OF DUMMY DATA ---
-
-    /* // --- REAL API FETCHING LOGIC (Commented out) ---
     const fetchAccount = async () => {
+      setIsLoading(true);
+      setError(null);
       try {
-        const response = await fetch("/api/query/account");
+        const response = await fetch("/api/Account");
         if (!response.ok) {
-          throw new Error("Failed to fetch account data");
+          throw new Error("Failed to fetch account data. Please re-login.");
         }
-        const data = await response.json();
-        if (data && data.length > 0) {
-          setAccount(data[0]);
-        } else {
-          throw new Error("No account data found");
-        }
+        const data: Account = await response.json();
+        
+        setUsername(data.USERNAME || "");
+        setEmail(data.EMAIL || "");
+        setName(data.NAME || "");
+        setPhone(data.PHONE || "");
+
       } catch (err: any) {
         setError(err.message);
-        console.error("Error fetching account data:", err);
       } finally {
         setIsLoading(false);
       }
     };
 
     fetchAccount();
-    */
   }, []);
 
-  // Display a loading message while fetching data
-  if (isLoading) {
+  const handleSubmit = async (event: FormEvent) => {
+    event.preventDefault();
+    setIsLoading(true);
+    setError(null);
+    setMessage(null);
+
+    const updateData: { name: string; phone: string } = {
+      name,
+      phone,
+    };
+
+    try {
+      const response = await fetch("/api/Account", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(updateData),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || "Failed to update account.");
+      }
+
+      setMessage("Profile updated successfully!");
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  if (isLoading && !username) {
     return <div>Loading account information...</div>;
   }
 
-  // Display an error message if fetching fails
-  if (error) {
-    return <div className="text-red-500">Error: {error}</div>;
-  }
-
-  // Display the profile card once data is loaded
   return (
     <div className="mt-6">
-      <Card className="max-w-2xl mx-auto">
-        <CardHeader>
-          <CardTitle>My Profile</CardTitle>
-          <CardDescription>
-            View and manage your personal account details.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <form className="space-y-4">
+      <Card className="max-w-3xl mx-auto">
+        <form onSubmit={handleSubmit}>
+          <CardHeader>
+            <CardTitle>My Profile</CardTitle>
+            <CardDescription>
+              View and manage your personal account details.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="username">Username</Label>
                 <Input
                   id="username"
-                  value={account?.USERNAME || ""}
+                  value={username}
                   readOnly
                   className="bg-gray-100"
                 />
@@ -106,46 +121,45 @@ export default function SnowflakeAccount() {
                 <Input
                   id="email"
                   type="email"
-                  value={account?.EMAIL || ""}
+                  value={email}
                   readOnly
                   className="bg-gray-100"
                 />
               </div>
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="role">Role</Label>
-              <Input
-                id="role"
-                value={account?.ROLE || ""}
-                readOnly
-                className="bg-gray-100"
-              />
-            </div>
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-               <div className="space-y-2">
-                <Label htmlFor="createdAt">Member Since</Label>
+              <div className="space-y-2">
+                <Label htmlFor="name">Full Name</Label>
                 <Input
-                    id="createdAt"
-                    value={account ? new Date(account.CREATED_AT).toLocaleDateString() : ""}
-                    readOnly
-                    className="bg-gray-100"
+                  id="name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  placeholder="Your full name"
                 />
-                </div>
-                <div className="space-y-2">
-                <Label htmlFor="updatedAt">Last Updated</Label>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="phone">Phone Number</Label>
                 <Input
-                    id="updatedAt"
-                    value={account ? new Date(account.UPDATED_AT).toLocaleString() : ""}
-                    readOnly
-                    className="bg-gray-100"
+                  id="phone"
+                  type="tel"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                  placeholder="+123456789"
                 />
-                </div>
+              </div>
             </div>
-          </form>
-        </CardContent>
-        <CardFooter className="border-t px-6 py-4">
-          <Button>Edit Profile</Button>
-        </CardFooter>
+            
+            {error && <p className="text-sm font-medium text-red-600">{error}</p>}
+            {message && <p className="text-sm font-medium text-green-600">{message}</p>}
+
+          </CardContent>
+          <CardFooter className="border-t px-6 py-4">
+            <Button type="submit" disabled={isLoading}>
+              {isLoading ? "Saving..." : "Save Changes"}
+            </Button>
+          </CardFooter>
+        </form>
       </Card>
     </div>
   );
