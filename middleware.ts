@@ -14,7 +14,6 @@ export async function middleware(req: NextRequest) {
   // Get token from cookies
   const token = req.cookies.get("token")?.value
   if (!token) {
-    console.log("🛑 No token found, redirecting to /login")
     return NextResponse.redirect(new URL("/login", req.url))
   }
 
@@ -23,10 +22,29 @@ export async function middleware(req: NextRequest) {
     const secret = new TextEncoder().encode(process.env.JWT_SECRET)
     const { payload } = await jwtVerify(token, secret)
     
-    console.log("✅ Token is valid:", payload)
+    const userRole = payload.role as string
+    
+    // ADMIN-only routes
+    const adminRoutes = ["/dashboard", "/application", "/job-post", "/account"]
+    // USER-only routes  
+    const userRoutes = ["/jobs", "/my-applications", "/profile"]
+    
+    if (adminRoutes.some(route => pathname.startsWith(route)) && userRole !== 'ADMIN') {
+      return NextResponse.redirect(new URL("/jobs", req.url))
+    }
+    
+    if (userRoutes.some(route => pathname.startsWith(route)) && userRole === 'ADMIN') {
+      return NextResponse.redirect(new URL("/dashboard", req.url))
+    }
+    
+    // Redirect root based on role
+    if (pathname === "/") {
+      const redirectUrl = userRole === 'ADMIN' ? "/dashboard" : "/jobs"
+      return NextResponse.redirect(new URL(redirectUrl, req.url))
+    }
+    
     return NextResponse.next()
   } catch (err) {
-    console.error("❌ JWT verification failed:", err)
     return NextResponse.redirect(new URL("/login", req.url))
   }
 }

@@ -56,8 +56,8 @@ export async function POST(req: Request) {
 
     const rows = await executeAsync(
       conn,
-      `SELECT ID, NAME, USERNAME, PASSWORD_HASH, EMAIL, PHONE
-       FROM ACCOUNT
+      `SELECT ID, NAME, USERNAME, PASSWORD_HASH, EMAIL, PHONE, ROLE
+       FROM ACCOUNT_TEST
        WHERE USERNAME = ?`,
       [username]
     )
@@ -77,12 +77,14 @@ export async function POST(req: Request) {
     }
 
     const token = jwt.sign(
-      { id: user.ID, username: user.USERNAME, name: user.NAME, email: user.EMAIL },
+      { id: user.ID, username: user.USERNAME, name: user.NAME, email: user.EMAIL, role: user.ROLE },
       process.env.JWT_SECRET!,
       { expiresIn: "1h" }
     )
 
-    const res = NextResponse.redirect(new URL("/", req.url))
+    // Redirect based on role
+    const redirectUrl = user.ROLE === 'ADMIN' ? "/" : "/jobs"
+    const res = NextResponse.redirect(new URL(redirectUrl, req.url))
     res.cookies.set("token", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",

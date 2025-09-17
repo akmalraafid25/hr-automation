@@ -45,7 +45,7 @@ export async function GET() {
 
     const rows: any = await new Promise((resolve, reject) => {
       connection.execute({
-        sqlText: `SELECT * FROM ACCOUNT_TEST WHERE USERNAME = ?`,
+        sqlText: `SELECT * FROM ACCOUNT WHERE USERNAME = ?`,
         binds: [decoded.username],
         complete: (err, stmt, result) => {
           if (err) {
