@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import snowflake from "snowflake-sdk";
 
+export const revalidate = 300; // Cache for 5 minutes
+
 export async function GET() {
   console.log("➡️ API /api/query called");
 

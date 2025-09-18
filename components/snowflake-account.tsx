@@ -21,40 +21,63 @@ interface Account {
   PHONE: string | number;
 }
 
-interface ApiResponse {
-  ok: boolean;
-  data: Account;
-}
-
 export default function SnowflakeAccount() {
   const [account, setAccount] = useState<Account | null>(null);
+  const [editedAccount, setEditedAccount] = useState<Account | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isEditing, setIsEditing] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchAccount = async () => {
       try {
-        const res = await fetch("/api/Account/me");
-        console.log("Response status:", res.status);
-
-        const json: ApiResponse = await res.json();
-        console.log("Parsed data:", json);
-
-        setAccount(json.data); // ✅ <-- FIX: use json.data
+        const res = await fetch("/api/Account");
+        const data = await res.json();
+        setAccount(data);
+        setEditedAccount(data);
       } catch (err) {
-        console.error("Fetch error:", err);
-        setError("Failed to fetch");
+        setError("Failed to fetch account");
       } finally {
         setIsLoading(false);
       }
     };
-
     fetchAccount();
   }, []);
 
-  useEffect(() => {
-    console.log("Account state updated:", account);
-  }, [account]);
+  const handleEdit = () => {
+    setIsEditing(true);
+    setEditedAccount({ ...account! });
+  };
+
+  const handleCancel = () => {
+    setIsEditing(false);
+    setEditedAccount({ ...account! });
+  };
+
+  const handleSave = async () => {
+    setIsSaving(true);
+    try {
+      const res = await fetch("/api/Account", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: editedAccount?.NAME,
+          phone: editedAccount?.PHONE
+        })
+      });
+      if (res.ok) {
+        setAccount(editedAccount);
+        setIsEditing(false);
+      } else {
+        setError("Failed to update account");
+      }
+    } catch (err) {
+      setError("Error updating account");
+    } finally {
+      setIsSaving(false);
+    }
+  };
 
   if (isLoading) return <div>Loading account information...</div>;
   if (error) return <div className="text-red-500">Error: {error}</div>;
@@ -69,14 +92,15 @@ export default function SnowflakeAccount() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form className="space-y-4">
+          <div className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="name">Full Name</Label>
               <Input
                 id="name"
-                value={account?.NAME ?? ""}
-                readOnly
-                className="bg-gray-100"
+                value={isEditing ? editedAccount?.NAME ?? "" : account?.NAME ?? ""}
+                onChange={(e) => setEditedAccount(prev => prev ? {...prev, NAME: e.target.value} : null)}
+                disabled={!isEditing}
+                className={!isEditing ? "bg-gray-100" : ""}
               />
             </div>
 
@@ -85,7 +109,7 @@ export default function SnowflakeAccount() {
               <Input
                 id="username"
                 value={account?.USERNAME ?? ""}
-                readOnly
+                disabled
                 className="bg-gray-100"
               />
             </div>
@@ -96,7 +120,7 @@ export default function SnowflakeAccount() {
                 id="email"
                 type="email"
                 value={account?.EMAIL ?? ""}
-                readOnly
+                disabled
                 className="bg-gray-100"
               />
             </div>
@@ -105,15 +129,27 @@ export default function SnowflakeAccount() {
               <Label htmlFor="phone">Phone</Label>
               <Input
                 id="phone"
-                value={account?.PHONE?.toString() ?? ""}
-                readOnly
-                className="bg-gray-100"
+                value={isEditing ? editedAccount?.PHONE?.toString() ?? "" : account?.PHONE?.toString() ?? ""}
+                onChange={(e) => setEditedAccount(prev => prev ? {...prev, PHONE: e.target.value} : null)}
+                disabled={!isEditing}
+                className={!isEditing ? "bg-gray-100" : ""}
               />
             </div>
-          </form>
+          </div>
         </CardContent>
-        <CardFooter className="border-t px-6 py-4">
-          <Button>Edit Profile</Button>
+        <CardFooter className="border-t px-6 py-4 flex gap-2">
+          {!isEditing ? (
+            <Button onClick={handleEdit}>Edit Profile</Button>
+          ) : (
+            <>
+              <Button onClick={handleSave} disabled={isSaving}>
+                {isSaving ? "Saving..." : "Save Changes"}
+              </Button>
+              <Button variant="outline" onClick={handleCancel}>
+                Cancel
+              </Button>
+            </>
+          )}
         </CardFooter>
       </Card>
     </div>
