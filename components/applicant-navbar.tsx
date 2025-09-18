@@ -19,7 +19,7 @@ export function ApplicantNavbar() {
           <div className="flex items-center space-x-8">
             <a href="/jobs">
               <Image
-                src="https://www.softwareone.com/-/media/images/logos/softwareone-logo-blk.svg?iar=0&hash=6A277FF39328B4D79A071F4A9F95F301"
+                src="/logo.svg"
                 width={100}
                 height={40}
                 alt="Company Logo"
