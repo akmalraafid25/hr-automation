@@ -8,11 +8,22 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { ApplicantNavbar } from "@/components/applicant-navbar"
+import { User, Mail, Phone, Briefcase } from "lucide-react"
 
 export default function ProfilePage() {
   const [isEditing, setIsEditing] = useState(false)
   const [loading, setLoading] = useState(true)
+  const [isSaving, setIsSaving] = useState(false)
   const [profile, setProfile] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    linkedin: "",
+    skills: "",
+    experience: "",
+    education: ""
+  })
+  const [editedProfile, setEditedProfile] = useState({
     name: "",
     email: "",
     phone: "",
@@ -27,7 +38,7 @@ export default function ProfilePage() {
       .then(res => res.json())
       .then(data => {
         if (data.NAME) {
-          setProfile({
+          const profileData = {
             name: data.NAME || "",
             email: data.EMAIL || "",
             phone: data.PHONE || "",
@@ -35,30 +46,46 @@ export default function ProfilePage() {
             skills: "",
             experience: "",
             education: ""
-          })
+          }
+          setProfile(profileData)
+          setEditedProfile(profileData)
         }
       })
       .catch(err => console.error("Error fetching profile:", err))
       .finally(() => setLoading(false))
   }, [])
 
+  const handleEdit = () => {
+    setIsEditing(true)
+    setEditedProfile({ ...profile })
+  }
+
+  const handleCancel = () => {
+    setIsEditing(false)
+    setEditedProfile({ ...profile })
+  }
+
   const handleSave = async () => {
+    setIsSaving(true)
     try {
       const res = await fetch("/api/Account", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          name: profile.name,
-          phone: profile.phone
+          name: editedProfile.name,
+          phone: editedProfile.phone
         })
       })
       if (res.ok) {
+        setProfile(editedProfile)
         setIsEditing(false)
       } else {
         alert("Failed to update profile")
       }
     } catch (err) {
       alert("Error updating profile")
+    } finally {
+      setIsSaving(false)
     }
   }
 
@@ -77,6 +104,45 @@ export default function ProfilePage() {
             </div>
 
             <div className="grid gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+                <Card>
+                  <CardContent className="flex items-center p-4">
+                    <User className="h-8 w-8 text-blue-500 mr-3" />
+                    <div>
+                      <p className="text-sm text-muted-foreground">Profile</p>
+                      <p className="text-lg font-semibold">Complete</p>
+                    </div>
+                  </CardContent>
+                </Card>
+                <Card>
+                  <CardContent className="flex items-center p-4">
+                    <Mail className="h-8 w-8 text-green-500 mr-3" />
+                    <div>
+                      <p className="text-sm text-muted-foreground">Email</p>
+                      <p className="text-lg font-semibold">Verified</p>
+                    </div>
+                  </CardContent>
+                </Card>
+                <Card>
+                  <CardContent className="flex items-center p-4">
+                    <Phone className="h-8 w-8 text-orange-500 mr-3" />
+                    <div>
+                      <p className="text-sm text-muted-foreground">Phone</p>
+                      <p className="text-lg font-semibold">{profile.phone ? 'Added' : 'Missing'}</p>
+                    </div>
+                  </CardContent>
+                </Card>
+                <Card>
+                  <CardContent className="flex items-center p-4">
+                    <Briefcase className="h-8 w-8 text-purple-500 mr-3" />
+                    <div>
+                      <p className="text-sm text-muted-foreground">Experience</p>
+                      <p className="text-lg font-semibold">{profile.experience ? 'Added' : 'Missing'}</p>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+              
           <Card>
             <CardHeader>
               <div className="flex items-center justify-between">
@@ -90,12 +156,20 @@ export default function ProfilePage() {
                     <CardDescription>{profile.email}</CardDescription>
                   </div>
                 </div>
-                <Button 
-                  onClick={() => isEditing ? handleSave() : setIsEditing(true)}
-                  variant={isEditing ? "default" : "outline"}
-                >
-                  {isEditing ? "Save Changes" : "Edit Profile"}
-                </Button>
+                {!isEditing ? (
+                  <Button onClick={handleEdit} variant="outline">
+                    Edit Profile
+                  </Button>
+                ) : (
+                  <div className="flex gap-2">
+                    <Button onClick={handleSave} disabled={isSaving}>
+                      {isSaving ? "Saving..." : "Save Changes"}
+                    </Button>
+                    <Button variant="outline" onClick={handleCancel}>
+                      Cancel
+                    </Button>
+                  </div>
+                )}
               </div>
             </CardHeader>
           </Card>
@@ -110,9 +184,10 @@ export default function ProfilePage() {
                   <Label htmlFor="name">Full Name</Label>
                   <Input
                     id="name"
-                    value={profile.name}
-                    onChange={(e) => setProfile({...profile, name: e.target.value})}
+                    value={isEditing ? editedProfile.name : profile.name}
+                    onChange={(e) => setEditedProfile({...editedProfile, name: e.target.value})}
                     disabled={!isEditing}
+                    className={!isEditing ? "bg-gray-100" : ""}
                   />
                 </div>
                 <div>
@@ -121,26 +196,28 @@ export default function ProfilePage() {
                     id="email"
                     type="email"
                     value={profile.email}
-                    onChange={(e) => setProfile({...profile, email: e.target.value})}
-                    disabled={!isEditing}
+                    disabled
+                    className="bg-gray-100"
                   />
                 </div>
                 <div>
                   <Label htmlFor="phone">Phone</Label>
                   <Input
                     id="phone"
-                    value={profile.phone}
-                    onChange={(e) => setProfile({...profile, phone: e.target.value})}
+                    value={isEditing ? editedProfile.phone : profile.phone}
+                    onChange={(e) => setEditedProfile({...editedProfile, phone: e.target.value})}
                     disabled={!isEditing}
+                    className={!isEditing ? "bg-gray-100" : ""}
                   />
                 </div>
                 <div>
                   <Label htmlFor="linkedin">LinkedIn</Label>
                   <Input
                     id="linkedin"
-                    value={profile.linkedin}
-                    onChange={(e) => setProfile({...profile, linkedin: e.target.value})}
+                    value={isEditing ? editedProfile.linkedin : profile.linkedin}
+                    onChange={(e) => setEditedProfile({...editedProfile, linkedin: e.target.value})}
                     disabled={!isEditing}
+                    className={!isEditing ? "bg-gray-100" : ""}
                   />
                 </div>
               </div>
@@ -156,9 +233,10 @@ export default function ProfilePage() {
                 <Label htmlFor="skills">Skills</Label>
                 <Textarea
                   id="skills"
-                  value={profile.skills}
-                  onChange={(e) => setProfile({...profile, skills: e.target.value})}
+                  value={isEditing ? editedProfile.skills : profile.skills}
+                  onChange={(e) => setEditedProfile({...editedProfile, skills: e.target.value})}
                   disabled={!isEditing}
+                  className={!isEditing ? "bg-gray-100" : ""}
                   rows={3}
                 />
               </div>
@@ -166,9 +244,10 @@ export default function ProfilePage() {
                 <Label htmlFor="experience">Work Experience</Label>
                 <Textarea
                   id="experience"
-                  value={profile.experience}
-                  onChange={(e) => setProfile({...profile, experience: e.target.value})}
+                  value={isEditing ? editedProfile.experience : profile.experience}
+                  onChange={(e) => setEditedProfile({...editedProfile, experience: e.target.value})}
                   disabled={!isEditing}
+                  className={!isEditing ? "bg-gray-100" : ""}
                   rows={4}
                 />
               </div>
@@ -176,9 +255,10 @@ export default function ProfilePage() {
                 <Label htmlFor="education">Education</Label>
                 <Textarea
                   id="education"
-                  value={profile.education}
-                  onChange={(e) => setProfile({...profile, education: e.target.value})}
+                  value={isEditing ? editedProfile.education : profile.education}
+                  onChange={(e) => setEditedProfile({...editedProfile, education: e.target.value})}
                   disabled={!isEditing}
+                  className={!isEditing ? "bg-gray-100" : ""}
                   rows={3}
                 />
               </div>
