@@ -32,7 +32,7 @@ export function DashboardHeader() {
           <div className="flex items-center gap-2">
             <a href="/">
               <Image
-                src="/logo.svg"
+                src="/softwareone-logo-blk.svg"
                 width={100}
                 height={40}
                 alt="Company Logo"
