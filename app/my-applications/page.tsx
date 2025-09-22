@@ -13,34 +13,6 @@ export default function MyApplicationsPage() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    // Add dummy data if no real applications exist
-    const dummyApplications = [
-      {
-        id: 1,
-        jobName: "Senior Software Engineer",
-        company: "SoftwareOne",
-        appliedDate: new Date().toISOString(),
-        status: "Under Review",
-        progress: 75
-      },
-      {
-        id: 2,
-        jobName: "Frontend Developer",
-        company: "SoftwareOne",
-        appliedDate: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
-        status: "Interview Scheduled",
-        progress: 90
-      },
-      {
-        id: 3,
-        jobName: "Product Manager",
-        company: "SoftwareOne",
-        appliedDate: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
-        status: "Under Review",
-        progress: 45
-      }
-    ]
-    
     fetch("/api/query/applications")
       .then((res) => res.json())
       .then((data) => {
@@ -54,23 +26,30 @@ export default function MyApplicationsPage() {
           progress: app.PROGRESS || 50
         }))
         
-        // Use dummy data if no real applications
-        const finalApplications = formattedApps.length > 0 ? formattedApps : dummyApplications
-        setApplications(finalApplications)
+        setApplications(formattedApps)
       })
       .catch((err) => {
         console.error("Error fetching applications:", err)
-        // Use dummy data on error
-        setApplications(dummyApplications)
+        setApplications([])
       })
       .finally(() => setLoading(false))
   }, [])
 
   const getStatusIcon = (status: string) => {
     switch (status) {
+      case "Pending":
       case "Under Review":
         return <Clock className="h-4 w-4 text-blue-500" />
+      case "Reviewed":
+        return <FileText className="h-4 w-4 text-orange-500" />
+      case "Interview":
       case "Interview Scheduled":
+        return <Users className="h-4 w-4 text-purple-500" />
+      case "Assessment":
+        return <FileText className="h-4 w-4 text-indigo-500" />
+      case "Offering":
+        return <TrendingUp className="h-4 w-4 text-green-400" />
+      case "Hired":
         return <CheckCircle className="h-4 w-4 text-green-500" />
       case "Rejected":
         return <XCircle className="h-4 w-4 text-red-500" />
@@ -81,9 +60,16 @@ export default function MyApplicationsPage() {
 
   const getStatusVariant = (status: string) => {
     switch (status) {
+      case "Pending":
       case "Under Review":
         return "secondary"
+      case "Reviewed":
+      case "Interview":
+      case "Assessment":
       case "Interview Scheduled":
+        return "default"
+      case "Offering":
+      case "Hired":
         return "default"
       case "Rejected":
         return "destructive"
@@ -117,7 +103,7 @@ export default function MyApplicationsPage() {
                 <Clock className="h-8 w-8 text-orange-500 mr-3" />
                 <div>
                   <p className="text-sm text-muted-foreground">Under Review</p>
-                  <p className="text-2xl font-bold">{applications.filter(app => app.status === 'Under Review').length}</p>
+                  <p className="text-2xl font-bold">{applications.filter(app => app.status === 'Under Review' || app.status === 'Pending' || app.status === 'Reviewed').length}</p>
                 </div>
               </CardContent>
             </Card>
