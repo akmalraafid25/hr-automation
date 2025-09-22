@@ -1,8 +1,15 @@
+import dynamic from "next/dynamic"
 import { DashboardHeader } from "@/components/dashboard-header"
 import { DashboardSidebar } from "@/components/dashboard-sidebar"
 import { DashboardStats } from "@/components/dashboard-stats"
-import { DashboardCharts } from "@/components/dashboard-charts"
-import { DashboardTable } from "@/components/dashboard-table"
+
+const DashboardCharts = dynamic(() => import("@/components/dashboard-charts").then(mod => ({ default: mod.DashboardCharts })), {
+  loading: () => <div className="h-64 bg-muted animate-pulse rounded-lg" />
+})
+
+const DashboardTable = dynamic(() => import("@/components/dashboard-table").then(mod => ({ default: mod.DashboardTable })), {
+  loading: () => <div className="h-32 bg-muted animate-pulse rounded-lg" />
+})
 
 export default function DashboardPage() {
   return (

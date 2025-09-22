@@ -13,138 +13,143 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-// This interface defines the structure of the account data
 interface Account {
   ID: number;
+  NAME: string;
   USERNAME: string;
   EMAIL: string;
-  ROLE: string;
-  CREATED_AT: string;
-  UPDATED_AT: string;
+  PHONE: string | number;
 }
 
 export default function SnowflakeAccount() {
-  // State to hold the account data and loading status
   const [account, setAccount] = useState<Account | null>(null);
+  const [editedAccount, setEditedAccount] = useState<Account | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isEditing, setIsEditing] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    // --- DUMMY DATA FOR TESTING ---
-    const dummyAccount: Account = {
-      ID: 1,
-      USERNAME: "testuser",
-      EMAIL: "test@example.com",
-      ROLE: "admin",
-      CREATED_AT: new Date().toISOString(),
-      UPDATED_AT: new Date().toISOString(),
-    };
-
-    setAccount(dummyAccount);
-    setIsLoading(false);
-    // --- END OF DUMMY DATA ---
-
-    /* // --- REAL API FETCHING LOGIC (Commented out) ---
     const fetchAccount = async () => {
       try {
-        const response = await fetch("/api/query/account");
-        if (!response.ok) {
-          throw new Error("Failed to fetch account data");
-        }
-        const data = await response.json();
-        if (data && data.length > 0) {
-          setAccount(data[0]);
-        } else {
-          throw new Error("No account data found");
-        }
-      } catch (err: any) {
-        setError(err.message);
-        console.error("Error fetching account data:", err);
+        const res = await fetch("/api/Account");
+        const data = await res.json();
+        setAccount(data);
+        setEditedAccount(data);
+      } catch (err) {
+        setError("Failed to fetch account");
       } finally {
         setIsLoading(false);
       }
     };
-
     fetchAccount();
-    */
   }, []);
 
-  // Display a loading message while fetching data
-  if (isLoading) {
-    return <div>Loading account information...</div>;
-  }
+  const handleEdit = () => {
+    setIsEditing(true);
+    setEditedAccount({ ...account! });
+  };
 
-  // Display an error message if fetching fails
-  if (error) {
-    return <div className="text-red-500">Error: {error}</div>;
-  }
+  const handleCancel = () => {
+    setIsEditing(false);
+    setEditedAccount({ ...account! });
+  };
 
-  // Display the profile card once data is loaded
+  const handleSave = async () => {
+    setIsSaving(true);
+    try {
+      const res = await fetch("/api/Account", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: editedAccount?.NAME,
+          phone: editedAccount?.PHONE
+        })
+      });
+      if (res.ok) {
+        setAccount(editedAccount);
+        setIsEditing(false);
+      } else {
+        setError("Failed to update account");
+      }
+    } catch (err) {
+      setError("Error updating account");
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  if (isLoading) return <div>Loading account information...</div>;
+  if (error) return <div className="text-red-500">Error: {error}</div>;
+
   return (
     <div className="mt-6">
       <Card className="max-w-2xl mx-auto">
         <CardHeader>
           <CardTitle>My Profile</CardTitle>
           <CardDescription>
-            View and manage your personal account details.
+            View and manage your account details.
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="username">Username</Label>
-                <Input
-                  id="username"
-                  value={account?.USERNAME || ""}
-                  readOnly
-                  className="bg-gray-100"
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="email">Email Address</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  value={account?.EMAIL || ""}
-                  readOnly
-                  className="bg-gray-100"
-                />
-              </div>
-            </div>
+          <div className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="role">Role</Label>
+              <Label htmlFor="name">Full Name</Label>
               <Input
-                id="role"
-                value={account?.ROLE || ""}
-                readOnly
+                id="name"
+                value={isEditing ? editedAccount?.NAME ?? "" : account?.NAME ?? ""}
+                onChange={(e) => setEditedAccount(prev => prev ? {...prev, NAME: e.target.value} : null)}
+                disabled={!isEditing}
+                className={!isEditing ? "bg-gray-100" : ""}
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="username">Username</Label>
+              <Input
+                id="username"
+                value={account?.USERNAME ?? ""}
+                disabled
                 className="bg-gray-100"
               />
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-               <div className="space-y-2">
-                <Label htmlFor="createdAt">Member Since</Label>
-                <Input
-                    id="createdAt"
-                    value={account ? new Date(account.CREATED_AT).toLocaleDateString() : ""}
-                    readOnly
-                    className="bg-gray-100"
-                />
-                </div>
-                <div className="space-y-2">
-                <Label htmlFor="updatedAt">Last Updated</Label>
-                <Input
-                    id="updatedAt"
-                    value={account ? new Date(account.UPDATED_AT).toLocaleString() : ""}
-                    readOnly
-                    className="bg-gray-100"
-                />
-                </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="email">Email</Label>
+              <Input
+                id="email"
+                type="email"
+                value={account?.EMAIL ?? ""}
+                disabled
+                className="bg-gray-100"
+              />
             </div>
-          </form>
+
+            <div className="space-y-2">
+              <Label htmlFor="phone">Phone</Label>
+              <Input
+                id="phone"
+                value={isEditing ? editedAccount?.PHONE?.toString() ?? "" : account?.PHONE?.toString() ?? ""}
+                onChange={(e) => setEditedAccount(prev => prev ? {...prev, PHONE: e.target.value} : null)}
+                disabled={!isEditing}
+                className={!isEditing ? "bg-gray-100" : ""}
+              />
+            </div>
+          </div>
         </CardContent>
-        <CardFooter className="border-t px-6 py-4">
-          <Button>Edit Profile</Button>
+        <CardFooter className="border-t px-6 py-4 flex gap-2">
+          {!isEditing ? (
+            <Button onClick={handleEdit}>Edit Profile</Button>
+          ) : (
+            <>
+              <Button onClick={handleSave} disabled={isSaving}>
+                {isSaving ? "Saving..." : "Save Changes"}
+              </Button>
+              <Button variant="outline" onClick={handleCancel}>
+                Cancel
+              </Button>
+            </>
+          )}
         </CardFooter>
       </Card>
     </div>

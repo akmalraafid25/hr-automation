@@ -6,9 +6,12 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { Dialog, DialogContent } from "@/components/ui/dialog"
+import { RegisterForm } from "@/components/register-form"
 
 export function LoginForm({ className, ...props }: React.ComponentProps<"div">) {
   const [loading, setLoading] = useState(false)
+  const [showRegister, setShowRegister] = useState(false)
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -69,18 +72,30 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
               <Button type="submit" className="w-full" disabled={loading}>
                 {loading ? "Logging in..." : "Login"}
               </Button>
+              <div className="text-center text-sm">
+                Don't have an account?{" "}
+                <Button variant="link" className="p-0" onClick={() => setShowRegister(true)}>
+                  Register Now
+                </Button>
+              </div>
             </div>
           </form>
 
           <div className="relative hidden md:block">
             <img
-              src="https://www.softwareone.com/_next/image?url=%2F-%2Fmedia%2Fimages%2Ffuture-forward%2Fbubbles-getty-1367572322-teaser.jpg%3Fh%3D405%26iar%3D0%26w%3D748%26hash%3D5063C47C08FC263B7F200611E196042E&w=992&q=90"
+              src="/login-bg.jpg"
               alt="Image"
               className="h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
             />
           </div>
         </CardContent>
       </Card>
+      
+      <Dialog open={showRegister} onOpenChange={setShowRegister}>
+        <DialogContent className="max-w-md">
+          <RegisterForm onClose={() => setShowRegister(false)} />
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }

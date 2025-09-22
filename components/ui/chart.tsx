@@ -34,7 +34,7 @@ export function ChartContainer({
 }
 
 export function ChartTooltip({ content, cursor }: any) {
-  return <>{/* wrap Recharts <Tooltip /> di sini */}</>
+  return <>{ }</>
 }
 
 export function ChartTooltipContent({ hideLabel }: { hideLabel?: boolean }) {

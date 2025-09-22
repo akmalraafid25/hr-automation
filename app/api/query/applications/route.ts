@@ -1,11 +1,7 @@
 import { NextResponse } from "next/server";
 import snowflake from "snowflake-sdk";
 
-export const revalidate = 300; // Cache for 5 minutes
-
 export async function GET() {
-  console.log("➡️ API /api/query called");
-
   return new Promise((resolve) => {
     const connection = snowflake.createConnection({
       account: process.env.SNOWFLAKE_ACCOUNT,
@@ -18,35 +14,36 @@ export async function GET() {
       warehouse: process.env.SNOWFLAKE_WAREHOUSE,
     });
 
-    console.log("➡️ Creating connection...");
-
     connection.connect((err) => {
       if (err) {
-        console.error("❌ Connection failed:", err.message);
         resolve(NextResponse.json({ error: err.message }, { status: 500 }));
         return;
       }
 
-      console.log("✅ Connected to Snowflake, running query...");
-
       connection.execute({
-        sqlText: "SELECT * FROM JOB_POST",
+        sqlText: `
+          SELECT 
+            A.APPLICANT_ID,
+            A.NAME,
+            A.EMAIL,
+            J.JOB_NAME,
+            A.CREATED_AT as APPLIED_DATE,
+            'Under Review' as STATUS,
+            60 as PROGRESS
+          FROM APPLICANT A 
+          LEFT JOIN JOB_POST J ON A.JOB_ID = J.JOB_ID
+          ORDER BY A.CREATED_AT DESC
+        `,
         complete: (err, stmt, rows) => {
-          console.log("➡️ Query callback fired");
-
           if (err) {
-            console.error("❌ Query failed:", err.message);
             resolve(NextResponse.json({ error: err.message }, { status: 500 }));
           } else {
-            console.log("✅ Query success:");
             resolve(NextResponse.json({ rows }, { status: 200 }));
           }
 
           connection.destroy((destroyErr) => {
             if (destroyErr) {
-              console.error("⚠️ Error closing connection:", destroyErr.message);
-            } else {
-              console.log("🔌 Connection closed");
+              console.error("Error closing connection:", destroyErr.message);
             }
           });
         },
