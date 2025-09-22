@@ -9,10 +9,12 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import ReactMarkdown from "react-markdown"
 import Image from "next/image"
 import { ApplicantNavbar } from "@/components/applicant-navbar"
+import { useRouter } from "next/navigation"
 
 export default function JobsPage() {
   const [jobs, setJobs] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
+  const router = useRouter()
 
   useEffect(() => {
     fetch("/api/query/posts")
@@ -69,7 +71,12 @@ export default function JobsPage() {
                       <ReactMarkdown>{job.PROMPT}</ReactMarkdown>
                     </ScrollArea>
                     <div className="flex gap-2 pt-4">
-                      <Button className="flex-1">Apply Now</Button>
+                      <Button 
+                        className="flex-1" 
+                        onClick={() => router.push(`/apply?jobId=${job.JOB_ID}&jobName=${encodeURIComponent(job.JOB_NAME)}`)}
+                      >
+                        Apply Now
+                      </Button>
                       <Button variant="outline">Save Job</Button>
                     </div>
                   </DialogContent>

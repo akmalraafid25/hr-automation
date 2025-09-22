@@ -17,6 +17,13 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import ReactMarkdown from "react-markdown";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "./ui/button";
@@ -28,6 +35,24 @@ export default function SnowflakeAnalysis() {
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const rowsPerPage = 5; // 👈 change this number as needed
+
+  const updateStatus = async (applicantId: string, status: string) => {
+    try {
+      const response = await fetch("/api/query/analysis", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ applicantId, status }),
+      });
+      
+      if (response.ok) {
+        setData(prev => prev.map(item => 
+          item.APPLICANT_ID === applicantId ? { ...item, STATUS: status } : item
+        ));
+      }
+    } catch (error) {
+      console.error("Failed to update status:", error);
+    }
+  };
 
   useEffect(() => {
     fetch("/api/query/analysis")
@@ -80,6 +105,7 @@ export default function SnowflakeAnalysis() {
                 <TableHead>Name</TableHead>
                 <TableHead>Job Applied</TableHead>
                 <TableHead>Match</TableHead>
+                <TableHead>Status</TableHead>
                 <TableHead>Details</TableHead>
                 <TableHead>Certification</TableHead>
               </TableRow>
@@ -91,6 +117,25 @@ export default function SnowflakeAnalysis() {
                   <TableCell>{row.NAME}</TableCell>
                   <TableCell>{row.JOB_NAME}</TableCell>
                   <TableCell>{row.SIMILARITY ? row.SIMILARITY +"%" : "-" }</TableCell>
+                  <TableCell>
+                    <Select
+                      value={row.STATUS || ""}
+                      onValueChange={(value) => updateStatus(row.APPLICANT_ID, value)}
+                    >
+                      <SelectTrigger className="w-32">
+                        <SelectValue placeholder="Select status" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="Pending">Pending</SelectItem>
+                        <SelectItem value="Reviewed">Reviewed</SelectItem>
+                        <SelectItem value="Interview">Interview</SelectItem>
+                        <SelectItem value="Assessment">Assessment</SelectItem>
+                        <SelectItem value="Offering">Offering</SelectItem>
+                        <SelectItem value="Hired">Hired</SelectItem>
+                        <SelectItem value="Rejected">Rejected</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </TableCell>
                   <TableCell className="max-w-[250px] truncate">
                       <Dialog>
                         <DialogTrigger asChild>
