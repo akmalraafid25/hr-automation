@@ -19,16 +19,18 @@ export default function ApplyPage() {
     <div className="min-h-screen bg-background">
       <ApplicantNavbar />
       <div className="max-w-2xl mx-auto p-8">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold">Job Application</h1>
+        <div className="mb-8 text-center">
+          <h1 className="mt-16 text-3xl font-bold">Job Application</h1>
           <p className="text-muted-foreground mt-2">Complete your application below</p>
         </div>
         
-        <JobApplicationForm
-          jobId={jobId}
-          jobName={jobName}
-          onClose={handleClose}
-        />
+        <div className="flex justify-center">
+          <JobApplicationForm
+            jobId={jobId}
+            jobName={jobName}
+            onClose={handleClose}
+          />
+        </div>
       </div>
     </div>
   )
