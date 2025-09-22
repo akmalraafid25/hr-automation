@@ -97,7 +97,7 @@ export default function MyApplicationsPage() {
   return (
     <div className="min-h-screen bg-background">
       <ApplicantNavbar />
-      <div className="max-w-4xl mx-auto p-8">
+      <div className="max-w-4xl mx-auto p-8 pt-24">
         <div className="mb-8">
           <h1 className="text-4xl font-bold">My Applications</h1>
           <p className="text-muted-foreground mt-2">Track the status of your job applications</p>

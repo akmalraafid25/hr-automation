@@ -83,11 +83,17 @@ export default function SnowflakeAnalysis() {
 
   if (loading) return <p>Loading...</p>;
 
+  // Filter data to show only candidates with match >= 80%
+  const filteredData = data.filter(row => {
+    const similarity = parseInt(row.SIMILARITY);
+    return similarity >= 80;
+  });
+
   // Pagination logic
-  const totalPages = Math.ceil(data.length / rowsPerPage);
+  const totalPages = Math.ceil(filteredData.length / rowsPerPage);
   const startIndex = (currentPage - 1) * rowsPerPage;
   const endIndex = startIndex + rowsPerPage;
-  const currentData = data.slice(startIndex, endIndex);
+  const currentData = filteredData.slice(startIndex, endIndex);
 
   return (
     <Card>
