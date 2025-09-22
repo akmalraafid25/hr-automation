@@ -126,7 +126,7 @@ export function JobApplicationForm({ jobId, jobName, onClose }: JobApplicationFo
           </div>
 
           <div>
-            <Label htmlFor="credlyLink" className="py-2">Credly Link (Optional)</Label>
+            <Label htmlFor="credlyLink" className="py-2">Credly (Optional)</Label>
             <Input
               id="credlyLink"
               type="url"
