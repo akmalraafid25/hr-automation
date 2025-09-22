@@ -82,6 +82,7 @@ export default function SnowflakeAnalysis() {
                 <TableHead>Match</TableHead>
                 <TableHead>Details</TableHead>
                 <TableHead>Certification</TableHead>
+                <TableHead>CV</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -142,6 +143,43 @@ export default function SnowflakeAnalysis() {
                           </DialogHeader>
                           <ScrollArea className="h-[200px] w-[460px] text-sm rounded-md border p-4">
                             <h1 className="font-bold">Certification:</h1><ReactMarkdown>{row.CERTIFICATION}</ReactMarkdown>
+                          </ScrollArea>
+                        </DialogContent>
+                      </Dialog>
+                    </TableCell>
+                    <TableCell>
+                      <Dialog>
+                        <DialogTrigger asChild>
+                            <Button>
+                              View CV
+                            </Button>
+                        </DialogTrigger>
+                        <DialogContent className="max-w-2xl">
+                          <DialogHeader>
+                            <DialogTitle className="text-xl">{row.NAME} - CV</DialogTitle>
+                            <DialogDescription>
+                                Job Applied: {row.JOB_NAME ?? "-"} 
+                            </DialogDescription>
+                          </DialogHeader>
+                          <ScrollArea className="h-[400px] w-full text-sm rounded-md border p-4">
+                            <div className="space-y-4">
+                              <div>
+                                <h3 className="font-bold text-base mb-2">Skills</h3>
+                                <p>{row.SKILLS || "Not specified"}</p>
+                              </div>
+                              <div>
+                                <h3 className="font-bold text-base mb-2">Work Experience</h3>
+                                <p className="whitespace-pre-wrap">{row.WORK_EXPERIENCE || "Not specified"}</p>
+                              </div>
+                              <div>
+                                <h3 className="font-bold text-base mb-2">Education</h3>
+                                <p className="whitespace-pre-wrap">{row.EDUCATION || "Not specified"}</p>
+                              </div>
+                              <div>
+                                <h3 className="font-bold text-base mb-2">Certifications</h3>
+                                <ReactMarkdown>{row.CERTIFICATION || "Not specified"}</ReactMarkdown>
+                              </div>
+                            </div>
                           </ScrollArea>
                         </DialogContent>
                       </Dialog>

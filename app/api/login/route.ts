@@ -50,14 +50,17 @@ export async function POST(req: NextRequest) {
       return new NextResponse("Unauthorized: Invalid credentials", { status: 401 });
     }
     
+    // Determine role based on username (temporary solution)
+    const userRole = user.USERNAME === 'admin' ? 'ADMIN' : 'USER'
+    
     const token = jwt.sign(
-      { id: user.ID, username: user.USERNAME, name: user.NAME, email: user.EMAIL, role: user.ROLE },
+      { id: user.ID, username: user.USERNAME, name: user.NAME, email: user.EMAIL, role: userRole },
       process.env.JWT_SECRET!,
       { expiresIn: "1h" }
     );
 
     // Redirect based on role
-    const redirectUrl = user.ROLE === 'ADMIN' ? "/" : "/jobs"
+    const redirectUrl = userRole === 'ADMIN' ? "/" : "/jobs"
     const res = NextResponse.redirect(new URL(redirectUrl, req.url))
     
     res.cookies.set("token", token, {
