@@ -83,7 +83,7 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
 
           <div className="relative hidden md:block">
             <img
-              src="/login-bg.jpg"
+              src="/2Q.png"
               alt="Image"
               className="h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
             />
