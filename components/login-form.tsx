@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Dialog, DialogContent } from "@/components/ui/dialog"
 import { RegisterForm } from "@/components/register-form"
+import Image from "next/image"
 
 export function LoginForm({ className, ...props }: React.ComponentProps<"div">) {
   const [loading, setLoading] = useState(false)
@@ -82,10 +83,11 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
           </form>
 
           <div className="relative hidden md:block">
-            <img
-              src="/login-bg.jpg"
-              alt="Image"
-              className="h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
+            <Image
+              src="https://images.unsplash.com/photo-1758315716325-d2c7c0eb9659?q=80&w=715&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+              alt="Login background"
+              fill
+              className="object-cover dark:brightness-[0.2] dark:grayscale"
             />
           </div>
         </CardContent>
