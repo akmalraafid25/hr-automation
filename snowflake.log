@@ -2496,6 +2496,7 @@
 {"level":"INFO","message":"[2:38:40.125 AM]: Connection[id: 7fc14056-7110-4a63-a6d0-30507a8686a8] - connecting. Associated Snowflake domain: GLOBAL"}
 {"level":"INFO","message":"[2:38:40.129 AM]: Connection[id: 7fc14056-7110-4a63-a6d0-30507a8686a8] - authentication successful using: SNOWFLAKE_JWT"}
 {"level":"INFO","message":"[2:38:40.129 AM]: Connection[id: 7fc14056-7110-4a63-a6d0-30507a8686a8] - connected successfully after 3.9331999998539686 milliseconds"}
+<<<<<<< Updated upstream
 >>>>>>> Stashed changes
 {"level":"INFO","message":"[2:39:16.136 AM]: Creating new connection object"}
 {"level":"INFO","message":"[2:39:16.151 AM]: Creating Connection[id: bb0485b9-794f-497b-89b9-18ff9d9fdbcd] with host: A5725842678961-SOFTWAREONE_SANDBOX.snowflakecomputing.com, account: A5725842678961-SOFTWAREONE_SANDBOX, accessUrl: https://A5725842678961-SOFTWAREONE_SANDBOX.snowflakecomputing.com, user: AKMAL_T, role: sysadmin, database: HR_Automation, schema: PUBLIC, warehouse: MY_WH_RIDHO, proxy was not configured, password is not provided, region: undefined, authenticator: SNOWFLAKE_JWT, ocsp mode: FAIL_OPEN, os: win32, os version: 10."}
@@ -2540,3 +2541,5 @@
 {"level":"INFO","message":"[2:39:18.913 AM]: Connection[id: f8035fe2-e545-4934-bdf3-fd9c424304c7] - connecting. Associated Snowflake domain: GLOBAL"}
 {"level":"INFO","message":"[2:39:18.915 AM]: Connection[id: f8035fe2-e545-4934-bdf3-fd9c424304c7] - authentication successful using: SNOWFLAKE_JWT"}
 {"level":"INFO","message":"[2:39:18.916 AM]: Connection[id: f8035fe2-e545-4934-bdf3-fd9c424304c7] - connected successfully after 3.3933999999426305 milliseconds"}
+=======
+>>>>>>> Stashed changes

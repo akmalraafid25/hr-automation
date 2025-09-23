@@ -71,6 +71,9 @@ export default function SnowflakeAnalysis() {
     }
   };
 
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
   useEffect(() => {
     fetch("/api/query/analysis")
@@ -197,6 +200,7 @@ export default function SnowflakeAnalysis() {
                       >
                         Remove
                       </Button>
+<<<<<<< Updated upstream
                     </TableCell>
                     <TableCell>
                       <Dialog>
@@ -234,6 +238,8 @@ export default function SnowflakeAnalysis() {
                           </ScrollArea>
                         </DialogContent>
                       </Dialog>
+=======
+>>>>>>> Stashed changes
                     </TableCell>
                 </TableRow>
               ))}
