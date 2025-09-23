@@ -31,8 +31,6 @@ export default function SnowflakeAnalysis() {
   const rowsPerPage = 5; // 👈 change this number as needed
   const { addToast } = useToast();
 
-<<<<<<< Updated upstream
-=======
   const updateStatus = async (applicantId: string, status: string) => {
     try {
       const response = await fetch("/api/query/analysis", {
@@ -71,10 +69,6 @@ export default function SnowflakeAnalysis() {
     }
   };
 
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
   useEffect(() => {
     fetch("/api/query/analysis")
       .then((res) => res.json())
@@ -200,46 +194,6 @@ export default function SnowflakeAnalysis() {
                       >
                         Remove
                       </Button>
-<<<<<<< Updated upstream
-                    </TableCell>
-                    <TableCell>
-                      <Dialog>
-                        <DialogTrigger asChild>
-                            <Button>
-                              View CV
-                            </Button>
-                        </DialogTrigger>
-                        <DialogContent className="max-w-2xl">
-                          <DialogHeader>
-                            <DialogTitle className="text-xl">{row.NAME} - CV</DialogTitle>
-                            <DialogDescription>
-                                Job Applied: {row.JOB_NAME ?? "-"} 
-                            </DialogDescription>
-                          </DialogHeader>
-                          <ScrollArea className="h-[400px] w-full text-sm rounded-md border p-4">
-                            <div className="space-y-4">
-                              <div>
-                                <h3 className="font-bold text-base mb-2">Skills</h3>
-                                <p>{row.SKILLS || "Not specified"}</p>
-                              </div>
-                              <div>
-                                <h3 className="font-bold text-base mb-2">Work Experience</h3>
-                                <p className="whitespace-pre-wrap">{row.WORK_EXPERIENCE || "Not specified"}</p>
-                              </div>
-                              <div>
-                                <h3 className="font-bold text-base mb-2">Education</h3>
-                                <p className="whitespace-pre-wrap">{row.EDUCATION || "Not specified"}</p>
-                              </div>
-                              <div>
-                                <h3 className="font-bold text-base mb-2">Certifications</h3>
-                                <ReactMarkdown>{row.CERTIFICATION || "Not specified"}</ReactMarkdown>
-                              </div>
-                            </div>
-                          </ScrollArea>
-                        </DialogContent>
-                      </Dialog>
-=======
->>>>>>> Stashed changes
                     </TableCell>
                 </TableRow>
               ))}

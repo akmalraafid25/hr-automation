@@ -2,7 +2,8 @@ import type React from "react"
 import type { Metadata } from "next"
 import { GeistSans } from "geist/font/sans"
 import { GeistMono } from "geist/font/mono"
-import { POPPINS } from "./fonts/poppins";
+import { POPPINS } from "./fonts/poppins"
+import { ToastProvider } from "@/components/ui/toast"
 import "./globals.css"
 
 export const metadata: Metadata = {
@@ -10,8 +11,6 @@ export const metadata: Metadata = {
   description: "Modern comprehensive dashboard interface",
   generator: "v0.app",
 }
-
-import { ToastProvider } from "@/components/ui/toast"
 
 export default function RootLayout({
   children,
