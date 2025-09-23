@@ -1,5 +1,6 @@
 'use client'
 import { useEffect, useState } from "react";
+import { useToast } from "@/components/ui/toast";
 import {
   Table,
   TableBody,
@@ -28,6 +29,28 @@ export default function SnowflakeTable() {
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const rowsPerPage = 5; // 👈 change this number as needed
+  const { addToast } = useToast();
+
+  const moveToShortlist = async (applicantId: string) => {
+    try {
+      const response = await fetch("/api/shortlist", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ applicantId }),
+      });
+      
+      if (response.ok) {
+        // Remove from current list
+        setData(prev => prev.filter(item => item.APPLICANT_ID !== applicantId));
+        addToast({ title: "Success", description: "Candidate moved to shortlist successfully!", variant: "success" });
+      } else {
+        addToast({ title: "Error", description: "Failed to move candidate to shortlist", variant: "destructive" });
+      }
+    } catch (error) {
+      console.error("Failed to shortlist candidate:", error);
+      addToast({ title: "Error", description: "Error occurred while shortlisting candidate", variant: "destructive" });
+    }
+  };
 
   useEffect(() => {
     fetch("/api/query/candidates")
@@ -119,10 +142,10 @@ export default function SnowflakeTable() {
                       </a>
                     </Button>
                   </TableCell>
-                  <TableCell>
+                  <TableCell className="space-x-2">
                     <Dialog>
                       <DialogTrigger asChild>
-                          <Button>
+                          <Button variant="outline" size="sm">
                             View CV
                           </Button>
                       </DialogTrigger>
@@ -155,6 +178,14 @@ export default function SnowflakeTable() {
                         </ScrollArea>
                       </DialogContent>
                     </Dialog>
+                    <Button 
+                      size="sm"
+                      variant="ghost"
+                      className="text-green-600 hover:text-green-800 hover:bg-green-50"
+                      onClick={() => moveToShortlist(row.APPLICANT_ID)}
+                    >
+                      Shortlist
+                    </Button>
                   </TableCell>
                 </TableRow>
               ))}
