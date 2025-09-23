@@ -9,10 +9,17 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import ReactMarkdown from "react-markdown"
 import Image from "next/image"
 import { ApplicantNavbar } from "@/components/applicant-navbar"
+import { JobSearch } from "@/components/job-search"
+import { SavedJobs } from "@/components/saved-jobs"
+import { JobStats } from "@/components/job-stats"
+import { JobAlerts } from "@/components/job-alerts"
+import { JobRecommendations } from "@/components/job-recommendations"
+import { QuickApply } from "@/components/quick-apply"
 import { useRouter } from "next/navigation"
 
 export default function JobsPage() {
   const [jobs, setJobs] = useState<any[]>([])
+  const [filteredJobs, setFilteredJobs] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
   const router = useRouter()
 
@@ -22,24 +29,49 @@ export default function JobsPage() {
       .then((data) => {
         const jobData = data?.rows || []
         setJobs(jobData)
+        setFilteredJobs(jobData)
       })
       .catch((err) => console.error("Error fetching jobs:", err))
       .finally(() => setLoading(false))
   }, [])
 
+  const handleSearch = (query: string, location: string, type: string) => {
+    let filtered = jobs
+    if (query) {
+      filtered = filtered.filter(job => 
+        job.JOB_NAME.toLowerCase().includes(query.toLowerCase())
+      )
+    }
+    setFilteredJobs(filtered)
+  }
+
   if (loading) return <div className="p-8">Loading jobs...</div>
+
+  const activeJobs = jobs.filter(job => new Date(job.END_DATE) > new Date()).length
+  const newJobs = jobs.filter(job => {
+    const created = new Date(job.DATE_CREATED)
+    const today = new Date()
+    return created.toDateString() === today.toDateString()
+  }).length
 
   return (
     <div className="min-h-screen bg-background">
       <ApplicantNavbar />
       <div className="max-w-6xl mx-auto p-4 md:p-8 pt-20 md:pt-24">
-        <div className="mb-6 md:mb-8">
-          <h1 className="text-2xl md:text-4xl font-bold">Open Positions</h1>
-          <p className="text-muted-foreground mt-2">Find your next career opportunity</p>
+        <div className="bg-cover bg-[url(/light-refraction-getty-912442750-cta-banner.jpg)] p-16 mb-6 md:mb-8">
+          <h1 className="text-secondary text-2xl md:text-4xl font-bold">Open Positions</h1>
+          <p className="text-secondary mt-2">Find your next career opportunity</p>
         </div>
-
-        <div className="grid gap-4 md:gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-          {jobs.map((job, index) => (
+        <div className="mb-6">
+          <JobRecommendations />
+        </div>
+        <div className="mb-6">
+          <JobSearch onSearch={handleSearch} />
+        </div>
+        <div className="grid gap-4 grid-cols-1 lg:grid-cols-4">
+          <div className="lg:col-span-4">
+            <div className="grid gap-4 md:gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+              {filteredJobs.map((job, index) => (
             <Card key={index} className="hover:shadow-lg transition-shadow">
               <CardHeader>
                 <CardTitle className="text-lg md:text-xl">{job.JOB_NAME}</CardTitle>
@@ -77,15 +109,24 @@ export default function JobsPage() {
                       >
                         Apply Now
                       </Button>
-                      <Button variant="outline">Save Job</Button>
+                      <QuickApply jobId={job.JOB_ID} jobName={job.JOB_NAME} />
+                      <SavedJobs jobId={job.JOB_ID} jobName={job.JOB_NAME} />
                     </div>
                   </DialogContent>
                 </Dialog>
               </CardContent>
             </Card>
-          ))}
+              ))}
+            </div>
+          </div>
         </div>
 
+        {filteredJobs.length === 0 && jobs.length > 0 && (
+          <div className="text-center py-12">
+            <p className="text-muted-foreground">No jobs match your search criteria.</p>
+          </div>
+        )}
+        
         {jobs.length === 0 && (
           <div className="text-center py-12">
             <p className="text-muted-foreground">No open positions available at the moment.</p>

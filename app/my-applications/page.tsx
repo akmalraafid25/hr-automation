@@ -23,7 +23,7 @@ export default function MyApplicationsPage() {
           company: "SoftwareOne",
           appliedDate: app.APPLIED_DATE,
           status: app.STATUS || "Under Review",
-          progress: app.PROGRESS || 50
+          progress: app.STATUS === 'Rejected' ? 0 : (app.PROGRESS || 50)
         }))
         
         setApplications(formattedApps)
@@ -85,9 +85,10 @@ export default function MyApplicationsPage() {
       <ApplicantNavbar />
       <div className="max-w-4xl mx-auto p-8 pt-24">
         <div className="mb-8">
-          <h1 className="text-4xl font-bold">My Applications</h1>
-          <p className="text-muted-foreground mt-2">Track the status of your job applications</p>
-          
+          <div className="bg-cover bg-[url(/bubbles-getty-1367572322-teaser.webp)] p-16">
+            <h1 className="text-4xl font-bold">My Applications</h1>
+            <p className="text-muted-foreground mt-2">Track the status of your job applications</p>
+          </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
             <Card>
               <CardContent className="flex items-center p-4">
