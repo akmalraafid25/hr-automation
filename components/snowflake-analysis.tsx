@@ -18,6 +18,13 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import ReactMarkdown from "react-markdown";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "./ui/button";
@@ -69,6 +76,24 @@ export default function SnowflakeAnalysis() {
     }
   };
 
+  const updateStatus = async (applicantId: string, status: string) => {
+    try {
+      const response = await fetch("/api/query/analysis", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ applicantId, status }),
+      });
+      
+      if (response.ok) {
+        setData(prev => prev.map(item => 
+          item.APPLICANT_ID === applicantId ? { ...item, STATUS: status } : item
+        ));
+      }
+    } catch (error) {
+      console.error("Failed to update status:", error);
+    }
+  };
+
   useEffect(() => {
     fetch("/api/query/analysis")
       .then((res) => res.json())
@@ -98,11 +123,17 @@ export default function SnowflakeAnalysis() {
 
   if (loading) return <p>Loading...</p>;
 
+  // Filter data to show only candidates with match >= 80%
+  const filteredData = data.filter(row => {
+    const similarity = parseInt(row.SIMILARITY);
+    return similarity >= 80;
+  });
+
   // Pagination logic
-  const totalPages = Math.ceil(data.length / rowsPerPage);
+  const totalPages = Math.ceil(filteredData.length / rowsPerPage);
   const startIndex = (currentPage - 1) * rowsPerPage;
   const endIndex = startIndex + rowsPerPage;
-  const currentData = data.slice(startIndex, endIndex);
+  const currentData = filteredData.slice(startIndex, endIndex);
 
   return (
     <Card>
@@ -120,9 +151,9 @@ export default function SnowflakeAnalysis() {
                 <TableHead>Name</TableHead>
                 <TableHead>Job Applied</TableHead>
                 <TableHead>Match</TableHead>
+                <TableHead>Status</TableHead>
                 <TableHead>Details</TableHead>
                 <TableHead>Certification</TableHead>
-                <TableHead>CV</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -132,6 +163,25 @@ export default function SnowflakeAnalysis() {
                   <TableCell>{row.NAME}</TableCell>
                   <TableCell>{row.JOB_NAME}</TableCell>
                   <TableCell>{row.SIMILARITY ? row.SIMILARITY +"%" : "-" }</TableCell>
+                  <TableCell>
+                    <Select
+                      value={row.STATUS || ""}
+                      onValueChange={(value) => updateStatus(row.APPLICANT_ID, value)}
+                    >
+                      <SelectTrigger className="w-32">
+                        <SelectValue placeholder="Select status" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="Pending">Pending</SelectItem>
+                        <SelectItem value="Reviewed">Reviewed</SelectItem>
+                        <SelectItem value="Interview">Interview</SelectItem>
+                        <SelectItem value="Assessment">Assessment</SelectItem>
+                        <SelectItem value="Offering">Offering</SelectItem>
+                        <SelectItem value="Hired">Hired</SelectItem>
+                        <SelectItem value="Rejected">Rejected</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </TableCell>
                   <TableCell className="max-w-[250px] truncate">
                       <Dialog>
                         <DialogTrigger asChild>
@@ -139,7 +189,42 @@ export default function SnowflakeAnalysis() {
                               Details
                             </Button>
                         </DialogTrigger>
-                        <DialogContent className="w-max">
+                        <DialogContent className="max-w-4xl">
+                          <Dialog>
+                            <DialogTrigger asChild>
+                                <Button className="absolute top-4 right-4 bg-black hover:bg-gray-800 text-white text-xs px-2 py-1">
+                                  View CV
+                                </Button>
+                            </DialogTrigger>
+                            <DialogContent className="max-w-4xl">
+                              <DialogHeader className="text-center">
+                                <DialogTitle className="text-xl">{row.NAME} - CV</DialogTitle>
+                                <DialogDescription>
+                                    Job Applied: {row.JOB_NAME ?? "-"} 
+                                </DialogDescription>
+                              </DialogHeader>
+                              <ScrollArea className="h-[450px] w-full text-sm rounded-md border p-4">
+                                <div className="space-y-4">
+                                  <div>
+                                    <h3 className="font-bold text-base mb-2">Skills</h3>
+                                    <p>{row.SKILLS || "Not specified"}</p>
+                                  </div>
+                                  <div>
+                                    <h3 className="font-bold text-base mb-2">Work Experience</h3>
+                                    <p className="whitespace-pre-wrap">{row.WORK_EXPERIENCE || "Not specified"}</p>
+                                  </div>
+                                  <div>
+                                    <h3 className="font-bold text-base mb-2">Education</h3>
+                                    <p className="whitespace-pre-wrap">{row.EDUCATION || "Not specified"}</p>
+                                  </div>
+                                  <div>
+                                    <h3 className="font-bold text-base mb-2">Certifications</h3>
+                                    <ReactMarkdown>{row.CERTIFICATION || "Not specified"}</ReactMarkdown>
+                                  </div>
+                                </div>
+                              </ScrollArea>
+                            </DialogContent>
+                          </Dialog>
                           <DialogHeader>
                             <DialogTitle className="text-xl">{row.NAME}</DialogTitle>
                             <div>
@@ -151,7 +236,7 @@ export default function SnowflakeAnalysis() {
                                 </DialogDescription>
                             </div>
                           </DialogHeader>
-                          <ScrollArea className="h-[200px] w-[460px] text-sm rounded-md border p-4">
+                          <ScrollArea className="h-[400px] w-full text-sm rounded-md border p-4">
                             <h1 className="font-bold">Analysis:</h1><ReactMarkdown>{row.ANALYSIS}</ReactMarkdown>
                             <br/>
                             <h1 className="font-bold">Pros:</h1>{row.PROS ?? "-"}

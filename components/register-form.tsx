@@ -46,32 +46,32 @@ export function RegisterForm({ className, onClose, ...props }: RegisterFormProps
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card className="overflow-hidden p-0">
-        <CardContent className="p-6 md:p-8">
+        <CardContent className="p-4 md:p-6">
           <form onSubmit={handleSubmit}>
-            <div className="flex flex-col gap-6">
+            <div className="flex flex-col gap-4">
               <div className="flex flex-col items-center text-center">
-                <h1 className="text-2xl font-bold">Create Account</h1>
-                <p className="text-muted-foreground text-balance">
+                <h1 className="text-xl font-bold">Create Account</h1>
+                <p className="text-muted-foreground text-balance text-sm">
                   Join us today
                 </p>
               </div>
-              <div className="grid gap-3">
+              <div className="grid gap-2">
                 <Label htmlFor="name">Full Name</Label>
                 <Input id="name" name="name" type="text" required />
               </div>
-              <div className="grid gap-3">
+              <div className="grid gap-2">
                 <Label htmlFor="username">Username</Label>
                 <Input id="username" name="username" type="text" required />
               </div>
-              <div className="grid gap-3">
+              <div className="grid gap-2">
                 <Label htmlFor="email">Email</Label>
                 <Input id="email" name="email" type="email" required />
               </div>
-              <div className="grid gap-3">
+              <div className="grid gap-2">
                 <Label htmlFor="phone">Phone</Label>
                 <Input id="phone" name="phone" type="tel" required />
               </div>
-              <div className="grid gap-3">
+              <div className="grid gap-2">
                 <Label htmlFor="password">Password</Label>
                 <Input id="password" name="password" type="password" required />
               </div>

@@ -72,6 +72,7 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
                   id="password"
                   name="password"
                   type="password"
+                  placeholder="Password"
                   required
                 />
               </div>
