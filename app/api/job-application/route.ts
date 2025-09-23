@@ -29,7 +29,7 @@ export async function POST(req: NextRequest) {
     }
 
     // Send to webhook
-    const webhookUrl = process.env.JOB_APPLICATION_WEBHOOK_URL || "https://hr-automationv2sone.app.n8n.cloud/webhook-test/b7725152-c75b-47ec-abe3-a091babc9f3d"
+    const webhookUrl = process.env.JOB_APPLICATION_WEBHOOK_URL || "https://hr-automationv2sone.app.n8n.cloud/webhook/b7725152-c75b-47ec-abe3-a091babc9f3d"
     
     await fetch(webhookUrl, {
       method: "POST",

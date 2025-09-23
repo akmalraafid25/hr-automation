@@ -27,7 +27,7 @@ export function DashboardHeader() {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container flex h-16 items-center justify-between px-6">
+      <div className="container flex h-16 items-center justify-between px-4 md:px-6">
         <div className="flex items-center gap-6">
           <div className="flex items-center gap-2">
             <a href="/">
@@ -42,9 +42,9 @@ export function DashboardHeader() {
         </div>
 
         <div className="flex items-center gap-4">
-          <div className="relative max-w-sm">
+          <div className="relative max-w-sm hidden sm:block">
             <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-            <Input placeholder="Search..." className="pl-10 w-64" />
+            <Input placeholder="Search..." className="pl-10 w-32 sm:w-64" />
           </div>
 
           <Button variant="ghost" size="icon">

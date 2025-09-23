@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import { useToast } from "@/components/ui/toast"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -15,6 +16,7 @@ interface JobApplicationFormProps {
 export function JobApplicationForm({ jobId, jobName, onClose }: JobApplicationFormProps) {
   const [loading, setLoading] = useState(false)
   const [accountId, setAccountId] = useState<string | null>(null)
+  const { addToast } = useToast()
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
@@ -63,13 +65,13 @@ export function JobApplicationForm({ jobId, jobName, onClose }: JobApplicationFo
       })
 
       if (response.ok) {
-        alert("Application submitted successfully!")
+        addToast({ title: "Success", description: "Application submitted successfully!", variant: "success" })
         onClose()
       } else {
-        alert("Failed to submit application")
+        addToast({ title: "Error", description: "Failed to submit application", variant: "destructive" })
       }
     } catch (error) {
-      alert("Error submitting application")
+      addToast({ title: "Error", description: "Error submitting application", variant: "destructive" })
     } finally {
       setLoading(false)
     }

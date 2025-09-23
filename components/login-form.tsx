@@ -31,7 +31,12 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
       window.location.href = "/"  // <--- this triggers real browser navigation
     } else {
       setLoading(false)
-      alert("Your password is incorrect or account doesn't exists")
+      // Show error message in UI instead of alert
+      const errorDiv = document.createElement('div')
+      errorDiv.className = 'fixed top-4 right-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded z-50'
+      errorDiv.textContent = 'Your password is incorrect or account doesn\'t exist'
+      document.body.appendChild(errorDiv)
+      setTimeout(() => errorDiv.remove(), 3000)
     }
   }
 

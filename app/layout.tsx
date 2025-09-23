@@ -11,6 +11,8 @@ export const metadata: Metadata = {
   generator: "v0.app",
 }
 
+import { ToastProvider } from "@/components/ui/toast"
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -18,7 +20,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`font-sans ${GeistSans.variable} ${GeistMono.variable} ${POPPINS.variable}`}>{children}</body>
+      <body className={`font-sans ${GeistSans.variable} ${GeistMono.variable} ${POPPINS.variable}`}>
+        <ToastProvider>
+          {children}
+        </ToastProvider>
+      </body>
     </html>
   )
 }

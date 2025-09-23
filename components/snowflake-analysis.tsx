@@ -1,5 +1,6 @@
 'use client'
 import { useEffect, useState } from "react";
+import { useToast } from "@/components/ui/toast";
 import {
   Table,
   TableBody,
@@ -28,7 +29,49 @@ export default function SnowflakeAnalysis() {
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const rowsPerPage = 5; // 👈 change this number as needed
+  const { addToast } = useToast();
 
+<<<<<<< Updated upstream
+=======
+  const updateStatus = async (applicantId: string, status: string) => {
+    try {
+      const response = await fetch("/api/query/analysis", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ applicantId, status }),
+      });
+      
+      if (response.ok) {
+        setData(prev => prev.map(item => 
+          item.APPLICANT_ID === applicantId ? { ...item, STATUS: status } : item
+        ));
+      }
+    } catch (error) {
+      console.error("Failed to update status:", error);
+    }
+  };
+
+  const removeFromShortlist = async (applicantId: string) => {
+    try {
+      const response = await fetch("/api/shortlist", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ applicantId }),
+      });
+      
+      if (response.ok) {
+        setData(prev => prev.filter(item => item.APPLICANT_ID !== applicantId));
+        addToast({ title: "Success", description: "Candidate removed from shortlist successfully!", variant: "success" });
+      } else {
+        addToast({ title: "Error", description: "Failed to remove candidate from shortlist", variant: "destructive" });
+      }
+    } catch (error) {
+      console.error("Failed to remove candidate:", error);
+      addToast({ title: "Error", description: "Error occurred while removing candidate", variant: "destructive" });
+    }
+  };
+
+>>>>>>> Stashed changes
   useEffect(() => {
     fetch("/api/query/analysis")
       .then((res) => res.json())
@@ -122,7 +165,7 @@ export default function SnowflakeAnalysis() {
                         </DialogContent>
                       </Dialog>
                     </TableCell>
-                    <TableCell>
+                    <TableCell className="space-x-2">
                       <Dialog>
                         <DialogTrigger asChild>
                             <Button variant="outline">
@@ -146,6 +189,14 @@ export default function SnowflakeAnalysis() {
                           </ScrollArea>
                         </DialogContent>
                       </Dialog>
+                      <Button 
+                        size="sm"
+                        variant="ghost"
+                        className="text-red-600 hover:text-red-800 hover:bg-red-50"
+                        onClick={() => removeFromShortlist(row.APPLICANT_ID)}
+                      >
+                        Remove
+                      </Button>
                     </TableCell>
                     <TableCell>
                       <Dialog>
