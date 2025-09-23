@@ -76,24 +76,6 @@ export default function SnowflakeAnalysis() {
     }
   };
 
-  const updateStatus = async (applicantId: string, status: string) => {
-    try {
-      const response = await fetch("/api/query/analysis", {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ applicantId, status }),
-      });
-      
-      if (response.ok) {
-        setData(prev => prev.map(item => 
-          item.APPLICANT_ID === applicantId ? { ...item, STATUS: status } : item
-        ));
-      }
-    } catch (error) {
-      console.error("Failed to update status:", error);
-    }
-  };
-
   useEffect(() => {
     fetch("/api/query/analysis")
       .then((res) => res.json())
