@@ -93,16 +93,18 @@ export default function ProfilePage() {
     <div className="min-h-screen bg-background">
       <ApplicantNavbar />
       
-      <div className="max-w-4xl mx-auto p-8">
+      <div className="max-w-4xl mx-auto p-8 pt-24">
         {loading ? (
           <div className="text-center py-8">Loading profile...</div>
         ) : (
           <>
-            <div className="mb-8">
-              <h1 className="text-4xl font-bold">My Profile</h1>
-              <p className="text-muted-foreground mt-2">Manage your personal information and preferences</p>
+            <div className="bg-cover bg-[url(/bubbles-getty-1367572322-teaser.webp)] p-16 mb-8 relative">
+              <div className="absolute inset-0"></div>
+              <div className="relative z-10">
+                <h1 className="text-4xl font-bold text-primary">My Profile</h1>
+                <p className="text-gray-600 mt-2">Manage your personal information and preferences</p>
+              </div>
             </div>
-
             <div className="grid gap-6">
               <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
                 <Card>
