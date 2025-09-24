@@ -56,16 +56,16 @@ export default function SnowflakeAnalysis() {
     }
   };
 
-  const removeFromShortlist = async (applicantId: string) => {
+  const removeFromShortlist = async (shortlistId: string) => {
     try {
       const response = await fetch("/api/shortlist", {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ applicantId }),
+        body: JSON.stringify({ shortlistId }),
       });
       
       if (response.ok) {
-        setData(prev => prev.filter(item => item.APPLICANT_ID !== applicantId));
+        setData(prev => prev.filter(item => item.SHORTLIST_ID !== shortlistId));
         addToast({ title: "Success", description: "Candidate removed from shortlist successfully!", variant: "success" });
       } else {
         addToast({ title: "Error", description: "Failed to remove candidate from shortlist", variant: "destructive" });
@@ -76,7 +76,7 @@ export default function SnowflakeAnalysis() {
     }
   };
 
-  useEffect(() => {
+  const fetchData = () => {
     fetch("/api/query/analysis")
       .then((res) => res.json())
       .then((d) => {
@@ -101,6 +101,19 @@ export default function SnowflakeAnalysis() {
         setData([]);
       })
       .finally(() => setLoading(false));
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  // Listen for shortlist updates
+  useEffect(() => {
+    const handleShortlistUpdate = () => {
+      fetchData();
+    };
+    window.addEventListener('shortlistUpdated', handleShortlistUpdate);
+    return () => window.removeEventListener('shortlistUpdated', handleShortlistUpdate);
   }, []);
 
   if (loading) return <p>Loading...</p>;
@@ -257,7 +270,7 @@ export default function SnowflakeAnalysis() {
                         size="sm"
                         variant="ghost"
                         className="text-red-600 hover:text-red-800 hover:bg-red-50"
-                        onClick={() => removeFromShortlist(row.APPLICANT_ID)}
+                        onClick={() => removeFromShortlist(row.SHORTLIST_ID)}
                       >
                         Remove
                       </Button>

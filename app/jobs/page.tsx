@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useState, useCallback, useMemo } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -16,6 +16,7 @@ import { JobAlerts } from "@/components/job-alerts"
 import { JobRecommendations } from "@/components/job-recommendations"
 import { QuickApply } from "@/components/quick-apply"
 import { useRouter } from "next/navigation"
+import { debounce } from "@/lib/utils"
 
 export default function JobsPage() {
   const [jobs, setJobs] = useState<any[]>([])
@@ -35,24 +36,30 @@ export default function JobsPage() {
       .finally(() => setLoading(false))
   }, [])
 
-  const handleSearch = (query: string, location: string, type: string) => {
-    let filtered = jobs
-    if (query) {
-      filtered = filtered.filter(job => 
-        job.JOB_NAME.toLowerCase().includes(query.toLowerCase())
-      )
-    }
-    setFilteredJobs(filtered)
-  }
+  const handleSearch = useCallback(
+    debounce((query: string, location: string, type: string) => {
+      let filtered = jobs
+      if (query) {
+        filtered = filtered.filter(job => 
+          job.JOB_NAME.toLowerCase().includes(query.toLowerCase())
+        )
+      }
+      setFilteredJobs(filtered)
+    }, 300),
+    [jobs]
+  )
+
+  const { activeJobs, newJobs } = useMemo(() => {
+    const active = jobs.filter(job => new Date(job.END_DATE) > new Date()).length
+    const newCount = jobs.filter(job => {
+      const created = new Date(job.DATE_CREATED)
+      const today = new Date()
+      return created.toDateString() === today.toDateString()
+    }).length
+    return { activeJobs: active, newJobs: newCount }
+  }, [jobs])
 
   if (loading) return <div className="p-8">Loading jobs...</div>
-
-  const activeJobs = jobs.filter(job => new Date(job.END_DATE) > new Date()).length
-  const newJobs = jobs.filter(job => {
-    const created = new Date(job.DATE_CREATED)
-    const today = new Date()
-    return created.toDateString() === today.toDateString()
-  }).length
 
   return (
     <div className="min-h-screen bg-background">
@@ -72,7 +79,7 @@ export default function JobsPage() {
           <div className="lg:col-span-4">
             <div className="grid gap-4 md:gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
               {filteredJobs.map((job, index) => (
-            <Card key={index} className="hover:shadow-lg transition-shadow">
+            <Card key={job.JOB_ID || index} className="hover:shadow-lg transition-shadow">
               <CardHeader>
                 <CardTitle className="text-lg md:text-xl">{job.JOB_NAME}</CardTitle>
                 <div className="flex flex-wrap gap-2">

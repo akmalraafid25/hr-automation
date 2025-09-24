@@ -22,12 +22,13 @@ export async function POST(req: NextRequest) {
       }
 
       try {
-        const { applicantId } = await req.json()
+        const { applicantId, jobId } = await req.json()
+        console.log("Shortlisting:", { applicantId, jobId })
 
         // Insert into SHORTLIST table
         connection.execute({
-          sqlText: "INSERT INTO SHORTLIST (APPLICANT_ID, SHORTLISTED_DATE) VALUES (?, CURRENT_TIMESTAMP())",
-          binds: [applicantId],
+          sqlText: "INSERT INTO SHORTLIST (APPLICANT_ID, JOB_ID, SHORTLISTED_DATE) VALUES (?, ?, CURRENT_TIMESTAMP())",
+          binds: [applicantId, jobId || null],
           complete: (err, stmt, rows) => {
             if (err) {
               console.error("❌ Insert failed:", err.message)
@@ -71,11 +72,11 @@ export async function DELETE(req: NextRequest) {
       }
 
       try {
-        const { applicantId } = await req.json()
+        const { shortlistId } = await req.json()
 
         connection.execute({
-          sqlText: "DELETE FROM SHORTLIST WHERE APPLICANT_ID = ?",
-          binds: [applicantId],
+          sqlText: "DELETE FROM SHORTLIST WHERE SHORTLIST_ID = ?",
+          binds: [shortlistId],
           complete: (err, stmt, rows) => {
             if (err) {
               resolve(NextResponse.json({ error: err.message }, { status: 500 }))

@@ -31,17 +31,17 @@ export default function SnowflakeTable() {
   const rowsPerPage = 5; // 👈 change this number as needed
   const { addToast } = useToast();
 
-  const moveToShortlist = async (applicantId: string) => {
+  const moveToShortlist = async (applicantId: string, jobId: string) => {
     try {
       const response = await fetch("/api/shortlist", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ applicantId }),
+        body: JSON.stringify({ applicantId, jobId }),
       });
       
       if (response.ok) {
-        // Remove from current list
-        setData(prev => prev.filter(item => item.APPLICANT_ID !== applicantId));
+        // Trigger shortlist table refresh
+        window.dispatchEvent(new CustomEvent('shortlistUpdated'));
         addToast({ title: "Success", description: "Candidate moved to shortlist successfully!", variant: "success" });
       } else {
         addToast({ title: "Error", description: "Failed to move candidate to shortlist", variant: "destructive" });
@@ -200,7 +200,7 @@ export default function SnowflakeTable() {
                       size="sm"
                       variant="ghost"
                       className="text-green-600 hover:text-green-800 hover:bg-green-50"
-                      onClick={() => moveToShortlist(row.APPLICANT_ID)}
+                      onClick={() => moveToShortlist(row.APPLICANT_ID, row.JOB_ID)}
                     >
                       Shortlist
                     </Button>
