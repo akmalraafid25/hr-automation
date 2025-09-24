@@ -218,7 +218,7 @@ export default function SnowflakeAnalysis() {
                                     Job Applied: {row.JOB_NAME ?? "-"} 
                                 </DialogDescription>
                               </DialogHeader>
-                              <ScrollArea className="h-[450px] w-full text-sm rounded-md border p-4">
+                              <ScrollArea className="h-[350px] w-full text-sm rounded-md border p-4">
                                 <div className="space-y-4">
                                   <div>
                                     <h3 className="font-bold text-base mb-2">Skills</h3>
@@ -238,6 +238,24 @@ export default function SnowflakeAnalysis() {
                                   </div>
                                 </div>
                               </ScrollArea>
+                              <div className="flex justify-end pt-4">
+                                <Button 
+                                  variant="outline" 
+                                  onClick={async () => {
+                                    try {
+                                      const res = await fetch(`/api/cv/${row.CV_URL}`);
+                                      const data = await res.json();
+                                      if (data.url) {
+                                        window.open(data.url, '_blank');
+                                      }
+                                    } catch (error) {
+                                      console.error('Error fetching CV:', error);
+                                    }
+                                  }}
+                                >
+                                  PDF File
+                                </Button>
+                              </div>
                             </DialogContent>
                           </Dialog>
                           <DialogHeader>

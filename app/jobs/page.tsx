@@ -71,30 +71,44 @@ export default function JobsPage() {
         <div className="grid gap-4 grid-cols-1 lg:grid-cols-4">
           <div className="lg:col-span-4">
             <div className="grid gap-4 md:gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-              {filteredJobs.map((job, index) => (
-            <Card key={index} className="hover:shadow-lg transition-shadow">
+              {filteredJobs.map((job, index) => {
+                const isExpired = new Date(job.END_DATE) < new Date()
+                return (
+            <Card key={index} className={`hover:shadow-lg transition-shadow ${isExpired ? 'opacity-60' : ''} relative flex flex-col h-full`}>
+              {isExpired && (
+                <div className="absolute top-2 right-2 bg-red-500 text-white text-xs px-1 py-0.5 rounded text-[10px] z-10">
+                  CLOSED
+                </div>
+              )}
               <CardHeader>
-                <CardTitle className="text-lg md:text-xl">{job.JOB_NAME}</CardTitle>
+                <CardTitle className="text-lg md:text-xl">
+                  {job.JOB_NAME}
+                </CardTitle>
                 <div className="flex flex-wrap gap-2">
                   <Badge variant="secondary">
                     {new Date(job.START_DATE).toLocaleDateString()}
                   </Badge>
-                  <Badge variant="outline">
+                  <Badge variant={isExpired ? "destructive" : "outline"}>
                     Ends: {new Date(job.END_DATE).toLocaleDateString()}
                   </Badge>
                 </div>
               </CardHeader>
-              <CardContent>
+              <CardContent className="flex-1 flex flex-col justify-between">
                 <p className="text-sm text-muted-foreground mb-4">
                   Posted: {new Date(job.DATE_CREATED).toLocaleDateString()}
                 </p>
                 <Dialog>
                   <DialogTrigger asChild>
-                    <Button className="w-full">View Details & Apply</Button>
+                    <Button className="w-full mt-auto" disabled={isExpired}>
+                      {isExpired ? 'Application Closed' : 'View Details & Apply'}
+                    </Button>
                   </DialogTrigger>
                   <DialogContent className="max-w-2xl mx-4 md:mx-0">
                     <DialogHeader>
-                      <DialogTitle>{job.JOB_NAME}</DialogTitle>
+                      <DialogTitle className="flex items-center gap-2">
+                        {job.JOB_NAME}
+                        {isExpired && <span className="text-red-500 text-sm">🔒 EXPIRED</span>}
+                      </DialogTitle>
                       <DialogDescription>
                         Application Period: {new Date(job.START_DATE).toLocaleDateString()} - {new Date(job.END_DATE).toLocaleDateString()}
                       </DialogDescription>
@@ -105,18 +119,22 @@ export default function JobsPage() {
                     <div className="flex gap-2 pt-4">
                       <Button 
                         className="flex-1" 
+                        disabled={isExpired}
                         onClick={() => router.push(`/apply?jobId=${job.JOB_ID}&jobName=${encodeURIComponent(job.JOB_NAME)}`)}
                       >
-                        Apply Now
+                        {isExpired ? '🔒 Application Closed' : 'Apply Now'}
                       </Button>
-                      <QuickApply jobId={job.JOB_ID} jobName={job.JOB_NAME} />
+                      <div className={isExpired ? 'opacity-50 pointer-events-none' : ''}>
+                        <QuickApply jobId={job.JOB_ID} jobName={job.JOB_NAME} />
+                      </div>
                       <SavedJobs jobId={job.JOB_ID} jobName={job.JOB_NAME} />
                     </div>
                   </DialogContent>
                 </Dialog>
               </CardContent>
             </Card>
-              ))}
+                )
+              })}
             </div>
           </div>
         </div>

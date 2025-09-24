@@ -27,22 +27,43 @@ export async function POST(req: NextRequest) {
         const { applicantId } = await req.json()
         console.log("➡️ Shortlisting applicant:", applicantId);
 
-        // Insert into SHORTLIST table using JOB_ID from APPLICANT table
+        // Check if already shortlisted to prevent duplicates
         connection.execute({
-          sqlText: "INSERT INTO SHORTLIST (APPLICANT_ID, JOB_ID) SELECT ?, JOB_ID FROM APPLICANT WHERE APPLICANT_ID = ?",
-          binds: [applicantId, applicantId],
+          sqlText: "SELECT COUNT(*) as count FROM SHORTLIST WHERE APPLICANT_ID = ?",
+          binds: [applicantId],
           complete: (err, stmt, rows) => {
             if (err) {
-              console.error("❌ Insert failed:", err.message)
+              console.error("❌ Check failed:", err.message)
               resolve(NextResponse.json({ error: err.message }, { status: 500 }))
-            } else {
-              resolve(NextResponse.json({ success: true }, { status: 200 }))
+              connection.destroy()
+              return
             }
+            
+            const count = rows?.[0]?.COUNT || 0
+            if (count > 0) {
+              resolve(NextResponse.json({ error: "Candidate already shortlisted" }, { status: 400 }))
+              connection.destroy()
+              return
+            }
+            
+            // Insert into SHORTLIST table using JOB_ID from APPLICANT table
+            connection.execute({
+              sqlText: "INSERT INTO SHORTLIST (APPLICANT_ID, JOB_ID) SELECT ?, JOB_ID FROM APPLICANT WHERE APPLICANT_ID = ?",
+              binds: [applicantId, applicantId],
+              complete: (err, stmt, rows) => {
+                if (err) {
+                  console.error("❌ Insert failed:", err.message)
+                  resolve(NextResponse.json({ error: err.message }, { status: 500 }))
+                } else {
+                  resolve(NextResponse.json({ success: true }, { status: 200 }))
+                }
 
-            connection.destroy((destroyErr) => {
-              if (destroyErr) {
-                console.error("⚠ Error closing connection:", destroyErr.message)
-              }
+                connection.destroy((destroyErr) => {
+                  if (destroyErr) {
+                    console.error("⚠ Error closing connection:", destroyErr.message)
+                  }
+                })
+              },
             })
           },
         })
