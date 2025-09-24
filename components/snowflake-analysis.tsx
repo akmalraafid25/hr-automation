@@ -40,6 +40,33 @@ export default function SnowflakeAnalysis() {
   const rowsPerPage = 5; // 👈 change this number as needed
   const { addToast } = useToast();
 
+  const fetchData = () => {
+    fetch("/api/query/analysis")
+      .then((res) => res.json())
+      .then((d) => {
+        let parsed;
+        if (typeof d === "string") {
+          try {
+            parsed = JSON.parse(d);
+          } catch {
+            parsed = [];
+          }
+        } else if (Array.isArray(d)) {
+          parsed = d;
+        } else if (d?.rows) {
+          parsed = d.rows;
+        } else {
+          parsed = [];
+        }
+        setData(parsed);
+      })
+      .catch((err) => {
+        console.error("❌ Fetch error:", err);
+        setData([]);
+      })
+      .finally(() => setLoading(false));
+  };
+
   const updateStatus = async (applicantId: string, status: string) => {
     try {
       const response = await fetch("/api/query/analysis", {
@@ -68,6 +95,8 @@ export default function SnowflakeAnalysis() {
       
       if (response.ok) {
         setData(prev => prev.filter(item => item.APPLICANT_ID !== applicantId));
+        // Trigger event for other components
+        window.dispatchEvent(new CustomEvent('shortlistUpdated'));
         addToast({ title: "Success", description: "Candidate removed from shortlist successfully!", variant: "success" });
       } else {
         addToast({ title: "Error", description: "Failed to remove candidate from shortlist", variant: "destructive" });
@@ -79,30 +108,15 @@ export default function SnowflakeAnalysis() {
   };
 
   useEffect(() => {
-    fetch("/api/query/analysis")
-      .then((res) => res.json())
-      .then((d) => {
-        let parsed;
-        if (typeof d === "string") {
-          try {
-            parsed = JSON.parse(d);
-          } catch {
-            parsed = [];
-          }
-        } else if (Array.isArray(d)) {
-          parsed = d;
-        } else if (d?.rows) {
-          parsed = d.rows;
-        } else {
-          parsed = [];
-        }
-        setData(parsed);
-      })
-      .catch((err) => {
-        console.error("❌ Fetch error:", err);
-        setData([]);
-      })
-      .finally(() => setLoading(false));
+    fetchData();
+    
+    // Listen for shortlist updates
+    const handleShortlistUpdate = () => {
+      fetchData();
+    };
+    
+    window.addEventListener('shortlistUpdated', handleShortlistUpdate);
+    return () => window.removeEventListener('shortlistUpdated', handleShortlistUpdate);
   }, []);
 
   if (loading) return <p>Loading...</p>;

@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server"
 import snowflake from "snowflake-sdk"
 
 export async function POST(req: NextRequest) {
-  console.log("➡ API /api/shortlist POST called");
+  console.log("➡️ API /api/shortlist POST called");
 
   return new Promise((resolve) => {
     const connection = snowflake.createConnection({
@@ -25,7 +25,7 @@ export async function POST(req: NextRequest) {
 
       try {
         const { applicantId } = await req.json()
-        console.log("➡ Shortlisting applicant:", applicantId);
+        console.log("➡️ Shortlisting applicant:", applicantId);
 
         // Insert into SHORTLIST table using JOB_ID from APPLICANT table
         connection.execute({

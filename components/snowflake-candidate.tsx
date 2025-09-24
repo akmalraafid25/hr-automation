@@ -45,6 +45,8 @@ export default function SnowflakeTable() {
       if (response.ok) {
         // Remove from current list
         setData(prev => prev.filter(item => item.APPLICANT_ID !== applicantId));
+        // Trigger custom event for real-time update
+        window.dispatchEvent(new CustomEvent('shortlistUpdated'));
         addToast({ title: "Success", description: "Candidate moved to shortlist successfully!", variant: "success" });
       } else {
         addToast({ title: "Error", description: "Failed to move candidate to shortlist", variant: "destructive" });
@@ -200,6 +202,24 @@ export default function SnowflakeTable() {
                             </div>
                           </div>
                         </ScrollArea>
+                        <div className="flex justify-end pt-4">
+                          <Button 
+                            variant="outline" 
+                            onClick={async () => {
+                              try {
+                                const res = await fetch(`/api/cv/${row.CV_URL}`);
+                                const data = await res.json();
+                                if (data.url) {
+                                  window.open(data.url, '_blank');
+                                }
+                              } catch (error) {
+                                console.error('Error fetching CV:', error);
+                              }
+                            }}
+                          >
+                            PDF File
+                          </Button>
+                        </div>
                       </DialogContent>
                     </Dialog>
                     <Button 
