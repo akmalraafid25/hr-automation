@@ -42,6 +42,8 @@ export default function SnowflakeTable() {
       if (response.ok) {
         // Remove from current list
         setData(prev => prev.filter(item => item.APPLICANT_ID !== applicantId));
+        // Trigger custom event for real-time update
+        window.dispatchEvent(new CustomEvent('shortlistUpdated'));
         addToast({ title: "Success", description: "Candidate moved to shortlist successfully!", variant: "success" });
       } else {
         addToast({ title: "Error", description: "Failed to move candidate to shortlist", variant: "destructive" });
