@@ -50,8 +50,8 @@ export async function POST(req: NextRequest) {
       return new NextResponse("Unauthorized: Invalid credentials", { status: 401 });
     }
     
-    // Determine role based on username (temporary solution)
-    const userRole = user.USERNAME === 'admin' ? 'ADMIN' : 'USER'
+    // Get role from database - check if user has ROLE column
+    const userRole = user.ROLE || 'USER'
     
     const token = jwt.sign(
       { id: user.ID, username: user.USERNAME, name: user.NAME, email: user.EMAIL, role: userRole },
