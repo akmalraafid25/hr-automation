@@ -176,6 +176,24 @@ export default function SnowflakeTable() {
                             </div>
                           </div>
                         </ScrollArea>
+                        <div className="flex justify-end pt-4">
+                          <Button 
+                            variant="outline" 
+                            onClick={async () => {
+                              try {
+                                const res = await fetch(`/api/cv/${row.CV_URL}`);
+                                const data = await res.json();
+                                if (data.url) {
+                                  window.open(data.url, '_blank');
+                                }
+                              } catch (error) {
+                                console.error('Error fetching CV:', error);
+                              }
+                            }}
+                          >
+                            PDF File
+                          </Button>
+                        </div>
                       </DialogContent>
                     </Dialog>
                     <Button 
