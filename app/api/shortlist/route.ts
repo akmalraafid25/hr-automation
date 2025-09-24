@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server"
 import snowflake from "snowflake-sdk"
 
 export async function POST(req: NextRequest) {
+  console.log("➡ API /api/shortlist POST called");
+
   return new Promise((resolve) => {
     const connection = snowflake.createConnection({
       account: process.env.SNOWFLAKE_ACCOUNT,
@@ -23,11 +25,12 @@ export async function POST(req: NextRequest) {
 
       try {
         const { applicantId } = await req.json()
+        console.log("➡ Shortlisting applicant:", applicantId);
 
-        // Insert into SHORTLIST table
+        // Insert into SHORTLIST table using JOB_ID from APPLICANT table
         connection.execute({
-          sqlText: "INSERT INTO SHORTLIST (APPLICANT_ID, SHORTLISTED_DATE) VALUES (?, CURRENT_TIMESTAMP())",
-          binds: [applicantId],
+          sqlText: "INSERT INTO SHORTLIST (APPLICANT_ID, JOB_ID) SELECT ?, JOB_ID FROM APPLICANT WHERE APPLICANT_ID = ?",
+          binds: [applicantId, applicantId],
           complete: (err, stmt, rows) => {
             if (err) {
               console.error("❌ Insert failed:", err.message)
@@ -38,7 +41,7 @@ export async function POST(req: NextRequest) {
 
             connection.destroy((destroyErr) => {
               if (destroyErr) {
-                console.error("⚠️ Error closing connection:", destroyErr.message)
+                console.error("⚠ Error closing connection:", destroyErr.message)
               }
             })
           },

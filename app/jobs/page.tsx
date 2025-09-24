@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useState, useCallback } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -35,7 +35,7 @@ export default function JobsPage() {
       .finally(() => setLoading(false))
   }, [])
 
-  const handleSearch = (query: string, location: string, type: string) => {
+  const handleSearch = useCallback((query: string, location: string, type: string) => {
     let filtered = jobs
     if (query) {
       filtered = filtered.filter(job => 
@@ -43,7 +43,7 @@ export default function JobsPage() {
       )
     }
     setFilteredJobs(filtered)
-  }
+  }, [jobs])
 
   if (loading) return <div className="p-8">Loading jobs...</div>
 

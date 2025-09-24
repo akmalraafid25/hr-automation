@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
@@ -18,6 +18,11 @@ export function JobSearch({ onSearch }: JobSearchProps) {
   const handleSearch = () => {
     onSearch(query, location, type)
   }
+
+  // Real-time search effect
+  useEffect(() => {
+    onSearch(query, location, type)
+  }, [query, location, type, onSearch])
 
   return (
     <div className="bg-white p-6 rounded-lg shadow-sm border space-y-4">

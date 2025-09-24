@@ -52,19 +52,34 @@ export function DashboardSidebar() {
 
       <nav className="flex-1 space-y-2 p-4">
         {sidebarItems.map((item) => (
-          <Link key={item.label} href={item.href}>
-            <Button
-              variant={pathname === item.href ? "default" : "ghost"}
-              className={cn(
-                "w-full justify-start gap-3",
-                collapsed && "justify-center px-2",
-                pathname === item.href && "bg-sidebar-primary text-sidebar-primary-foreground",
-              )}
-            >
-              <item.icon className="h-5 w-5 flex-shrink-0" />
-              {!collapsed && <span>{item.label}</span>}
-            </Button>
-          </Link>
+          item.label === "Calendly" ? (
+            <a key={item.label} href={item.href} target="_blank" rel="noopener noreferrer">
+              <Button
+                variant="ghost"
+                className={cn(
+                  "w-full justify-start gap-3",
+                  collapsed && "justify-center px-2",
+                )}
+              >
+                <item.icon className="h-5 w-5 flex-shrink-0" />
+                {!collapsed && <span>{item.label}</span>}
+              </Button>
+            </a>
+          ) : (
+            <Link key={item.label} href={item.href}>
+              <Button
+                variant={pathname === item.href ? "default" : "ghost"}
+                className={cn(
+                  "w-full justify-start gap-3",
+                  collapsed && "justify-center px-2",
+                  pathname === item.href && "bg-sidebar-primary text-sidebar-primary-foreground",
+                )}
+              >
+                <item.icon className="h-5 w-5 flex-shrink-0" />
+                {!collapsed && <span>{item.label}</span>}
+              </Button>
+            </Link>
+          )
         ))}
       </nav>
     </div>
