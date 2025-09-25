@@ -103,33 +103,6 @@ export default function SnowflakeAnalysis() {
     }
   };
 
-  const fetchData = () => {
-    fetch("/api/query/analysis")
-      .then((res) => res.json())
-      .then((d) => {
-        let parsed;
-        if (typeof d === "string") {
-          try {
-            parsed = JSON.parse(d);
-          } catch {
-            parsed = [];
-          }
-        } else if (Array.isArray(d)) {
-          parsed = d;
-        } else if (d?.rows) {
-          parsed = d.rows;
-        } else {
-          parsed = [];
-        }
-        setData(parsed);
-      })
-      .catch((err) => {
-        console.error("❌ Fetch error:", err);
-        setData([]);
-      })
-      .finally(() => setLoading(false));
-  };
-
   useEffect(() => {
     fetchData();
   }, []);
