@@ -6,6 +6,8 @@ export async function POST(req: NextRequest) {
     
     const jobId = formData.get("jobId") as string
     const jobName = formData.get("jobName") as string
+    
+    console.log("API received - jobId:", jobId, "jobName:", jobName)
     const accountId = formData.get("accountId") as string
     const fullName = formData.get("fullName") as string
     const email = formData.get("email") as string
@@ -15,13 +17,16 @@ export async function POST(req: NextRequest) {
 
     // Prepare webhook payload as FormData to send binary file
     const webhookFormData = new FormData()
-    webhookFormData.append("jobId", jobId)
-    webhookFormData.append("jobName", jobName)
+    webhookFormData.append("jobId", jobId || "unknown")
+    webhookFormData.append("jobName", jobName || "unknown")
+    
+    console.log("Sending to webhook - jobId:", jobId, "jobName:", jobName)
     webhookFormData.append("accountId", accountId)
     webhookFormData.append("fullName", fullName)
     webhookFormData.append("email", email)
     webhookFormData.append("phone", phone)
     webhookFormData.append("credlyLink", credlyLink)
+    webhookFormData.append("status", 'Reviewed')
     webhookFormData.append("submittedAt", new Date().toISOString())
     
     if (cvFile) {

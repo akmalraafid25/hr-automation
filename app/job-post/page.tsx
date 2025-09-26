@@ -24,19 +24,12 @@ export default function ChatbotPage() {
     <div className="flex h-screen bg-background">
           <DashboardSidebar />
           <div className="flex-1 flex flex-col overflow-hidden">
-            <DashboardHeader />
+            <DashboardHeader pageName="Job Posts" />
             <main className="flex-1 overflow-y-auto">
               <div className="container mx-auto p-4 md:p-6 space-y-4 md:space-y-6">
-                <div>
-                  <h2 className="text-xl md:text-3xl font-bold tracking-tight text-balance">Job Post Dashboard</h2>
-                  <p className="text-sm md:text-base text-muted-foreground">Manage job postings and track recruitment metrics</p>
-                </div>
                 <DashboardStats />
-                <div className="grid gap-4 md:gap-6 grid-cols-1 md:grid-cols-2">
-                  <RecentJobPosts />
-                  <HiringPipeline />
-                </div>
                 <SnowflakeTable/>
+                <HiringPipeline />
                 <DashboardTable />
               </div>
             </main>

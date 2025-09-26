@@ -40,6 +40,7 @@ export default function SnowflakeTable() {
       });
       
       if (response.ok) {
+        console.log("Shortlist success, dispatching event");
         window.dispatchEvent(new CustomEvent('shortlistUpdated'));
         addToast({ title: "Success", description: "Candidate moved to shortlist successfully!", variant: "success" });
       } else {

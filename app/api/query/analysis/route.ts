@@ -29,9 +29,10 @@ export async function GET() {
 
       connection.execute({
 
-        sqlText: "SELECT S.SHORTLIST_ID, A.APPLICANT_ID, A.NAME, A.SKILLS, A.CERTIFICATION, A.WORK_EXPERIENCE, A.EDUCATION, J.JOB_NAME, analysis.ANALYSIS, analysis.PROS, analysis.CONS, analysis.SIMILARITY, A.STATUS FROM SHORTLIST S LEFT JOIN APPLICANT A ON S.APPLICANT_ID = A.APPLICANT_ID LEFT JOIN ANALYSIS analysis ON S.APPLICANT_ID = analysis.APPLICANT_ID LEFT JOIN JOB_POST J ON S.JOB_ID = J.JOB_ID;",
+        sqlText: "SELECT S.SHORTLIST_ID, A.APPLICANT_ID, A.NAME, A.SKILLS, A.CERTIFICATION, A.WORK_EXPERIENCE, A.EDUCATION, J.JOB_NAME, analysis.ANALYSIS, analysis.PROS, analysis.CONS, analysis.SIMILARITY, A.STATUS FROM SHORTLIST S JOIN APPLICANT A ON S.APPLICANT_ID = A.APPLICANT_ID JOIN JOB_POST J ON S.JOB_ID = J.JOB_ID LEFT JOIN ANALYSIS analysis ON S.APPLICANT_ID = analysis.APPLICANT_ID",
         complete: (err, stmt, rows) => {
           console.log("➡️ Query callback fired");
+          console.log(rows);
 
           if (err) {
             console.error("❌ Query failed:", err.message);

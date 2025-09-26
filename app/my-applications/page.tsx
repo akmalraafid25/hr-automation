@@ -89,9 +89,9 @@ export default function MyApplicationsPage() {
             <h1 className="text-4xl font-bold">My Applications</h1>
             <p className="text-muted-foreground mt-2">Track the status of your job applications</p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
+          <div className="grid grid-cols-1 pt-6 md:grid-cols-3 gap-4">
             <Card>
-              <CardContent className="flex items-center p-4">
+              <CardContent className="flex items-center">
                 <FileText className="h-8 w-8 text-blue-500 mr-3" />
                 <div>
                   <p className="text-sm text-muted-foreground">Total Applications</p>
@@ -100,7 +100,7 @@ export default function MyApplicationsPage() {
               </CardContent>
             </Card>
             <Card>
-              <CardContent className="flex items-center p-4">
+              <CardContent className="flex items-center">
                 <Clock className="h-8 w-8 text-orange-500 mr-3" />
                 <div>
                   <p className="text-sm text-muted-foreground">Under Review</p>
@@ -109,7 +109,7 @@ export default function MyApplicationsPage() {
               </CardContent>
             </Card>
             <Card>
-              <CardContent className="flex items-center p-4">
+              <CardContent className="flex items-center">
                 <TrendingUp className="h-8 w-8 text-green-500 mr-3" />
                 <div>
                   <p className="text-sm text-muted-foreground">Avg Progress</p>
@@ -124,7 +124,7 @@ export default function MyApplicationsPage() {
           {applications.map((app) => (
             <Card key={app.id} className="hover:shadow-lg transition-shadow">
               <CardHeader>
-                <div className="flex items-start justify-between">
+                <div className="flex items-start justify-between border-b-2 py-2">
                   <div>
                     <CardTitle className="text-xl">{app.jobName}</CardTitle>
                     <CardDescription>{app.company}</CardDescription>
@@ -136,7 +136,7 @@ export default function MyApplicationsPage() {
                 </div>
               </CardHeader>
               <CardContent>
-                <div className="space-y-4">
+                <div className="space-y-2">
                   <div className="flex justify-between text-sm">
                     <span className="text-muted-foreground">Applied on:</span>
                     <span>{new Date(app.appliedDate).toLocaleDateString()}</span>
