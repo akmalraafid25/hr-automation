@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 
-export function DashboardHeader() {
+export function DashboardHeader({ pageName }: { pageName?: string }) {
   async function handleLogout() {
     try {
       await fetch("/api/logout", { method: "POST", credentials: "include" })
@@ -26,27 +26,16 @@ export function DashboardHeader() {
   }
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container flex h-16 items-center justify-between px-4 md:px-6">
-        <div className="flex items-center gap-6">
-          <div className="flex items-center gap-2">
-            <a href="/">
-              <Image
-                src="/softwareone-logo-blk.svg"
-                width={100}
-                height={40}
-                alt="Company Logo"
-              />
-            </a>
-          </div>
+    <header className="sticky top-0 z-50 w-full bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <div className="container flex h-16 items-center justify-between px-4 md:px-8">
+        <div>
+          <h2 className="text-2xl font-bold tracking-tight text-balance">{pageName || "Home"}</h2>
         </div>
-
-        <div className="flex items-center gap-4">
-          <div className="relative max-w-sm hidden sm:block">
+        <div className="relative w-64 hidden sm:block">
             <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-            <Input placeholder="Search..." className="pl-10 w-32 sm:w-64" />
-          </div>
-
+            <Input placeholder="Search..." className="pl-10 w-120" />
+        </div>
+        <div className="flex items-center gap-4">
           <Button variant="ghost" size="icon">
             <Bell className="h-5 w-5" />
           </Button>

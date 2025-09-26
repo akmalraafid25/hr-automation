@@ -7,7 +7,7 @@ export default function AccountPage() {
     <div className="flex min-h-screen">
       <DashboardSidebar />
       <main className="flex-1">
-        <DashboardHeader/>
+        <DashboardHeader pageName="Account" />
         <div className="p-8">
           <SnowflakeAccount/>
         </div>

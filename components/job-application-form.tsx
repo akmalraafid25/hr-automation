@@ -14,6 +14,7 @@ interface JobApplicationFormProps {
 }
 
 export function JobApplicationForm({ jobId, jobName, onClose }: JobApplicationFormProps) {
+  console.log("JobApplicationForm received - jobId:", jobId, "jobName:", jobName)
   const [loading, setLoading] = useState(false)
   const [accountId, setAccountId] = useState<string | null>(null)
   const { addToast } = useToast()
@@ -46,7 +47,14 @@ export function JobApplicationForm({ jobId, jobName, onClose }: JobApplicationFo
     e.preventDefault()
     setLoading(true)
 
+    if (!jobId || !jobName) {
+      addToast({ title: "Error", description: "Missing job information", variant: "destructive" })
+      setLoading(false)
+      return
+    }
+
     const submitData = new FormData()
+    console.log("Submitting with jobId:", jobId, "jobName:", jobName)
     submitData.append("jobId", jobId)
     submitData.append("jobName", jobName)
     submitData.append("accountId", accountId || "")
