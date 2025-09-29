@@ -30,7 +30,7 @@ const sidebarItems = [
   { icon: TrendingUp, label: "Sales", href: "/sales" },
   { icon: FileText, label: "Job Post", href: "/job-post" },
   { icon: User, label: "Account", href: "/account" },
-  { icon: Calendar, label: "Calendly", href: "/schedule" },
+  { icon: Calendar, label: "Schedule", href: "/schedule" },
   { icon: Settings, label: "Settings", href: "/settings" },
 ]
 
