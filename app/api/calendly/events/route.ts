@@ -31,7 +31,7 @@ export async function GET() {
     const actualUserUri = userData.resource.uri
     console.log('Actual user URI:', actualUserUri)
     
-    const response = await fetch(`https://api.calendly.com/scheduled_events?user=${actualUserUri}`, {
+    const response = await fetch(`https://api.calendly.com/scheduled_events?user=${actualUserUri}&sort=start_time:desc`, {
       headers: {
         'Authorization': `Bearer ${CALENDLY_TOKEN}`,
         'Content-Type': 'application/json'
