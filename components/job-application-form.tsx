@@ -86,12 +86,12 @@ export function JobApplicationForm({ jobId, jobName, onClose }: JobApplicationFo
   }
 
   return (
-    <Card className="w-full max-w-md">
+    <Card className="w-full max-w-md gap-2">
       <CardHeader>
-        <CardTitle>Apply for {jobName}</CardTitle>
+        <CardTitle className="text-xl">Apply for {jobName}</CardTitle>
       </CardHeader>
       <CardContent>
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-2">
           <div>
             <Label htmlFor="fullName" className="py-2">Full Name *</Label>
             <Input

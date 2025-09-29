@@ -22,6 +22,7 @@ export default function JobsPage() {
   const [jobs, setJobs] = useState<any[]>([])
   const [filteredJobs, setFilteredJobs] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
+  const [applicationStatus, setApplicationStatus] = useState<{[key: string]: any}>({})
   const router = useRouter()
 
   useEffect(() => {
@@ -31,6 +32,19 @@ export default function JobsPage() {
         const jobData = data?.rows || []
         setJobs(jobData)
         setFilteredJobs(jobData)
+        
+        // Check application status for each job
+        jobData.forEach((job: any) => {
+          fetch(`/api/check-application?jobId=${job.JOB_ID}`)
+            .then(res => res.json())
+            .then(appData => {
+              setApplicationStatus(prev => ({
+                ...prev,
+                [job.JOB_ID]: appData
+              }))
+            })
+            .catch(() => {})
+        })
       })
       .catch((err) => console.error("Error fetching jobs:", err))
       .finally(() => setLoading(false))
@@ -97,7 +111,12 @@ export default function JobsPage() {
                 </p>
                 <Dialog>
                   <DialogTrigger asChild>
-                    <Button className="w-full">View Details & Apply</Button>
+                    <Button 
+                      className="w-full" 
+                      variant={applicationStatus[job.JOB_ID]?.hasApplied && applicationStatus[job.JOB_ID]?.status !== 'Rejected' && applicationStatus[job.JOB_ID]?.status !== 'Hired' ? "secondary" : "default"}
+                    >
+                      {applicationStatus[job.JOB_ID]?.hasApplied && applicationStatus[job.JOB_ID]?.status !== 'Rejected' && applicationStatus[job.JOB_ID]?.status !== 'Hired' ? "Applied" : "View Details & Apply"}
+                    </Button>
                   </DialogTrigger>
                   <DialogContent className="max-w-2xl mx-4 md:mx-0">
                     <DialogHeader>
@@ -112,7 +131,19 @@ export default function JobsPage() {
                     <div className="flex gap-2 pt-4">
                       <Button 
                         className="flex-1" 
-                        onClick={() => router.push(`/apply?jobId=${job.JOB_ID}&jobName=${encodeURIComponent(job.JOB_NAME)}`)}
+                        onClick={async () => {
+                          try {
+                            const res = await fetch(`/api/check-application?jobId=${job.JOB_ID}`);
+                            const data = await res.json();
+                            if (data.hasApplied && data.status !== 'Rejected' && data.status !== 'Hired') {
+                              alert('You have already applied to this position. Please wait for the current application to be processed.');
+                            } else {
+                              router.push(`/apply?jobId=${job.JOB_ID}&jobName=${encodeURIComponent(job.JOB_NAME)}`);
+                            }
+                          } catch (error) {
+                            router.push(`/apply?jobId=${job.JOB_ID}&jobName=${encodeURIComponent(job.JOB_NAME)}`);
+                          }
+                        }}
                       >
                         Apply Now
                       </Button>

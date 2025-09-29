@@ -53,8 +53,8 @@ export function DashboardCharts() {
         const candidates = analysisData?.rows || []
         const allCandidates = candidatesData?.rows || []
         
-        // Group by status for pie chart with specific colors
-        const statusCounts = candidates.reduce((acc: any, candidate: any) => {
+        // Group by status for pie chart from all applicants
+        const statusCounts = allCandidates.reduce((acc: any, candidate: any) => {
           const status = candidate.STATUS || 'Under Review'
           acc[status] = (acc[status] || 0) + 1
           return acc

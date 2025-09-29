@@ -20,8 +20,8 @@ export default function ApplyPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      <ApplicantNavbar />
-      <div className="max-w-2xl mx-auto p-8">
+      <ApplicantNavbar/>
+      <div className="max-w-2xl mx-auto p-24">
         <div className="mb-8">
           <h1 className="text-3xl font-bold">Job Application</h1>
           <p className="text-muted-foreground mt-2">Complete your application below</p>
