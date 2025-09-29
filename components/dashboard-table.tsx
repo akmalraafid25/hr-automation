@@ -11,7 +11,7 @@ export function DashboardTable() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    fetch("/api/query/analysis")
+    fetch("/api/query/candidates")
       .then(res => res.json())
       .then(data => {
         const candidateData = data?.rows?.slice(0, 5) || []

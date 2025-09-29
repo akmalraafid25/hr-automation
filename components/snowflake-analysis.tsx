@@ -35,6 +35,8 @@ export default function SnowflakeAnalysis() {
   const [data, setData] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
+  const [sortField, setSortField] = useState<string>('');
+  const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
   const rowsPerPage = 5; // 👈 change this number as needed
   const { addToast } = useToast();
 
@@ -131,7 +133,30 @@ export default function SnowflakeAnalysis() {
   const totalPages = Math.ceil(filteredData.length / rowsPerPage);
   const startIndex = (currentPage - 1) * rowsPerPage;
   const endIndex = startIndex + rowsPerPage;
-  const currentData = filteredData.slice(startIndex, endIndex);
+  const handleSort = (field: string) => {
+    if (sortField === field) {
+      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
+    } else {
+      setSortField(field);
+      setSortDirection('asc');
+    }
+  };
+
+  const sortedData = [...filteredData].sort((a, b) => {
+    if (!sortField) return 0;
+    const aVal = a[sortField] || '';
+    const bVal = b[sortField] || '';
+    if (sortField === 'SIMILARITY') {
+      return sortDirection === 'asc' ? parseInt(aVal) - parseInt(bVal) : parseInt(bVal) - parseInt(aVal);
+    }
+    if (sortDirection === 'asc') {
+      return aVal.toString().localeCompare(bVal.toString());
+    } else {
+      return bVal.toString().localeCompare(aVal.toString());
+    }
+  });
+
+  const currentData = sortedData.slice(startIndex, endIndex);
 
   return (
     <Card>
@@ -146,10 +171,10 @@ export default function SnowflakeAnalysis() {
             <TableHeader>
               <TableRow>
                 <TableHead>No</TableHead>
-                <TableHead>Name</TableHead>
-                <TableHead>Job Applied</TableHead>
-                <TableHead>Match</TableHead>
-                <TableHead>Status</TableHead>
+                <TableHead className="cursor-pointer hover:bg-muted" onClick={() => handleSort('NAME')}>Name {sortField === 'NAME' && (sortDirection === 'asc' ? '↑' : '↓')}</TableHead>
+                <TableHead className="cursor-pointer hover:bg-muted" onClick={() => handleSort('JOB_NAME')}>Job Applied {sortField === 'JOB_NAME' && (sortDirection === 'asc' ? '↑' : '↓')}</TableHead>
+                <TableHead className="cursor-pointer hover:bg-muted" onClick={() => handleSort('SIMILARITY')}>Match {sortField === 'SIMILARITY' && (sortDirection === 'asc' ? '↑' : '↓')}</TableHead>
+                <TableHead className="cursor-pointer hover:bg-muted" onClick={() => handleSort('STATUS')}>Status {sortField === 'STATUS' && (sortDirection === 'asc' ? '↑' : '↓')}</TableHead>
                 <TableHead>Details</TableHead>
               </TableRow>
             </TableHeader>

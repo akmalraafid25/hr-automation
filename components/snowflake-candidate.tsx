@@ -1,5 +1,5 @@
 'use client'
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useToast } from "@/components/ui/toast";
 import {
   Table,
@@ -28,6 +28,8 @@ export default function SnowflakeTable() {
   const [data, setData] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
+  const [sortField, setSortField] = useState<string>('');
+  const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
   const rowsPerPage = 5; // 👈 change this number as needed
   const { addToast } = useToast();
 
@@ -79,13 +81,35 @@ export default function SnowflakeTable() {
       .finally(() => setLoading(false));
   }, []);
 
+  const handleSort = (field: string) => {
+    if (sortField === field) {
+      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
+    } else {
+      setSortField(field);
+      setSortDirection('asc');
+    }
+  };
+
+  const sortedData = useMemo(() => {
+    if (!sortField) return data;
+    return [...data].sort((a, b) => {
+      const aVal = a[sortField] || '';
+      const bVal = b[sortField] || '';
+      if (sortDirection === 'asc') {
+        return aVal.toString().localeCompare(bVal.toString());
+      } else {
+        return bVal.toString().localeCompare(aVal.toString());
+      }
+    });
+  }, [data, sortField, sortDirection]);
+
   if (loading) return <p>Loading...</p>;
 
   // Pagination logic
-  const totalPages = Math.ceil(data.length / rowsPerPage);
+  const totalPages = Math.ceil(sortedData.length / rowsPerPage);
   const startIndex = (currentPage - 1) * rowsPerPage;
   const endIndex = startIndex + rowsPerPage;
-  const currentData = data.slice(startIndex, endIndex);
+  const currentData = sortedData.slice(startIndex, endIndex);
 
   return (
     <Card>
@@ -100,10 +124,10 @@ export default function SnowflakeTable() {
             <TableHeader>
               <TableRow>
                 <TableHead>No</TableHead>
-                <TableHead>Name</TableHead>
-                <TableHead>Email</TableHead>
+                <TableHead className="cursor-pointer hover:bg-muted" onClick={() => handleSort('NAME')}>Name {sortField === 'NAME' && (sortDirection === 'asc' ? '↑' : '↓')}</TableHead>
+                <TableHead className="cursor-pointer hover:bg-muted" onClick={() => handleSort('EMAIL')}>Email {sortField === 'EMAIL' && (sortDirection === 'asc' ? '↑' : '↓')}</TableHead>
                 <TableHead>Phone</TableHead>
-                <TableHead>Job Applied</TableHead>
+                <TableHead className="cursor-pointer hover:bg-muted" onClick={() => handleSort('JOB_NAME')}>Job Applied {sortField === 'JOB_NAME' && (sortDirection === 'asc' ? '↑' : '↓')}</TableHead>
                 <TableHead>LinkedIn</TableHead>
                 <TableHead>CV</TableHead>
               </TableRow>

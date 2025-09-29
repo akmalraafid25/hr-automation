@@ -19,6 +19,13 @@ export default function ChatbotPage() {
       initialMessages:['👋 Hello! I’m Hira', 'I’m here to help you craft clear, professional, and engaging job postings that attract the right candidates. Just tell me the role you’re hiring for, along with any key details (skills, experience, location, etc.), and I’ll generate a tailored job post for you'
       ],
 		});
+		
+		return () => {
+			const chatContainer = document.querySelector('#n8n-chat');
+			if (chatContainer) {
+				chatContainer.remove();
+			}
+		};
 	}, []);
   return (
     <div className="flex h-screen bg-background">
