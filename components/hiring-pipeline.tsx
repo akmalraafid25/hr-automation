@@ -22,10 +22,13 @@ export function HiringPipeline() {
         }, {})
 
         const pipeline = [
-          { stage: "Applied", count: total, percentage: 100 },
-          { stage: "Under Review", count: statusCounts['Under Review'] || 0, percentage: ((statusCounts['Under Review'] || 0) / total) * 100 },
+          { stage: "Pending", count: statusCounts['Pending'] || 0, percentage: ((statusCounts['Pending'] || 0) / total) * 100 },
+          { stage: "Reviewed", count: statusCounts['Reviewed'] || 0, percentage: ((statusCounts['Reviewed'] || 0) / total) * 100 },
           { stage: "Interview", count: statusCounts['Interview'] || 0, percentage: ((statusCounts['Interview'] || 0) / total) * 100 },
+          { stage: "Assessment", count: statusCounts['Assessment'] || 0, percentage: ((statusCounts['Assessment'] || 0) / total) * 100 },
+          { stage: "Offering", count: statusCounts['Offering'] || 0, percentage: ((statusCounts['Offering'] || 0) / total) * 100 },
           { stage: "Hired", count: statusCounts['Hired'] || 0, percentage: ((statusCounts['Hired'] || 0) / total) * 100 },
+          { stage: "Rejected", count: statusCounts['Rejected'] || 0, percentage: ((statusCounts['Rejected'] || 0) / total) * 100 },
         ]
         
         setPipelineData(pipeline)

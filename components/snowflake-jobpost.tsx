@@ -1,5 +1,6 @@
 'use client'
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import ReactMarkdown from "react-markdown";
@@ -25,34 +26,39 @@ import { Input } from "@/components/ui/input";
 
 export default function SnowflakeTable() {
   const [data, setData] = useState<any[]>([]);
+  const [applicants, setApplicants] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
   const rowsPerPage = 5; // 👈 change as needed
 
     useEffect(() => {
-        fetch("/api/query/posts")
-          .then((res) => res.json())
-          .then((d) => {
+        Promise.all([
+          fetch("/api/query/posts").then(res => res.json()),
+          fetch("/api/query/candidates").then(res => res.json())
+        ])
+          .then(([postsData, candidatesData]) => {
             let parsed;
-            if (typeof d === "string") {
+            if (typeof postsData === "string") {
               try {
-                parsed = JSON.parse(d);
+                parsed = JSON.parse(postsData);
               } catch {
                 parsed = [];
               }
-            } else if (Array.isArray(d)) {
-              parsed = d;
-            } else if (d?.rows) {
-              parsed = d.rows;
+            } else if (Array.isArray(postsData)) {
+              parsed = postsData;
+            } else if (postsData?.rows) {
+              parsed = postsData.rows;
             } else {
               parsed = [];
             }
             setData(parsed);
+            setApplicants(candidatesData?.rows || []);
           })
           .catch((err) => {
             console.error("❌ Fetch error:", err);
             setData([]);
+            setApplicants([]);
           })
           .finally(() => setLoading(false));
       }, []);
@@ -101,6 +107,7 @@ export default function SnowflakeTable() {
                 <TableRow>
                   <TableHead>No</TableHead>
                   <TableHead>Job Name</TableHead>
+                  <TableHead>Applicants</TableHead>
                   <TableHead>Start Date</TableHead>
                   <TableHead>End Date</TableHead>
                   <TableHead>Date Created</TableHead>
@@ -108,43 +115,126 @@ export default function SnowflakeTable() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {currentData.map((row, index) => (
+                {currentData.map((row, index) => {
+                  const jobApplicants = applicants.filter(app => app.JOB_ID === row.JOB_ID)
+                  return (
                   <TableRow key={index}>
                     <TableCell>{startIndex + index + 1}</TableCell>
                     <TableCell>{row.JOB_NAME}</TableCell>
+                    <TableCell>{jobApplicants.length}</TableCell>
                     <TableCell>{row.START_DATE ?? "-"}</TableCell>
                     <TableCell>{row.END_DATE ?? "-"}</TableCell>
                     <TableCell>{row.DATE_CREATED ?? "-"}</TableCell>
                     <TableCell className="max-w-[250px] truncate">
-                      <Dialog>
-                        <DialogTrigger asChild>
-                            <Button>
-                              See Details
-                            </Button>
-                        </DialogTrigger>
-                        <DialogContent className="w-max">
-                          <DialogHeader>
-                            <DialogTitle className="text-xl">{row.JOB_NAME}</DialogTitle>
-                            <div>
-                                <DialogDescription>
-                                    Created On: {row.DATE_CREATED ?? "-"} 
-                                </DialogDescription>
-                                <DialogDescription>
-                                    Start Date: {row.START_DATE ?? "-"}
-                                </DialogDescription>
-                                <DialogDescription>
-                                    End Date: {row.END_DATE ?? "-"}
-                                </DialogDescription>
+                      <div className="relative">
+                        <Button onClick={() => {
+                          const modal = document.getElementById(`modal-${row.JOB_ID}`)
+                          if (modal) {
+                            modal.classList.remove('hidden')
+                            document.body.style.overflow = 'hidden'
+                          }
+                        }}>See Details</Button>
+                        <div id={`modal-${row.JOB_ID}`} className="hidden fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4" onClick={(e) => {
+                          if (e.target === e.currentTarget) {
+                            const modal = document.getElementById(`modal-${row.JOB_ID}`)
+                            if (modal) {
+                              modal.classList.add('hidden')
+                              document.body.style.overflow = 'auto'
+                            }
+                          }
+                        }}>
+                          <div className="bg-white rounded-xl w-[95vw] max-h-[90vh] overflow-y-auto shadow-2xl border" onClick={(e) => e.stopPropagation()}>
+                            <div className="bg-black text-white p-8 relative">
+                              <Button variant="ghost" size="sm" className="absolute top-4 right-4 text-white hover:bg-white/20 rounded-full" onClick={() => {
+                                const modal = document.getElementById(`modal-${row.JOB_ID}`)
+                                if (modal) {
+                                  modal.classList.add('hidden')
+                                  document.body.style.overflow = 'auto'
+                                }
+                              }}>×</Button>
+                              <div className="flex items-center gap-4 mb-4">
+                                <div className="w-24 h-16 bg-white rounded-lg flex items-center justify-center">
+                                  <span className="text-2xl font-bold text-slate-900">
+                                                <Image
+                                                  src="/softwareone-logo-blk.svg"
+                                                  width={60}
+                                                  height={40}
+                                                  alt="Company Logo"
+                                                />
+                                  </span>
+                                </div>
+                                <h1 className="text-3xl font-bold">{row.JOB_NAME}</h1>
+                              </div>
+                              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                                <div className="bg-white/10 rounded-lg p-3">
+                                  <div className="text-gray-300">Created</div>
+                                  <div className="font-semibold">{new Date(row.DATE_CREATED).toLocaleDateString()}</div>
+                                </div>
+                                <div className="bg-white/10 rounded-lg p-3">
+                                  <div className="text-gray-300">Start Date</div>
+                                  <div className="font-semibold">{new Date(row.START_DATE).toLocaleDateString()}</div>
+                                </div>
+                                <div className="bg-white/10 rounded-lg p-3">
+                                  <div className="text-gray-300">End Date</div>
+                                  <div className="font-semibold">{new Date(row.END_DATE).toLocaleDateString()}</div>
+                                </div>
+                                <div className="bg-white/10 rounded-lg p-3">
+                                  <div className="text-gray-300">Applicants</div>
+                                  <div className="font-semibold text-xl">{jobApplicants.length}</div>
+                                </div>
+                              </div>
                             </div>
-                          </DialogHeader>
-                          <ScrollArea className="h-[480px] w-[460px] text-sm rounded-md border p-4">
-                            <ReactMarkdown>{row.PROMPT}</ReactMarkdown>
-                          </ScrollArea>
-                        </DialogContent>
-                      </Dialog>
+                            <div className="p-8 flex flex-col gap-8">
+                              <div>
+                                <div className="mb-4">
+                                  <h2 className="text-xl font-bold text-gray-800 mb-2">Job Description</h2>
+                                  <div className="w-12 h-1 bg-slate-900 rounded"></div>
+                                </div>
+                                <div className="bg-gray-50 rounded-xl p-6 h-64 overflow-y-auto border w-full overflow-x-hidden">
+                                  <div className="w-full whitespace-pre-wrap break-all">
+                                    <ReactMarkdown>{row.PROMPT}</ReactMarkdown>
+                                  </div>
+                                </div>
+                              </div>
+                              <div>
+                                <div className="mb-4">
+                                  <h2 className="text-xl font-bold text-gray-800 mb-2">Applicants</h2>
+                                  <div className="w-12 h-1 bg-slate-900 rounded"></div>
+                                </div>
+                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-h-64 overflow-y-auto">
+                                  {jobApplicants.length > 0 ? jobApplicants.map((applicant, idx) => (
+                                    <div key={idx} className="bg-white border-2 border-gray-100 rounded-xl p-4 hover:border-slate-300 transition-colors">
+                                      <div className="flex items-start gap-3">
+                                        <div className="w-12 h-12 bg-slate-900 rounded-full flex items-center justify-center text-white font-bold text-lg">
+                                          {applicant.NAME?.charAt(0)}
+                                        </div>
+                                        <div className="flex-1 min-w-0">
+                                          <h3 className="font-semibold text-gray-900 truncate">{applicant.NAME}</h3>
+                                          <p className="text-sm text-gray-500 mb-2">{applicant.EMAIL}</p>
+                                          <div className="bg-gray-50 rounded-lg p-2">
+                                            <p className="text-xs text-gray-600 line-clamp-2">{applicant.SKILLS?.substring(0, 100)}...</p>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  )) : (
+                                    <div className="col-span-full text-center py-12">
+                                      <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                        <span className="text-2xl">👤</span>
+                                      </div>
+                                      <p className="text-gray-500">No applicants yet</p>
+                                    </div>
+                                  )}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     </TableCell>
                   </TableRow>
-                ))}
+                  )
+                })}
               </TableBody>
             </Table>
             {/* Pagination Controls */}

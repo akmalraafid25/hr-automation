@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState, useCallback } from "react"
+import { useEffect, useState, useCallback, useMemo } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -16,11 +16,13 @@ import { JobAlerts } from "@/components/job-alerts"
 import { JobRecommendations } from "@/components/job-recommendations"
 import { QuickApply } from "@/components/quick-apply"
 import { useRouter } from "next/navigation"
+import { debounce } from "@/lib/utils"
 
 export default function JobsPage() {
   const [jobs, setJobs] = useState<any[]>([])
   const [filteredJobs, setFilteredJobs] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
+  const [applicationStatus, setApplicationStatus] = useState<{[key: string]: any}>({})
   const router = useRouter()
 
   useEffect(() => {
@@ -30,29 +32,48 @@ export default function JobsPage() {
         const jobData = data?.rows || []
         setJobs(jobData)
         setFilteredJobs(jobData)
+        
+        // Check application status for each job
+        jobData.forEach((job: any) => {
+          fetch(`/api/check-application?jobId=${job.JOB_ID}`)
+            .then(res => res.json())
+            .then(appData => {
+              setApplicationStatus(prev => ({
+                ...prev,
+                [job.JOB_ID]: appData
+              }))
+            })
+            .catch(() => {})
+        })
       })
       .catch((err) => console.error("Error fetching jobs:", err))
       .finally(() => setLoading(false))
   }, [])
 
-  const handleSearch = useCallback((query: string, location: string, type: string) => {
-    let filtered = jobs
-    if (query) {
-      filtered = filtered.filter(job => 
-        job.JOB_NAME.toLowerCase().includes(query.toLowerCase())
-      )
-    }
-    setFilteredJobs(filtered)
+  const handleSearch = useCallback(
+    debounce((query: string, location: string, type: string) => {
+      let filtered = jobs
+      if (query) {
+        filtered = filtered.filter(job => 
+          job.JOB_NAME.toLowerCase().includes(query.toLowerCase())
+        )
+      }
+      setFilteredJobs(filtered)
+    }, 300),
+    [jobs]
+  )
+
+  const { activeJobs, newJobs } = useMemo(() => {
+    const active = jobs.filter(job => new Date(job.END_DATE) > new Date()).length
+    const newCount = jobs.filter(job => {
+      const created = new Date(job.DATE_CREATED)
+      const today = new Date()
+      return created.toDateString() === today.toDateString()
+    }).length
+    return { activeJobs: active, newJobs: newCount }
   }, [jobs])
 
   if (loading) return <div className="p-8">Loading jobs...</div>
-
-  const activeJobs = jobs.filter(job => new Date(job.END_DATE) > new Date()).length
-  const newJobs = jobs.filter(job => {
-    const created = new Date(job.DATE_CREATED)
-    const today = new Date()
-    return created.toDateString() === today.toDateString()
-  }).length
 
   return (
     <div className="min-h-screen bg-background">
@@ -71,15 +92,8 @@ export default function JobsPage() {
         <div className="grid gap-4 grid-cols-1 lg:grid-cols-4">
           <div className="lg:col-span-4">
             <div className="grid gap-4 md:gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-              {filteredJobs.map((job, index) => {
-                const isExpired = new Date(job.END_DATE) < new Date()
-                return (
-            <Card key={index} className={`hover:shadow-lg transition-shadow ${isExpired ? 'opacity-60' : ''} relative flex flex-col h-full`}>
-              {isExpired && (
-                <div className="absolute top-2 right-2 bg-red-500 text-white text-xs px-1 py-0.5 rounded text-[10px] z-10">
-                  CLOSED
-                </div>
-              )}
+              {filteredJobs.map((job, index) => (
+            <Card key={job.JOB_ID || index} className="hover:shadow-lg transition-shadow">
               <CardHeader>
                 <CardTitle className="text-lg md:text-xl">
                   {job.JOB_NAME}
@@ -99,8 +113,11 @@ export default function JobsPage() {
                 </p>
                 <Dialog>
                   <DialogTrigger asChild>
-                    <Button className="w-full mt-auto" disabled={isExpired}>
-                      {isExpired ? 'Application Closed' : 'View Details & Apply'}
+                    <Button 
+                      className="w-full" 
+                      variant={applicationStatus[job.JOB_ID]?.hasApplied && applicationStatus[job.JOB_ID]?.status !== 'Rejected' && applicationStatus[job.JOB_ID]?.status !== 'Hired' ? "secondary" : "default"}
+                    >
+                      {applicationStatus[job.JOB_ID]?.hasApplied && applicationStatus[job.JOB_ID]?.status !== 'Rejected' && applicationStatus[job.JOB_ID]?.status !== 'Hired' ? "Applied" : "View Details & Apply"}
                     </Button>
                   </DialogTrigger>
                   <DialogContent className="max-w-2xl mx-4 md:mx-0">
@@ -119,8 +136,19 @@ export default function JobsPage() {
                     <div className="flex gap-2 pt-4">
                       <Button 
                         className="flex-1" 
-                        disabled={isExpired}
-                        onClick={() => router.push(`/apply?jobId=${job.JOB_ID}&jobName=${encodeURIComponent(job.JOB_NAME)}`)}
+                        onClick={async () => {
+                          try {
+                            const res = await fetch(`/api/check-application?jobId=${job.JOB_ID}`);
+                            const data = await res.json();
+                            if (data.hasApplied && data.status !== 'Rejected' && data.status !== 'Hired') {
+                              alert('You have already applied to this position. Please wait for the current application to be processed.');
+                            } else {
+                              router.push(`/apply?jobId=${job.JOB_ID}&jobName=${encodeURIComponent(job.JOB_NAME)}`);
+                            }
+                          } catch (error) {
+                            router.push(`/apply?jobId=${job.JOB_ID}&jobName=${encodeURIComponent(job.JOB_NAME)}`);
+                          }
+                        }}
                       >
                         {isExpired ? '🔒 Application Closed' : 'Apply Now'}
                       </Button>

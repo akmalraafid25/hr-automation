@@ -24,39 +24,19 @@ export async function POST(req: NextRequest) {
       }
 
       try {
-        const { applicantId } = await req.json()
-        console.log("➡️ Shortlisting applicant:", applicantId);
-
-        // Check if already shortlisted to prevent duplicates
+        const { applicantId, jobId } = await req.json()
+        console.log("Shortlisting:", { applicantId, jobId })
+        // Insert into SHORTLIST table using JOB_ID from APPLICANT table
         connection.execute({
-          sqlText: "SELECT COUNT(*) as count FROM SHORTLIST WHERE APPLICANT_ID = ?",
-          binds: [applicantId],
+          sqlText: "INSERT INTO SHORTLIST (APPLICANT_ID, JOB_ID, SHORTLISTED_DATE) VALUES (?, ?, CURRENT_TIMESTAMP())",
+          binds: [applicantId, jobId || null],
           complete: (err, stmt, rows) => {
             if (err) {
-              console.error("❌ Check failed:", err.message)
+              console.error("❌ Insert failed:", err.message)
               resolve(NextResponse.json({ error: err.message }, { status: 500 }))
-              connection.destroy()
-              return
+            } else {
+              resolve(NextResponse.json({ success: true }, { status: 200 }))
             }
-            
-            const count = rows?.[0]?.COUNT || 0
-            if (count > 0) {
-              resolve(NextResponse.json({ error: "Candidate already shortlisted" }, { status: 400 }))
-              connection.destroy()
-              return
-            }
-            
-            // Insert into SHORTLIST table using JOB_ID from APPLICANT table
-            connection.execute({
-              sqlText: "INSERT INTO SHORTLIST (APPLICANT_ID, JOB_ID) SELECT ?, JOB_ID FROM APPLICANT WHERE APPLICANT_ID = ?",
-              binds: [applicantId, applicantId],
-              complete: (err, stmt, rows) => {
-                if (err) {
-                  console.error("❌ Insert failed:", err.message)
-                  resolve(NextResponse.json({ error: err.message }, { status: 500 }))
-                } else {
-                  resolve(NextResponse.json({ success: true }, { status: 200 }))
-                }
 
                 connection.destroy((destroyErr) => {
                   if (destroyErr) {
@@ -95,11 +75,11 @@ export async function DELETE(req: NextRequest) {
       }
 
       try {
-        const { applicantId } = await req.json()
+        const { shortlistId } = await req.json()
 
         connection.execute({
-          sqlText: "DELETE FROM SHORTLIST WHERE APPLICANT_ID = ?",
-          binds: [applicantId],
+          sqlText: "DELETE FROM SHORTLIST WHERE SHORTLIST_ID = ?",
+          binds: [shortlistId],
           complete: (err, stmt, rows) => {
             if (err) {
               resolve(NextResponse.json({ error: err.message }, { status: 500 }))

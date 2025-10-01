@@ -11,7 +11,7 @@ export function DashboardTable() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    fetch("/api/query/analysis")
+    fetch("/api/query/candidates")
       .then(res => res.json())
       .then(data => {
         const candidateData = data?.rows?.slice(0, 5) || []
@@ -21,13 +21,16 @@ export function DashboardTable() {
       .finally(() => setLoading(false))
   }, [])
 
-  const getStatusVariant = (status: string) => {
+  const getStatusColor = (status: string) => {
     switch (status) {
-      case "Hired": return "default"
-      case "Interview": return "secondary"
-      case "Under Review": return "outline"
-      case "Rejected": return "destructive"
-      default: return "outline"
+      case "Pending": return "bg-orange-500 text-white"
+      case "Reviewed": return "bg-blue-500 text-white"
+      case "Interview": return "bg-purple-500 text-white"
+      case "Assessment": return "bg-cyan-500 text-white"
+      case "Offering": return "bg-amber-500 text-white"
+      case "Hired": return "bg-green-500 text-white"
+      case "Rejected": return "bg-red-500 text-white"
+      default: return "bg-gray-500 text-white"
     }
   }
 
@@ -67,7 +70,7 @@ export function DashboardTable() {
                 </TableCell>
                 <TableCell>{candidate.JOB_NAME || 'N/A'}</TableCell>
                 <TableCell>
-                  <Badge variant={getStatusVariant(candidate.STATUS)}>
+                  <Badge className={getStatusColor(candidate.STATUS)}>
                     {candidate.STATUS || 'Pending'}
                   </Badge>
                 </TableCell>

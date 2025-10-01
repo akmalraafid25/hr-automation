@@ -44,15 +44,15 @@ export function DashboardStats() {
   }, [])
 
   return (
-    <div className="grid gap-4 grid-cols-2 md:grid-cols-2 lg:grid-cols-4">
+    <div className="grid gap-2 grid-cols-2 md:grid-cols-2 lg:grid-cols-4">
       {stats.map((stat) => (
-        <Card key={stat.title}>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+        <Card className="gap-2" key={stat.title}>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0">
             <CardTitle className="text-xs md:text-sm font-medium text-muted-foreground">{stat.title}</CardTitle>
             <stat.icon className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-lg md:text-2xl font-bold text-balance">{stat.value}</div>
+            <div className="text-lg md:text-3xl font-bold text-balance">{stat.value}</div>
           </CardContent>
         </Card>
       ))}

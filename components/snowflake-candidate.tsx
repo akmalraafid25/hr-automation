@@ -1,5 +1,5 @@
 'use client'
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useToast } from "@/components/ui/toast";
 import {
   Table,
@@ -30,22 +30,21 @@ export default function SnowflakeTable() {
   const [data, setData] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
-  const [searchTerm, setSearchTerm] = useState("");
+  const [sortField, setSortField] = useState<string>('');
+  const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
   const rowsPerPage = 5; // 👈 change this number as needed
   const { addToast } = useToast();
 
-  const moveToShortlist = async (applicantId: string) => {
+  const moveToShortlist = async (applicantId: string, jobId: string) => {
     try {
       const response = await fetch("/api/shortlist", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ applicantId }),
+        body: JSON.stringify({ applicantId, jobId }),
       });
       
       if (response.ok) {
-        // Remove from current list
-        setData(prev => prev.filter(item => item.APPLICANT_ID !== applicantId));
-        // Trigger custom event for real-time update
+        console.log("Shortlist success, dispatching event");
         window.dispatchEvent(new CustomEvent('shortlistUpdated'));
         addToast({ title: "Success", description: "Candidate moved to shortlist successfully!", variant: "success" });
       } else {
@@ -84,6 +83,28 @@ export default function SnowflakeTable() {
       .finally(() => setLoading(false));
   }, []);
 
+  const handleSort = (field: string) => {
+    if (sortField === field) {
+      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
+    } else {
+      setSortField(field);
+      setSortDirection('asc');
+    }
+  };
+
+  const sortedData = useMemo(() => {
+    if (!sortField) return data;
+    return [...data].sort((a, b) => {
+      const aVal = a[sortField] || '';
+      const bVal = b[sortField] || '';
+      if (sortDirection === 'asc') {
+        return aVal.toString().localeCompare(bVal.toString());
+      } else {
+        return bVal.toString().localeCompare(aVal.toString());
+      }
+    });
+  }, [data, sortField, sortDirection]);
+
   if (loading) return <p>Loading...</p>;
 
   // Filter data based on search term
@@ -95,10 +116,10 @@ export default function SnowflakeTable() {
   );
 
   // Pagination logic
-  const totalPages = Math.ceil(filteredData.length / rowsPerPage);
+  const totalPages = Math.ceil(sortedData.length / rowsPerPage);
   const startIndex = (currentPage - 1) * rowsPerPage;
   const endIndex = startIndex + rowsPerPage;
-  const currentData = filteredData.slice(startIndex, endIndex);
+  const currentData = sortedData.slice(startIndex, endIndex);
 
   return (
     <Card>
@@ -126,10 +147,10 @@ export default function SnowflakeTable() {
             <TableHeader>
               <TableRow>
                 <TableHead>No</TableHead>
-                <TableHead>Name</TableHead>
-                <TableHead>Email</TableHead>
+                <TableHead className="cursor-pointer hover:bg-muted" onClick={() => handleSort('NAME')}>Name {sortField === 'NAME' && (sortDirection === 'asc' ? '↑' : '↓')}</TableHead>
+                <TableHead className="cursor-pointer hover:bg-muted" onClick={() => handleSort('EMAIL')}>Email {sortField === 'EMAIL' && (sortDirection === 'asc' ? '↑' : '↓')}</TableHead>
                 <TableHead>Phone</TableHead>
-                <TableHead>Job Applied</TableHead>
+                <TableHead className="cursor-pointer hover:bg-muted" onClick={() => handleSort('JOB_NAME')}>Job Applied {sortField === 'JOB_NAME' && (sortDirection === 'asc' ? '↑' : '↓')}</TableHead>
                 <TableHead>LinkedIn</TableHead>
                 <TableHead>CV</TableHead>
               </TableRow>
@@ -226,7 +247,7 @@ export default function SnowflakeTable() {
                       size="sm"
                       variant="ghost"
                       className="text-green-600 hover:text-green-800 hover:bg-green-50"
-                      onClick={() => moveToShortlist(row.APPLICANT_ID)}
+                      onClick={() => moveToShortlist(row.APPLICANT_ID, row.JOB_ID)}
                     >
                       Shortlist
                     </Button>
