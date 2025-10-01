@@ -21,13 +21,15 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { Button } from "./ui/button";
-import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
+import { ChevronLeftIcon, ChevronRightIcon, Search } from "lucide-react";
+import { Input } from "@/components/ui/input";
 
 export default function SnowflakeTable() {
   const [data, setData] = useState<any[]>([]);
   const [applicants, setApplicants] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
+  const [searchTerm, setSearchTerm] = useState("");
   const rowsPerPage = 5; // 👈 change as needed
 
     useEffect(() => {
@@ -64,11 +66,19 @@ export default function SnowflakeTable() {
 
   if (loading) return <p>Loading...</p>;
 
+  // Filter data based on search term
+  const filteredData = data.filter(row => 
+    row.JOB_NAME?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    row.START_DATE?.includes(searchTerm) ||
+    row.END_DATE?.includes(searchTerm) ||
+    row.DATE_CREATED?.includes(searchTerm)
+  );
+
   // Pagination logic
-  const totalPages = Math.ceil(data.length / rowsPerPage);
+  const totalPages = Math.ceil(filteredData.length / rowsPerPage);
   const startIndex = (currentPage - 1) * rowsPerPage;
   const endIndex = startIndex + rowsPerPage;
-  const currentData = data.slice(startIndex, endIndex);
+  const currentData = filteredData.slice(startIndex, endIndex);
 
   return (
     <div>
@@ -79,6 +89,19 @@ export default function SnowflakeTable() {
               <CardTitle className="text-balance">Recent Posts</CardTitle>
               <CardDescription>Recent Post Created.</CardDescription>
             </CardHeader>
+            {/* Search Bar */}
+            <div className="relative mb-4 px-6">
+              <Search className="absolute left-9 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+              <Input
+                placeholder="Search by job name or dates..."
+                value={searchTerm}
+                onChange={(e) => {
+                  setSearchTerm(e.target.value);
+                  setCurrentPage(1); // Reset to first page when searching
+                }}
+                className="pl-10"
+              />
+            </div>
             <Table>
               <TableHeader>
                 <TableRow>

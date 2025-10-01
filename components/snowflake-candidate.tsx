@@ -23,6 +23,8 @@ import {
 } from "@/components/ui/dialog";
 import ReactMarkdown from "react-markdown";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Input } from "@/components/ui/input";
+import { Search } from "lucide-react";
 
 export default function SnowflakeTable() {
   const [data, setData] = useState<any[]>([]);
@@ -105,6 +107,14 @@ export default function SnowflakeTable() {
 
   if (loading) return <p>Loading...</p>;
 
+  // Filter data based on search term
+  const filteredData = data.filter(row => 
+    row.NAME?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    row.EMAIL?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    row.JOB_NAME?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    row.PHONE?.includes(searchTerm)
+  );
+
   // Pagination logic
   const totalPages = Math.ceil(sortedData.length / rowsPerPage);
   const startIndex = (currentPage - 1) * rowsPerPage;
@@ -118,6 +128,19 @@ export default function SnowflakeTable() {
         <CardDescription>Candidates Information.</CardDescription>
       </CardHeader>
       <div className="p-6">
+        {/* Search Bar */}
+        <div className="relative mb-4">
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+          <Input
+            placeholder="Search by name, email, job, or phone..."
+            value={searchTerm}
+            onChange={(e) => {
+              setSearchTerm(e.target.value);
+              setCurrentPage(1); // Reset to first page when searching
+            }}
+            className="pl-10"
+          />
+        </div>
         {/* Table Container */}
         <div className="overflow-hidden">
           <Table>

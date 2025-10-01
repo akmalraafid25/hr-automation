@@ -38,10 +38,12 @@ export async function POST(req: NextRequest) {
               resolve(NextResponse.json({ success: true }, { status: 200 }))
             }
 
-            connection.destroy((destroyErr) => {
-              if (destroyErr) {
-                console.error("⚠️ Error closing connection:", destroyErr.message)
-              }
+                connection.destroy((destroyErr) => {
+                  if (destroyErr) {
+                    console.error("⚠ Error closing connection:", destroyErr.message)
+                  }
+                })
+              },
             })
           },
         })

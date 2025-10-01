@@ -95,17 +95,19 @@ export default function JobsPage() {
               {filteredJobs.map((job, index) => (
             <Card key={job.JOB_ID || index} className="hover:shadow-lg transition-shadow">
               <CardHeader>
-                <CardTitle className="text-lg md:text-xl">{job.JOB_NAME}</CardTitle>
+                <CardTitle className="text-lg md:text-xl">
+                  {job.JOB_NAME}
+                </CardTitle>
                 <div className="flex flex-wrap gap-2">
                   <Badge variant="secondary">
                     {new Date(job.START_DATE).toLocaleDateString()}
                   </Badge>
-                  <Badge variant="outline">
+                  <Badge variant={isExpired ? "destructive" : "outline"}>
                     Ends: {new Date(job.END_DATE).toLocaleDateString()}
                   </Badge>
                 </div>
               </CardHeader>
-              <CardContent>
+              <CardContent className="flex-1 flex flex-col justify-between">
                 <p className="text-sm text-muted-foreground mb-4">
                   Posted: {new Date(job.DATE_CREATED).toLocaleDateString()}
                 </p>
@@ -120,7 +122,10 @@ export default function JobsPage() {
                   </DialogTrigger>
                   <DialogContent className="max-w-2xl mx-4 md:mx-0">
                     <DialogHeader>
-                      <DialogTitle>{job.JOB_NAME}</DialogTitle>
+                      <DialogTitle className="flex items-center gap-2">
+                        {job.JOB_NAME}
+                        {isExpired && <span className="text-red-500 text-sm">🔒 EXPIRED</span>}
+                      </DialogTitle>
                       <DialogDescription>
                         Application Period: {new Date(job.START_DATE).toLocaleDateString()} - {new Date(job.END_DATE).toLocaleDateString()}
                       </DialogDescription>
@@ -145,16 +150,19 @@ export default function JobsPage() {
                           }
                         }}
                       >
-                        Apply Now
+                        {isExpired ? '🔒 Application Closed' : 'Apply Now'}
                       </Button>
-                      <QuickApply jobId={job.JOB_ID} jobName={job.JOB_NAME} />
+                      <div className={isExpired ? 'opacity-50 pointer-events-none' : ''}>
+                        <QuickApply jobId={job.JOB_ID} jobName={job.JOB_NAME} />
+                      </div>
                       <SavedJobs jobId={job.JOB_ID} jobName={job.JOB_NAME} />
                     </div>
                   </DialogContent>
                 </Dialog>
               </CardContent>
             </Card>
-              ))}
+                )
+              })}
             </div>
           </div>
         </div>
