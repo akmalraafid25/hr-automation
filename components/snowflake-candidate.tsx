@@ -32,6 +32,7 @@ export default function SnowflakeTable() {
   const [currentPage, setCurrentPage] = useState(1);
   const [sortField, setSortField] = useState<string>('');
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
+  const [searchTerm, setSearchTerm] = useState('');
   const rowsPerPage = 5; // 👈 change this number as needed
   const { addToast } = useToast();
 
@@ -108,7 +109,7 @@ export default function SnowflakeTable() {
   if (loading) return <p>Loading...</p>;
 
   // Filter data based on search term
-  const filteredData = data.filter(row => 
+  const filteredData = sortedData.filter(row => 
     row.NAME?.toLowerCase().includes(searchTerm.toLowerCase()) ||
     row.EMAIL?.toLowerCase().includes(searchTerm.toLowerCase()) ||
     row.JOB_NAME?.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -116,10 +117,10 @@ export default function SnowflakeTable() {
   );
 
   // Pagination logic
-  const totalPages = Math.ceil(sortedData.length / rowsPerPage);
+  const totalPages = Math.ceil(filteredData.length / rowsPerPage);
   const startIndex = (currentPage - 1) * rowsPerPage;
   const endIndex = startIndex + rowsPerPage;
-  const currentData = sortedData.slice(startIndex, endIndex);
+  const currentData = filteredData.slice(startIndex, endIndex);
 
   return (
     <Card>

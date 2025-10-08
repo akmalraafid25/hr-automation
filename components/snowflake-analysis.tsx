@@ -38,6 +38,7 @@ export default function SnowflakeAnalysis() {
   const [currentPage, setCurrentPage] = useState(1);
   const [sortField, setSortField] = useState<string>('');
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
+  const [searchTerm, setSearchTerm] = useState('');
   const rowsPerPage = 5; // 👈 change this number as needed
   const { addToast } = useToast();
 
@@ -127,7 +128,12 @@ export default function SnowflakeAnalysis() {
   // Filter data to show only candidates with match >= 80% and search term
   const filteredData = data.filter(row => {
     const similarity = parseInt(row.SIMILARITY);
-    return similarity > 0;
+    const matchesSearch = !searchTerm || 
+      row.NAME?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      row.JOB_NAME?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      row.STATUS?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      row.SIMILARITY?.toString().includes(searchTerm);
+    return similarity > 0 && matchesSearch;
   });
 
   // Pagination logic
@@ -321,7 +327,7 @@ export default function SnowflakeAnalysis() {
                                   </div>
                                   <div className="bg-gradient-to-br from-red-50 to-rose-50 rounded-2xl p-6 border border-red-200 shadow-sm w-full">
                                     <div className="max-h-64 overflow-y-auto w-full" style={{width: '100%', maxWidth: '100%'}}>
-                                      <div className="w-full" style={{width: '100%', wordBreak: 'break-all', whiteSpace: 'pre-wrap'}}>
+                                      <div className="w-full" style={{width: '100%', wordBreak: 'break-word', whiteSpace: 'pre-wrap'}}>
                                         {row.CONS || 'Not specified'}
                                       </div>
                                     </div>
