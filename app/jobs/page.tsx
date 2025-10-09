@@ -91,7 +91,14 @@ export default function JobsPage() {
           <div className="lg:col-span-4">
             <div className="grid gap-4 md:gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
               {filteredJobs.map((job, index) => (
+=======
+              {filteredJobs.map((job, index) => {
+                const isExpired = new Date(job.END_DATE) < new Date()
+                return (
+<<<<<<< HEAD
+>>>>>>> Stashed changes
             <Card key={job.JOB_ID || index} className="hover:shadow-lg transition-shadow">
               <CardHeader>
                 <CardTitle className="text-lg md:text-xl">{job.JOB_NAME}</CardTitle>
@@ -119,6 +126,7 @@ export default function JobsPage() {
                   </DialogTrigger>
                   <DialogContent className="max-w-2xl mx-4 md:mx-0">
                     <DialogHeader>
+<<<<<<< Updated upstream
                       <DialogTitle>{job.JOB_NAME}</DialogTitle>
                       <DialogDescription>
                         Application Period: {new Date(job.START_DATE).toLocaleDateString()} - {new Date(job.END_DATE).toLocaleDateString()}
@@ -161,6 +169,14 @@ export default function JobsPage() {
                   <Card key={job.JOB_ID || index} className="hover:shadow-lg transition-shadow">
                     <CardHeader>
                       <CardTitle className="text-lg md:text-xl">
+=======
+                      <DialogTitle className="flex items-center gap-2">
+=======
+                  <Card key={job.JOB_ID || index} className="hover:shadow-lg transition-shadow">
+                    <CardHeader>
+                      <CardTitle className="text-lg md:text-xl">
+>>>>>>> 362ee52f2e67fca7082a3fef7a9dbf29ea527a6f
+>>>>>>> Stashed changes
                         {job.JOB_NAME}
                       </CardTitle>
                       <div className="flex flex-wrap gap-2">
