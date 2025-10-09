@@ -14,37 +14,9 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
   const [loading, setLoading] = useState(false)
   const [showRegister, setShowRegister] = useState(false)
 
-  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault()
+  function handleSubmit(e: FormEvent<HTMLFormElement>) {
     setLoading(true)
-    
-    const formData = new FormData(e.currentTarget)
-    
-    try {
-      const res = await fetch(`${window.location.origin}/api/login`, {
-        method: "POST",
-        body: formData,
-        credentials: "include",
-      })
-    
-      if (res.ok || res.status === 303 || res.status === 307) {
-        window.location.href = "/"
-      } else {
-        setLoading(false)
-        const errorDiv = document.createElement('div')
-        errorDiv.className = 'fixed top-4 right-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded z-50'
-        errorDiv.textContent = 'Your password is incorrect or account doesn\'t exist'
-        document.body.appendChild(errorDiv)
-        setTimeout(() => errorDiv.remove(), 3000)
-      }
-    } catch (error) {
-      setLoading(false)
-      const errorDiv = document.createElement('div')
-      errorDiv.className = 'fixed top-4 right-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded z-50'
-      errorDiv.textContent = 'Connection failed. Please try again.'
-      document.body.appendChild(errorDiv)
-      setTimeout(() => errorDiv.remove(), 3000)
-    }
+    // Let the form submit naturally to avoid client-side routing issues
   }
 
 
@@ -53,7 +25,7 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card className="overflow-hidden p-0">
         <CardContent className="grid p-0 md:grid-cols-2">
-          <form className="p-6 md:p-8" onSubmit={handleSubmit}>
+          <form className="p-6 md:p-8" action="/api/login" method="POST" onSubmit={handleSubmit}>
             <div className="flex flex-col gap-6">
               <div className="flex flex-col items-center text-center">
                 <h1 className="text-2xl font-bold">Welcome back</h1>
