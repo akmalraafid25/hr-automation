@@ -93,8 +93,11 @@ export default function JobsPage() {
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
               {filteredJobs.map((job, index) => (
 =======
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
               {filteredJobs.map((job, index) => {
@@ -102,6 +105,9 @@ export default function JobsPage() {
                 return (
 <<<<<<< HEAD
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
@@ -132,6 +138,7 @@ export default function JobsPage() {
                   </DialogTrigger>
                   <DialogContent className="max-w-2xl mx-4 md:mx-0">
                     <DialogHeader>
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
                       <DialogTitle>{job.JOB_NAME}</DialogTitle>
@@ -179,6 +186,8 @@ export default function JobsPage() {
 =======
 =======
 >>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
                       <DialogTitle className="flex items-center gap-2">
 =======
                   <Card key={job.JOB_ID || index} className="hover:shadow-lg transition-shadow">
@@ -186,6 +195,9 @@ export default function JobsPage() {
                       <CardTitle className="text-lg md:text-xl">
 >>>>>>> 362ee52f2e67fca7082a3fef7a9dbf29ea527a6f
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes

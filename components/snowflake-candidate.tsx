@@ -110,6 +110,7 @@ export default function SnowflakeTable() {
 
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   // Filter data based on search term
   const filteredData = sortedData.filter(row => 
     row.NAME?.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -118,6 +119,9 @@ export default function SnowflakeTable() {
     row.PHONE?.includes(searchTerm)
   );
 
+=======
+<<<<<<< HEAD
+>>>>>>> Stashed changes
 =======
 <<<<<<< HEAD
 >>>>>>> Stashed changes
@@ -149,6 +153,9 @@ export default function SnowflakeTable() {
   const currentData = filteredData.slice(startIndex, endIndex);
 >>>>>>> 362ee52f2e67fca7082a3fef7a9dbf29ea527a6f
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
