@@ -92,7 +92,6 @@ export default function SnowflakeTable() {
       setSortDirection('asc');
     }
   };
-
   const sortedData = useMemo(() => {
     if (!sortField) return data;
     return [...data].sort((a, b) => {
@@ -108,9 +107,6 @@ export default function SnowflakeTable() {
 
   if (loading) return <p>Loading...</p>;
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
   // Filter data based on search term
   const filteredData = sortedData.filter(row => 
     row.NAME?.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -118,48 +114,11 @@ export default function SnowflakeTable() {
     row.JOB_NAME?.toLowerCase().includes(searchTerm.toLowerCase()) ||
     row.PHONE?.includes(searchTerm)
   );
-
-=======
-<<<<<<< HEAD
->>>>>>> Stashed changes
-=======
-<<<<<<< HEAD
->>>>>>> Stashed changes
-=======
-<<<<<<< HEAD
->>>>>>> Stashed changes
-  // Pagination logic
-  const totalPages = Math.ceil(filteredData.length / rowsPerPage);
-  const startIndex = (currentPage - 1) * rowsPerPage;
-  const endIndex = startIndex + rowsPerPage;
-<<<<<<< Updated upstream
-  const currentData = filteredData.slice(startIndex, endIndex);
-
-=======
-  const currentData = filteredAndSortedData.slice(startIndex, endIndex);
-=======
-  // Filter data based on search term
-  const filteredData = sortedData.filter(row => 
-    row.NAME?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    row.EMAIL?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    row.JOB_NAME?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    row.PHONE?.includes(searchTerm)
-  );
-
   // Pagination logic
   const totalPages = Math.ceil(filteredData.length / rowsPerPage);
   const startIndex = (currentPage - 1) * rowsPerPage;
   const endIndex = startIndex + rowsPerPage;
   const currentData = filteredData.slice(startIndex, endIndex);
->>>>>>> 362ee52f2e67fca7082a3fef7a9dbf29ea527a6f
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-
   return (
     <Card>
       <CardHeader>
