@@ -38,18 +38,16 @@ export async function POST(req: NextRequest) {
               resolve(NextResponse.json({ success: true }, { status: 200 }))
             }
 
-                connection.destroy((destroyErr) => {
-                  if (destroyErr) {
-                    console.error("⚠ Error closing connection:", destroyErr.message)
-                  }
-                })
-              },
+            connection.destroy((destroyErr) => {
+              if (destroyErr) {
+                console.error("⚠ Error closing connection:", destroyErr.message)
+              }
             })
           },
         })
       } catch (error: any) {
         resolve(NextResponse.json({ error: error.message }, { status: 500 }))
-        connection.destroy()
+        connection.destroy(() => {})
       }
     })
   })
@@ -86,12 +84,12 @@ export async function DELETE(req: NextRequest) {
             } else {
               resolve(NextResponse.json({ success: true }, { status: 200 }))
             }
-            connection.destroy()
+            connection.destroy(() => {})
           },
         })
       } catch (error: any) {
         resolve(NextResponse.json({ error: error.message }, { status: 500 }))
-        connection.destroy()
+        connection.destroy(() => {})
       }
     })
   })
