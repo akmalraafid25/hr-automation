@@ -27,7 +27,6 @@ import Image from "next/image"
 const sidebarItems = [
   { icon: Home, label: "Home", href: "/dashboard", active: true },
   { icon: Users, label: "Application", href: "/application" },
-  { icon: TrendingUp, label: "Sales", href: "/sales" },
   { icon: FileText, label: "Job Post", href: "/job-post" },
   { icon: User, label: "Account", href: "/account" },
   { icon: Calendar, label: "Schedule", href: "/schedule" },

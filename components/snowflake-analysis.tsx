@@ -327,7 +327,7 @@ export default function SnowflakeAnalysis() {
                                   </div>
                                   <div className="bg-gradient-to-br from-red-50 to-rose-50 rounded-2xl p-6 border border-red-200 shadow-sm w-full">
                                     <div className="max-h-64 overflow-y-auto w-full" style={{width: '100%', maxWidth: '100%'}}>
-                                      <div className="w-full" style={{width: '100%', wordBreak: 'break-all', whiteSpace: 'pre-wrap'}}>
+                                      <div className="w-full" style={{width: '100%', wordBreak: 'break-word', whiteSpace: 'pre-wrap'}}>
                                         {row.CONS || 'Not specified'}
                                       </div>
                                     </div>

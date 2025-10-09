@@ -84,27 +84,6 @@ export default function SnowflakeTable() {
       .finally(() => setLoading(false));
   }, []);
 
-  // Filter and sort data
-  const filteredAndSortedData = useMemo(() => {
-    const filtered = data.filter(row => 
-      row.NAME?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      row.EMAIL?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      row.JOB_NAME?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      row.PHONE?.includes(searchTerm)
-    );
-    
-    if (!sortField) return filtered;
-    return [...filtered].sort((a, b) => {
-      const aVal = a[sortField] || '';
-      const bVal = b[sortField] || '';
-      if (sortDirection === 'asc') {
-        return aVal.toString().localeCompare(bVal.toString());
-      } else {
-        return bVal.toString().localeCompare(aVal.toString());
-      }
-    });
-  }, [data, searchTerm, sortField, sortDirection]);
-
   const handleSort = (field: string) => {
     if (sortField === field) {
       setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
@@ -114,13 +93,34 @@ export default function SnowflakeTable() {
     }
   };
 
+  const sortedData = useMemo(() => {
+    if (!sortField) return data;
+    return [...data].sort((a, b) => {
+      const aVal = a[sortField] || '';
+      const bVal = b[sortField] || '';
+      if (sortDirection === 'asc') {
+        return aVal.toString().localeCompare(bVal.toString());
+      } else {
+        return bVal.toString().localeCompare(aVal.toString());
+      }
+    });
+  }, [data, sortField, sortDirection]);
+
   if (loading) return <p>Loading...</p>;
 
+  // Filter data based on search term
+  const filteredData = sortedData.filter(row => 
+    row.NAME?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    row.EMAIL?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    row.JOB_NAME?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    row.PHONE?.includes(searchTerm)
+  );
+
   // Pagination logic
-  const totalPages = Math.ceil(filteredAndSortedData.length / rowsPerPage);
+  const totalPages = Math.ceil(filteredData.length / rowsPerPage);
   const startIndex = (currentPage - 1) * rowsPerPage;
   const endIndex = startIndex + rowsPerPage;
-  const currentData = filteredAndSortedData.slice(startIndex, endIndex);
+  const currentData = filteredData.slice(startIndex, endIndex);
 
   return (
     <Card>
