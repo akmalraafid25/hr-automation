@@ -13,7 +13,6 @@ import { JobSearch } from "@/components/job-search"
 import { SavedJobs } from "@/components/saved-jobs"
 import { JobStats } from "@/components/job-stats"
 import { JobAlerts } from "@/components/job-alerts"
-import { JobRecommendations } from "@/components/job-recommendations"
 import { QuickApply } from "@/components/quick-apply"
 import { useRouter } from "next/navigation"
 import { debounce } from "@/lib/utils"
@@ -83,15 +82,14 @@ export default function JobsPage() {
           <h1 className="text-secondary text-2xl md:text-4xl font-bold">Open Positions</h1>
           <p className="text-secondary mt-2">Find your next career opportunity</p>
         </div>
-        <div className="mb-6">
-          <JobRecommendations />
-        </div>
+
         <div className="mb-6">
           <JobSearch onSearch={handleSearch} />
         </div>
         <div className="grid gap-4 grid-cols-1 lg:grid-cols-4">
           <div className="lg:col-span-4">
             <div className="grid gap-4 md:gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+<<<<<<< Updated upstream
               {filteredJobs.map((job, index) => (
             <Card key={job.JOB_ID || index} className="hover:shadow-lg transition-shadow">
               <CardHeader>
@@ -155,6 +153,81 @@ export default function JobsPage() {
               </CardContent>
             </Card>
               ))}
+=======
+              {filteredJobs.map((job, index) => {
+                const isExpired = new Date(job.END_DATE) < new Date()
+                return (
+                  <Card key={job.JOB_ID || index} className="hover:shadow-lg transition-shadow">
+                    <CardHeader>
+                      <CardTitle className="text-lg md:text-xl">
+                        {job.JOB_NAME}
+                      </CardTitle>
+                      <div className="flex flex-wrap gap-2">
+                        <Badge variant="secondary">
+                          {new Date(job.START_DATE).toLocaleDateString()}
+                        </Badge>
+                        <Badge variant={isExpired ? "destructive" : "outline"}>
+                          Ends: {new Date(job.END_DATE).toLocaleDateString()}
+                        </Badge>
+                      </div>
+                    </CardHeader>
+                    <CardContent className="flex-1 flex flex-col justify-between">
+                      <p className="text-sm text-muted-foreground mb-4">
+                        Posted: {new Date(job.DATE_CREATED).toLocaleDateString()}
+                      </p>
+                      <Dialog>
+                        <DialogTrigger asChild>
+                          <Button 
+                            className="w-full" 
+                            variant={applicationStatus[job.JOB_ID]?.hasApplied && applicationStatus[job.JOB_ID]?.status !== 'Rejected' && applicationStatus[job.JOB_ID]?.status !== 'Hired' ? "secondary" : "default"}
+                          >
+                            {applicationStatus[job.JOB_ID]?.hasApplied && applicationStatus[job.JOB_ID]?.status !== 'Rejected' && applicationStatus[job.JOB_ID]?.status !== 'Hired' ? "Applied" : "View Details & Apply"}
+                          </Button>
+                        </DialogTrigger>
+                        <DialogContent className="max-w-2xl mx-4 md:mx-0">
+                          <DialogHeader>
+                            <DialogTitle className="flex items-center gap-2">
+                              {job.JOB_NAME}
+                              {isExpired && <span className="text-red-500 text-sm">🔒 EXPIRED</span>}
+                            </DialogTitle>
+                            <DialogDescription>
+                              Application Period: {new Date(job.START_DATE).toLocaleDateString()} - {new Date(job.END_DATE).toLocaleDateString()}
+                            </DialogDescription>
+                          </DialogHeader>
+                          <ScrollArea className="h-96 w-full rounded-md border p-4">
+                            <ReactMarkdown>{job.PROMPT}</ReactMarkdown>
+                          </ScrollArea>
+                          <div className="flex gap-2 pt-4">
+                            <Button 
+                              className="flex-1" 
+                              onClick={async () => {
+                                try {
+                                  const res = await fetch(`/api/check-application?jobId=${job.JOB_ID}`);
+                                  const data = await res.json();
+                                  if (data.hasApplied && data.status !== 'Rejected' && data.status !== 'Hired') {
+                                    alert('You have already applied to this position. Please wait for the current application to be processed.');
+                                  } else {
+                                    router.push(`/apply?jobId=${job.JOB_ID}&jobName=${encodeURIComponent(job.JOB_NAME)}`);
+                                  }
+                                } catch (error) {
+                                  router.push(`/apply?jobId=${job.JOB_ID}&jobName=${encodeURIComponent(job.JOB_NAME)}`);
+                                }
+                              }}
+                            >
+                              {isExpired ? '🔒 Application Closed' : 'Apply Now'}
+                            </Button>
+                            <div className={isExpired ? 'opacity-50 pointer-events-none' : ''}>
+                              <QuickApply jobId={job.JOB_ID} jobName={job.JOB_NAME} />
+                            </div>
+                            <SavedJobs jobId={job.JOB_ID} jobName={job.JOB_NAME} />
+                          </div>
+                        </DialogContent>
+                      </Dialog>
+                    </CardContent>
+                  </Card>
+                )
+              })}
+>>>>>>> Stashed changes
             </div>
           </div>
         </div>
