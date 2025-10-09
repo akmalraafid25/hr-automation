@@ -4,8 +4,18 @@ import { useEffect, useState } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
 
+interface PipelineStage {
+  stage: string
+  count: number
+  percentage: number
+}
+
+interface Candidate {
+  STATUS?: string
+}
+
 export function HiringPipeline() {
-  const [pipelineData, setPipelineData] = useState<any[]>([])
+  const [pipelineData, setPipelineData] = useState<PipelineStage[]>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -15,7 +25,7 @@ export function HiringPipeline() {
         const candidates = data?.rows || []
         const total = candidates.length
         
-        const statusCounts = candidates.reduce((acc: any, candidate: any) => {
+        const statusCounts = candidates.reduce((acc: Record<string, number>, candidate: Candidate) => {
           const status = candidate.STATUS || 'Under Review'
           acc[status] = (acc[status] || 0) + 1
           return acc
