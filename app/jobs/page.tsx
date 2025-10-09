@@ -13,6 +13,7 @@ import { JobSearch } from "@/components/job-search"
 import { SavedJobs } from "@/components/saved-jobs"
 import { JobStats } from "@/components/job-stats"
 import { JobAlerts } from "@/components/job-alerts"
+
 import { QuickApply } from "@/components/quick-apply"
 import { useRouter } from "next/navigation"
 import { debounce } from "@/lib/utils"
