@@ -10,7 +10,7 @@ export async function POST(req: NextRequest) {
     const formData = await req.formData();
     const username = formData.get("username")?.toString();
     const password = formData.get("password")?.toString();
-    const ip_address = req.headers.get('x-forwarded-for') ?? req.ip; 
+    const ip_address = req.headers.get('x-forwarded-for') ?? 'unknown'; 
 
     if (!username || !password) {
       return new NextResponse("Missing username or password", { status: 400 });

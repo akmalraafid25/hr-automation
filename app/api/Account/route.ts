@@ -70,7 +70,7 @@ export async function PATCH(req: NextRequest) {
 
     connection = await connect();
     let query = `UPDATE "ACCOUNT_TEST" SET `;
-    const binds = [];
+    const binds: string[] = [];
 
     if (name) {
       query += `"NAME" = ?, `;

@@ -26,8 +26,26 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
 
+interface Candidate {
+  APPLICANT_ID: string;
+  CV_URL: string;
+  NAME: string;
+  JOB_NAME: string;
+  JOB_ID: string;
+  EMAIL: string;
+  PHONE: string;
+  LINKEDIN: string;
+  SKILLS: string;
+  CERTIFICATION: string;
+  WORK_EXPERIENCE: string;
+  EDUCATION: string;
+  STATUS: string;
+  SIMILARITY: number;
+  [key: string]: any;
+}
+
 export default function SnowflakeTable() {
-  const [data, setData] = useState<any[]>([]);
+  const [data, setData] = useState<Candidate[]>([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [sortField, setSortField] = useState<string>('');
