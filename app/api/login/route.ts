@@ -41,7 +41,12 @@ export async function POST(req: NextRequest) {
     }
 
     console.log("Attempting to connect to Snowflake...");
-    connection = await connect();
+    connection = await Promise.race([
+      connect(),
+      new Promise((_, reject) => 
+        setTimeout(() => reject(new Error('Connection timeout')), 10000)
+      )
+    ]);
     console.log("Connected to Snowflake successfully");
     
     const userQuery = `SELECT * FROM "ACCOUNT_TEST" WHERE UPPER("USERNAME") = UPPER(?);`;

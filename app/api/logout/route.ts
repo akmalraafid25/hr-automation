@@ -1,7 +1,7 @@
-import { NextResponse } from "next/server"
+import { NextResponse, NextRequest } from "next/server"
 
-export async function POST() {
-  const res = NextResponse.redirect(new URL("/login", "http://localhost:3000"))
+export async function POST(req: NextRequest) {
+  const res = NextResponse.redirect(new URL("/login", req.url))
 
   // Clear the cookie
   res.cookies.set({
