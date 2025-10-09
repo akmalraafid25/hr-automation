@@ -15,7 +15,7 @@ import SnowflakeTable from "@/components/snowflake-jobpost";
 export default function ChatbotPage() {
   useEffect(() => {
 		createChat({
-			webhookUrl: 'https://hr-automationv2sone.app.n8n.cloud/webhook/a7fd14ea-2802-42e7-9115-53e211b7263e/chat',
+			webhookUrl: 'https://hr-automation.duckdns.org/webhook/a7fd14ea-2802-42e7-9115-53e211b7263e/chat',
       initialMessages:['👋 Hello! I’m Hira', 'I’m here to help you craft clear, professional, and engaging job postings that attract the right candidates. Just tell me the role you’re hiring for, along with any key details (skills, experience, location, etc.), and I’ll generate a tailored job post for you'
       ],
 		});
