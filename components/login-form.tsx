@@ -20,21 +20,28 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
     
     const formData = new FormData(e.currentTarget)
     
-    const res = await fetch("/api/login", {
-      method: "POST",
-      body: formData,
-      credentials: "include", // make sure cookie is set
-    })
-  
-    if (res.ok || res.status === 303 || res.status === 307) {
-      // 🔹 Force full page navigation so middleware sees cookie
-      window.location.href = "/"  // <--- this triggers real browser navigation
-    } else {
+    try {
+      const res = await fetch(`${window.location.origin}/api/login`, {
+        method: "POST",
+        body: formData,
+        credentials: "include",
+      })
+    
+      if (res.ok || res.status === 303 || res.status === 307) {
+        window.location.href = "/"
+      } else {
+        setLoading(false)
+        const errorDiv = document.createElement('div')
+        errorDiv.className = 'fixed top-4 right-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded z-50'
+        errorDiv.textContent = 'Your password is incorrect or account doesn\'t exist'
+        document.body.appendChild(errorDiv)
+        setTimeout(() => errorDiv.remove(), 3000)
+      }
+    } catch (error) {
       setLoading(false)
-      // Show error message in UI instead of alert
       const errorDiv = document.createElement('div')
       errorDiv.className = 'fixed top-4 right-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded z-50'
-      errorDiv.textContent = 'Your password is incorrect or account doesn\'t exist'
+      errorDiv.textContent = 'Connection failed. Please try again.'
       document.body.appendChild(errorDiv)
       setTimeout(() => errorDiv.remove(), 3000)
     }

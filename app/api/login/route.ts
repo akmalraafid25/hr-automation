@@ -1,18 +1,15 @@
 import { NextResponse, NextRequest } from "next/server";
-import { connect } from "@/lib/snowflake";
+import snowflake from "snowflake-sdk";
 import jwt from "jsonwebtoken";
 import bcryptjs from "bcryptjs";
 
 export const runtime = 'nodejs';
-export const dynamic = 'force-dynamic'; // avoid accidental prerendering
-
+export const dynamic = 'force-dynamic';
 
 export async function POST(req: NextRequest) {
   let connection: any;
   try {
-    // Check required environment variables
     if (!process.env.JWT_SECRET) {
-      console.error("Missing JWT_SECRET environment variable");
       return new NextResponse("Server configuration error", { status: 500 });
     }
     
@@ -27,7 +24,6 @@ export async function POST(req: NextRequest) {
     
     const missing = requiredEnvVars.filter(env => !process.env[env]);
     if (missing.length > 0) {
-      console.error("Missing Snowflake environment variables:", missing);
       return new NextResponse(`Missing environment variables: ${missing.join(', ')}`, { status: 500 });
     }
     
@@ -40,14 +36,27 @@ export async function POST(req: NextRequest) {
       return new NextResponse("Missing username or password", { status: 400 });
     }
 
-    console.log("Attempting to connect to Snowflake...");
-    connection = await Promise.race([
-      connect(),
-      new Promise((_, reject) => 
-        setTimeout(() => reject(new Error('Connection timeout')), 10000)
-      )
-    ]);
-    console.log("Connected to Snowflake successfully");
+    // Direct Snowflake connection for Amplify
+    connection = snowflake.createConnection({
+      account: process.env.SNOWFLAKE_ACCOUNT!,
+      username: process.env.SNOWFLAKE_USER!,
+      authenticator: 'SNOWFLAKE_JWT',
+      privateKey: process.env.SNOWFLAKE_PRIVATE_KEY?.replace(/\\n/g, "\n"),
+      role: process.env.SNOWFLAKE_ROLE,
+      database: process.env.SNOWFLAKE_DATABASE!,
+      schema: process.env.SNOWFLAKE_SCHEMA!,
+      warehouse: process.env.SNOWFLAKE_WAREHOUSE!,
+      timeout: 30000
+    });
+
+    await new Promise<void>((resolve, reject) => {
+      const timeout = setTimeout(() => reject(new Error('Connection timeout')), 15000);
+      connection.connect((err: any) => {
+        clearTimeout(timeout);
+        if (err) reject(err);
+        else resolve();
+      });
+    });
     
     const userQuery = `SELECT * FROM "ACCOUNT_TEST" WHERE UPPER("USERNAME") = UPPER(?);`;
     
