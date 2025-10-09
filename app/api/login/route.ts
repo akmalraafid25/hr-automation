@@ -16,6 +16,21 @@ export async function POST(req: NextRequest) {
       return new NextResponse("Server configuration error", { status: 500 });
     }
     
+    const requiredEnvVars = [
+      'SNOWFLAKE_ACCOUNT',
+      'SNOWFLAKE_USER', 
+      'SNOWFLAKE_PRIVATE_KEY',
+      'SNOWFLAKE_DATABASE',
+      'SNOWFLAKE_SCHEMA',
+      'SNOWFLAKE_WAREHOUSE'
+    ];
+    
+    const missing = requiredEnvVars.filter(env => !process.env[env]);
+    if (missing.length > 0) {
+      console.error("Missing Snowflake environment variables:", missing);
+      return new NextResponse(`Missing environment variables: ${missing.join(', ')}`, { status: 500 });
+    }
+    
     const formData = await req.formData();
     const username = formData.get("username")?.toString();
     const password = formData.get("password")?.toString();
