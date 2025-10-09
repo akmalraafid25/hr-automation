@@ -24,9 +24,25 @@ import { Button } from "./ui/button";
 import { ChevronLeftIcon, ChevronRightIcon, Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 
+interface JobPost {
+  JOB_ID: string
+  JOB_NAME: string
+  START_DATE: string
+  END_DATE: string
+  DATE_CREATED: string
+  PROMPT: string
+}
+
+interface Applicant {
+  JOB_ID: string
+  NAME: string
+  EMAIL: string
+  SKILLS: string
+}
+
 export default function SnowflakeTable() {
-  const [data, setData] = useState<any[]>([]);
-  const [applicants, setApplicants] = useState<any[]>([]);
+  const [data, setData] = useState<JobPost[]>([]);
+  const [applicants, setApplicants] = useState<Applicant[]>([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
@@ -34,10 +50,19 @@ export default function SnowflakeTable() {
 
     useEffect(() => {
         Promise.all([
-          fetch("/api/query/posts").then(res => res.json()),
-          fetch("/api/query/candidates").then(res => res.json())
+          fetch("/api/query/posts").then(res => {
+            if (!res.ok) throw new Error(`Posts API failed: ${res.status}`);
+            return res.json();
+          }),
+          fetch("/api/query/candidates").then(res => {
+            if (!res.ok) throw new Error(`Candidates API failed: ${res.status}`);
+            return res.json();
+          })
         ])
           .then(([postsData, candidatesData]) => {
+            console.log("Posts data:", postsData);
+            console.log("Candidates data:", candidatesData);
+            
             let parsed;
             if (typeof postsData === "string") {
               try {

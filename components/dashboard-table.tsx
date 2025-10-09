@@ -6,8 +6,17 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
+interface Candidate {
+  APPLICANT_ID?: string
+  NAME?: string
+  JOB_NAME?: string
+  STATUS?: string
+  SKILLS?: string
+  SIMILARITY?: number
+}
+
 export function DashboardTable() {
-  const [candidates, setCandidates] = useState<any[]>([])
+  const [candidates, setCandidates] = useState<Candidate[]>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -70,7 +79,7 @@ export function DashboardTable() {
                 </TableCell>
                 <TableCell>{candidate.JOB_NAME || 'N/A'}</TableCell>
                 <TableCell>
-                  <Badge className={getStatusColor(candidate.STATUS)}>
+                  <Badge className={getStatusColor(candidate.STATUS || 'Pending')}>
                     {candidate.STATUS || 'Pending'}
                   </Badge>
                 </TableCell>

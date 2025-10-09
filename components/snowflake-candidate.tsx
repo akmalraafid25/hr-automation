@@ -92,7 +92,6 @@ export default function SnowflakeTable() {
       setSortDirection('asc');
     }
   };
-
   const sortedData = useMemo(() => {
     if (!sortField) return data;
     return [...data].sort((a, b) => {
@@ -115,13 +114,11 @@ export default function SnowflakeTable() {
     row.JOB_NAME?.toLowerCase().includes(searchTerm.toLowerCase()) ||
     row.PHONE?.includes(searchTerm)
   );
-
   // Pagination logic
   const totalPages = Math.ceil(filteredData.length / rowsPerPage);
   const startIndex = (currentPage - 1) * rowsPerPage;
   const endIndex = startIndex + rowsPerPage;
   const currentData = filteredData.slice(startIndex, endIndex);
-
   return (
     <Card>
       <CardHeader>
@@ -140,8 +137,7 @@ export default function SnowflakeTable() {
               setCurrentPage(1); // Reset to first page when searching
             }}
             className="pl-10"
-          />
-        </div>
+          />        </div>
         {/* Table Container */}
         <div className="overflow-hidden">
           <Table>
