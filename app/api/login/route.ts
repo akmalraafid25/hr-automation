@@ -10,6 +10,11 @@ export const dynamic = 'force-dynamic'; // avoid accidental prerendering
 export async function POST(req: NextRequest) {
   let connection: any;
   try {
+    // Check required environment variables
+    if (!process.env.JWT_SECRET) {
+      console.error("Missing JWT_SECRET environment variable");
+      return new NextResponse("Server configuration error", { status: 500 });
+    }
     
     const formData = await req.formData();
     const username = formData.get("username")?.toString();
@@ -20,7 +25,9 @@ export async function POST(req: NextRequest) {
       return new NextResponse("Missing username or password", { status: 400 });
     }
 
+    console.log("Attempting to connect to Snowflake...");
     connection = await connect();
+    console.log("Connected to Snowflake successfully");
     
     const userQuery = `SELECT * FROM "ACCOUNT_TEST" WHERE UPPER("USERNAME") = UPPER(?);`;
     
@@ -83,10 +90,11 @@ export async function POST(req: NextRequest) {
 
   } catch (error: any) {
     console.error("Login API Error:", error.message);
-    return new NextResponse("Internal Server Error", { status: 500 });
+    console.error("Full error:", error);
+    return new NextResponse(`Internal Server Error: ${error.message}`, { status: 500 });
   } finally {
     if (connection) {
-      await connection.destroy();
+      connection.destroy(() => {});
     }
   }
 }
