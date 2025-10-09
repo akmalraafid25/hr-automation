@@ -3,6 +3,10 @@ import { connect } from "@/lib/snowflake";
 import jwt from "jsonwebtoken";
 import bcryptjs from "bcryptjs";
 
+export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic'; // avoid accidental prerendering
+
+
 export async function POST(req: NextRequest) {
   let connection: any;
   try {
