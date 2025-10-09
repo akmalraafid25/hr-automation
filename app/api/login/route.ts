@@ -101,7 +101,10 @@ export async function POST(req: NextRequest) {
 
     // Redirect based on role
     const redirectUrl = userRole === 'ADMIN' ? "/" : "/jobs"
-    const res = NextResponse.redirect(new URL(redirectUrl, req.url))
+    const host = req.headers.get('host') || req.headers.get('x-forwarded-host') || 'localhost:3000'
+    const protocol = req.headers.get('x-forwarded-proto') || (host.includes('localhost') ? 'http' : 'https')
+    const baseUrl = `${protocol}://${host}`
+    const res = NextResponse.redirect(new URL(redirectUrl, baseUrl))
     
     res.cookies.set("token", token, {
       httpOnly: true,
