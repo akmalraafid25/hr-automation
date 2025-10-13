@@ -5,7 +5,6 @@ import { DashboardHeader } from "@/components/dashboard-header"
 import { DashboardStats } from "@/components/dashboard-stats"
 
 import { DashboardTable } from "@/components/dashboard-table"
-import { RecentJobPosts } from "@/components/recent-job-posts"
 import { HiringPipeline } from "@/components/hiring-pipeline"
 import { useEffect } from 'react';
 import '@n8n/chat/style.css';
@@ -14,11 +13,20 @@ import SnowflakeTable from "@/components/snowflake-jobpost";
 
 export default function ChatbotPage() {
   useEffect(() => {
+<<<<<<< HEAD
 		createChat({
 			webhookUrl: 'https://hr-automation.duckdns.org/webhook/a7fd14ea-2802-42e7-9115-53e211b7263e/chat',
+=======
+		try {
+			createChat({
+			webhookUrl: '/api/n8n-proxy',
+>>>>>>> 8b69741cc332718ea1357d34f9cce5b481233ebd
       initialMessages:['👋 Hello! I’m Hira', 'I’m here to help you craft clear, professional, and engaging job postings that attract the right candidates. Just tell me the role you’re hiring for, along with any key details (skills, experience, location, etc.), and I’ll generate a tailored job post for you'
       ],
-		});
+			});
+		} catch (error) {
+			console.error('N8N chat failed:', error);
+		}
 		
 		return () => {
 			const chatContainer = document.querySelector('#n8n-chat');

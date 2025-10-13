@@ -4,16 +4,16 @@ import snowflake from "snowflake-sdk"
 export async function POST(req: NextRequest) {
   console.log("➡️ API /api/shortlist POST called");
 
-  return new Promise((resolve) => {
+  return new Promise<NextResponse>((resolve) => {
     const connection = snowflake.createConnection({
-      account: process.env.SNOWFLAKE_ACCOUNT,
-      username: process.env.SNOWFLAKE_USER,
+      account: process.env.SNOWFLAKE_ACCOUNT!,
+      username: process.env.SNOWFLAKE_USER!,
       authenticator: 'SNOWFLAKE_JWT',
-      role: process.env.SNOWFLAKE_ROLE,
+      role: process.env.SNOWFLAKE_ROLE!,
       privateKey: process.env.SNOWFLAKE_PRIVATE_KEY?.replace(/\\n/g, "\n"),
-      database: process.env.SNOWFLAKE_DATABASE,
-      schema: process.env.SNOWFLAKE_SCHEMA,
-      warehouse: process.env.SNOWFLAKE_WAREHOUSE,
+      database: process.env.SNOWFLAKE_DATABASE!,
+      schema: process.env.SNOWFLAKE_SCHEMA!,
+      warehouse: process.env.SNOWFLAKE_WAREHOUSE!,
     })
 
     connection.connect(async (err) => {
@@ -38,34 +38,32 @@ export async function POST(req: NextRequest) {
               resolve(NextResponse.json({ success: true }, { status: 200 }))
             }
 
-                connection.destroy((destroyErr) => {
-                  if (destroyErr) {
-                    console.error("⚠ Error closing connection:", destroyErr.message)
-                  }
-                })
-              },
+            connection.destroy((destroyErr) => {
+              if (destroyErr) {
+                console.error("⚠ Error closing connection:", destroyErr.message)
+              }
             })
           },
         })
       } catch (error: any) {
         resolve(NextResponse.json({ error: error.message }, { status: 500 }))
-        connection.destroy()
+        connection.destroy(() => {})
       }
     })
   })
 }
 
 export async function DELETE(req: NextRequest) {
-  return new Promise((resolve) => {
+  return new Promise<NextResponse>((resolve) => {
     const connection = snowflake.createConnection({
-      account: process.env.SNOWFLAKE_ACCOUNT,
-      username: process.env.SNOWFLAKE_USER,
+      account: process.env.SNOWFLAKE_ACCOUNT!,
+      username: process.env.SNOWFLAKE_USER!,
       authenticator: 'SNOWFLAKE_JWT',
-      role: process.env.SNOWFLAKE_ROLE,
+      role: process.env.SNOWFLAKE_ROLE!,
       privateKey: process.env.SNOWFLAKE_PRIVATE_KEY?.replace(/\\n/g, "\n"),
-      database: process.env.SNOWFLAKE_DATABASE,
-      schema: process.env.SNOWFLAKE_SCHEMA,
-      warehouse: process.env.SNOWFLAKE_WAREHOUSE,
+      database: process.env.SNOWFLAKE_DATABASE!,
+      schema: process.env.SNOWFLAKE_SCHEMA!,
+      warehouse: process.env.SNOWFLAKE_WAREHOUSE!,
     })
 
     connection.connect(async (err) => {
@@ -86,12 +84,12 @@ export async function DELETE(req: NextRequest) {
             } else {
               resolve(NextResponse.json({ success: true }, { status: 200 }))
             }
-            connection.destroy()
+            connection.destroy(() => {})
           },
         })
       } catch (error: any) {
         resolve(NextResponse.json({ error: error.message }, { status: 500 }))
-        connection.destroy()
+        connection.destroy(() => {})
       }
     })
   })

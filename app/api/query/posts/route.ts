@@ -6,16 +6,16 @@ export const revalidate = 300; // Cache for 5 minutes
 export async function GET() {
   console.log("➡️ API /api/query called");
 
-  return new Promise((resolve) => {
+  return new Promise<NextResponse>((resolve) => {
     const connection = snowflake.createConnection({
-      account: process.env.SNOWFLAKE_ACCOUNT,
-      username: process.env.SNOWFLAKE_USER,
+      account: process.env.SNOWFLAKE_ACCOUNT!,
+      username: process.env.SNOWFLAKE_USER!,
       authenticator: 'SNOWFLAKE_JWT',
-      role: process.env.SNOWFLAKE_ROLE,
+      role: process.env.SNOWFLAKE_ROLE!,
       privateKey: process.env.SNOWFLAKE_PRIVATE_KEY?.replace(/\\n/g, "\n"),
-      database: process.env.SNOWFLAKE_DATABASE,
-      schema: process.env.SNOWFLAKE_SCHEMA,
-      warehouse: process.env.SNOWFLAKE_WAREHOUSE,
+      database: process.env.SNOWFLAKE_DATABASE!,
+      schema: process.env.SNOWFLAKE_SCHEMA!,
+      warehouse: process.env.SNOWFLAKE_WAREHOUSE!,
     });
 
     console.log("➡️ Creating connection...");

@@ -26,8 +26,26 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
 
+interface Candidate {
+  APPLICANT_ID: string;
+  CV_URL: string;
+  NAME: string;
+  JOB_NAME: string;
+  JOB_ID: string;
+  EMAIL: string;
+  PHONE: string;
+  LINKEDIN: string;
+  SKILLS: string;
+  CERTIFICATION: string;
+  WORK_EXPERIENCE: string;
+  EDUCATION: string;
+  STATUS: string;
+  SIMILARITY: number;
+  [key: string]: any;
+}
+
 export default function SnowflakeTable() {
-  const [data, setData] = useState<any[]>([]);
+  const [data, setData] = useState<Candidate[]>([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [sortField, setSortField] = useState<string>('');
@@ -92,7 +110,6 @@ export default function SnowflakeTable() {
       setSortDirection('asc');
     }
   };
-
   const sortedData = useMemo(() => {
     if (!sortField) return data;
     return [...data].sort((a, b) => {
@@ -115,13 +132,11 @@ export default function SnowflakeTable() {
     row.JOB_NAME?.toLowerCase().includes(searchTerm.toLowerCase()) ||
     row.PHONE?.includes(searchTerm)
   );
-
   // Pagination logic
   const totalPages = Math.ceil(filteredData.length / rowsPerPage);
   const startIndex = (currentPage - 1) * rowsPerPage;
   const endIndex = startIndex + rowsPerPage;
   const currentData = filteredData.slice(startIndex, endIndex);
-
   return (
     <Card>
       <CardHeader>
@@ -140,8 +155,7 @@ export default function SnowflakeTable() {
               setCurrentPage(1); // Reset to first page when searching
             }}
             className="pl-10"
-          />
-        </div>
+          />        </div>
         {/* Table Container */}
         <div className="overflow-hidden">
           <Table>

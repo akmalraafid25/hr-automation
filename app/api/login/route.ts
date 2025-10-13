@@ -1,22 +1,62 @@
 import { NextResponse, NextRequest } from "next/server";
-import { connect } from "@/lib/snowflake";
+import snowflake from "snowflake-sdk";
 import jwt from "jsonwebtoken";
 import bcryptjs from "bcryptjs";
+
+export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
 
 export async function POST(req: NextRequest) {
   let connection: any;
   try {
+    if (!process.env.JWT_SECRET) {
+      return new NextResponse("Server configuration error", { status: 500 });
+    }
+    
+    const requiredEnvVars = [
+      'SNOWFLAKE_ACCOUNT',
+      'SNOWFLAKE_USER', 
+      'SNOWFLAKE_PRIVATE_KEY',
+      'SNOWFLAKE_DATABASE',
+      'SNOWFLAKE_SCHEMA',
+      'SNOWFLAKE_WAREHOUSE'
+    ];
+    
+    const missing = requiredEnvVars.filter(env => !process.env[env]);
+    if (missing.length > 0) {
+      return new NextResponse(`Missing environment variables: ${missing.join(', ')}`, { status: 500 });
+    }
     
     const formData = await req.formData();
     const username = formData.get("username")?.toString();
     const password = formData.get("password")?.toString();
-    const ip_address = req.headers.get('x-forwarded-for') ?? req.ip; 
+    const ip_address = req.headers.get('x-forwarded-for') ?? 'unknown'; 
 
     if (!username || !password) {
       return new NextResponse("Missing username or password", { status: 400 });
     }
 
-    connection = await connect();
+    // Direct Snowflake connection for Amplify
+    connection = snowflake.createConnection({
+      account: process.env.SNOWFLAKE_ACCOUNT!,
+      username: process.env.SNOWFLAKE_USER!,
+      authenticator: 'SNOWFLAKE_JWT',
+      privateKey: process.env.SNOWFLAKE_PRIVATE_KEY?.replace(/\\n/g, "\n"),
+      role: process.env.SNOWFLAKE_ROLE,
+      database: process.env.SNOWFLAKE_DATABASE!,
+      schema: process.env.SNOWFLAKE_SCHEMA!,
+      warehouse: process.env.SNOWFLAKE_WAREHOUSE!,
+      timeout: 30000
+    });
+
+    await new Promise<void>((resolve, reject) => {
+      const timeout = setTimeout(() => reject(new Error('Connection timeout')), 15000);
+      connection.connect((err: any) => {
+        clearTimeout(timeout);
+        if (err) reject(err);
+        else resolve();
+      });
+    });
     
     const userQuery = `SELECT * FROM "ACCOUNT_TEST" WHERE UPPER("USERNAME") = UPPER(?);`;
     
@@ -61,7 +101,10 @@ export async function POST(req: NextRequest) {
 
     // Redirect based on role
     const redirectUrl = userRole === 'ADMIN' ? "/" : "/jobs"
-    const res = NextResponse.redirect(new URL(redirectUrl, req.url))
+    const host = req.headers.get('host') || req.headers.get('x-forwarded-host') || 'localhost:3000'
+    const protocol = req.headers.get('x-forwarded-proto') || (host.includes('localhost') ? 'http' : 'https')
+    const baseUrl = `${protocol}://${host}`
+    const res = NextResponse.redirect(new URL(redirectUrl, baseUrl))
     
     res.cookies.set("token", token, {
       httpOnly: true,
@@ -79,10 +122,11 @@ export async function POST(req: NextRequest) {
 
   } catch (error: any) {
     console.error("Login API Error:", error.message);
-    return new NextResponse("Internal Server Error", { status: 500 });
+    console.error("Full error:", error);
+    return new NextResponse(`Internal Server Error: ${error.message}`, { status: 500 });
   } finally {
     if (connection) {
-      await connection.destroy();
+      connection.destroy(() => {});
     }
   }
 }

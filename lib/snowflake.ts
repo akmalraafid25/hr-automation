@@ -44,6 +44,6 @@ export function releaseConnection(connection: Connection) {
   if (connectionPool.length < MAX_CONNECTIONS) {
     connectionPool.push(connection);
   } else {
-    connection.destroy();
+    connection.destroy(() => {});
   }
 }

@@ -223,7 +223,7 @@ export function DashboardCharts() {
                         <p className="font-semibold">Month: {label}</p>
                         <p className="text-blue-600">{payload[0].value} total applications</p>
                         {Object.entries(data).filter(([key]) => key !== 'month' && key !== 'applications').map(([status, count]) => (
-                          <p key={status} className="text-gray-600">{status}: {count}</p>
+                          <p key={status} className="text-gray-600">{status}: {count as number}</p>
                         ))}
                       </div>
                     )

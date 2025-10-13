@@ -309,7 +309,7 @@ export default function SnowflakeAnalysis() {
                                   </div>
                                   <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-2xl p-6 border border-green-200 shadow-sm w-full">
                                     <div className="overflow-y-auto w-full">
-                                      <div className="w-full" style={{width: '100%', wordBreak: 'break-words', whiteSpace: 'pre-wrap'}}>
+                                      <div className="w-full" style={{width: '100%', wordBreak: 'break-word', whiteSpace: 'pre-wrap'}}>
                                         {row.PROS || 'Not specified'}
                                       </div>
                                     </div>
