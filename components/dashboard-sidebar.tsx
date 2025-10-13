@@ -11,7 +11,6 @@ import {
   LogOut,
   FileText,
   Home,
-  Settings,
   Users,
   TrendingUp,
   Calendar,
@@ -30,7 +29,6 @@ const sidebarItems = [
   { icon: FileText, label: "Job Post", href: "/job-post" },
   { icon: User, label: "Account", href: "/account" },
   { icon: Calendar, label: "Schedule", href: "/schedule" },
-  { icon: Settings, label: "Settings", href: "/settings" },
 ]
 
 export function DashboardSidebar() {

@@ -3,7 +3,8 @@ import { Bell, Search, Settings, User } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import Image from "next/image"
-import Link from "next/link" // <-- IMPORT ADDED
+import Link from "next/link"
+import { useEffect, useState } from "react"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -15,15 +16,35 @@ import {
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 
 export function DashboardHeader({ pageName }: { pageName?: string }) {
+  const [user, setUser] = useState<{name?: string, email?: string, username?: string}>({});
+
+  useEffect(() => {
+    fetch('/api/Account/me')
+      .then(res => res.json())
+      .then(data => {
+        if (data.ok && data.data) {
+          setUser({
+            name: data.data.NAME,
+            email: data.data.EMAIL,
+            username: data.data.USERNAME
+          });
+        }
+      })
+      .catch(() => {});
+  }, []);
+
   async function handleLogout() {
     try {
       await fetch("/api/logout", { method: "POST", credentials: "include" })
-      // Force full page reload so middleware sees cookie cleared
       window.location.href = "/login"
     } catch (err) {
       console.error("Logout failed:", err)
     }
   }
+
+  const getInitials = (username?: string) => {
+    return username ? username[0].toUpperCase() : 'U';
+  };
 
   return (
     <header className="sticky top-0 z-50 w-full bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -44,15 +65,15 @@ export function DashboardHeader({ pageName }: { pageName?: string }) {
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" className="relative h-8 w-8 rounded-full">
                 <Avatar className="h-8 w-8">
-                  <AvatarFallback>JD</AvatarFallback>
+                  <AvatarFallback>{getInitials(user.username)}</AvatarFallback>
                 </Avatar>
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-56" align="end" forceMount>
               <DropdownMenuLabel className="font-normal">
                 <div className="flex flex-col space-y-1">
-                  <p className="text-sm font-medium leading-none">John Doe</p>
-                  <p className="text-xs leading-none text-muted-foreground">john@example.com</p>
+                  <p className="text-sm font-medium leading-none">{user.name || user.username || 'User'}</p>
+                  <p className="text-xs leading-none text-muted-foreground">{user.email || ''}</p>
                 </div>
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
