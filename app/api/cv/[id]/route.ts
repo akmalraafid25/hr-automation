@@ -4,6 +4,8 @@ import { getSignedUrl } from "@aws-sdk/s3-request-presigner"
 
 const s3Client = new S3Client({
   region: process.env.AWS_REGION || "ap-southeast-1",
+  endpoint: "https://s3.ap-southeast-1.amazonaws.com", // ✅ correct endpoint format
+  forcePathStyle: false,
   credentials: {
     accessKeyId: process.env.AWS_ACCESS_KEY_ID!,
     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY!
@@ -22,7 +24,7 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
     const signedUrl = await getSignedUrl(s3Client, command, { expiresIn: 3600 })
 
     return NextResponse.json({ url: signedUrl })
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: "Failed to generate signed URL" }, { status: 500 })
   }
 }
