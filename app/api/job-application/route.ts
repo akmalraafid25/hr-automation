@@ -29,7 +29,7 @@ export async function POST(req: NextRequest) {
     }
 
     // Send to webhook
-    const webhookUrl = process.env.JOB_APPLICATION_WEBHOOK_URL || "https://hr-automation.duckdns.org/webhook/b7725152-c75b-47ec-abe3-a091babc9f3d"
+    const webhookUrl = process.env.JOB_APPLICATION_WEBHOOK_URL || "https://hr-automation.duckdns.org/webhook-test/b7725152-c75b-47ec-abe3-a091babc9f3d"
     
     await fetch(webhookUrl, {
       method: "POST",
