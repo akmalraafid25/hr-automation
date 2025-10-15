@@ -38,7 +38,6 @@ export async function GET() {
             resolve(NextResponse.json({ error: err.message }, { status: 500 }));
           } else {
             console.log("✅ Query success");
-            console.log(rows);
             resolve(NextResponse.json({ rows }, { status: 200 }));
           }
 
