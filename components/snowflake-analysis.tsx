@@ -111,6 +111,8 @@ export default function SnowflakeAnalysis() {
 
   useEffect(() => {
     fetchData();
+    const interval = setInterval(fetchData, 10000); // Refresh every 10 seconds
+    return () => clearInterval(interval);
   }, []);
 
   // Listen for shortlist updates
@@ -121,19 +123,18 @@ export default function SnowflakeAnalysis() {
     };
     window.addEventListener('shortlistUpdated', handleShortlistUpdate);
     return () => window.removeEventListener('shortlistUpdated', handleShortlistUpdate);
-  }, [fetchData]);
+  }, []);
 
   if (loading) return <p>Loading...</p>;
 
-  // Filter data to show only candidates with match >= 80% and search term
+  // Filter data based on search term
   const filteredData = data.filter(row => {
-    const similarity = parseInt(row.SIMILARITY);
     const matchesSearch = !searchTerm || 
       row.NAME?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       row.JOB_NAME?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       row.STATUS?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       row.SIMILARITY?.toString().includes(searchTerm);
-    return similarity > 0 && matchesSearch;
+    return matchesSearch;
   });
 
   // Pagination logic
