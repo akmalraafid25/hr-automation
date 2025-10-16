@@ -36,7 +36,7 @@ export default function SnowflakeAccount() {
         const data = await res.json();
         setAccount(data);
         setEditedAccount(data);
-      } catch (err) {
+      } catch {
         setError("Failed to fetch account");
       } finally {
         setIsLoading(false);
@@ -72,7 +72,7 @@ export default function SnowflakeAccount() {
       } else {
         setError("Failed to update account");
       }
-    } catch (err) {
+    } catch {
       setError("Error updating account");
     } finally {
       setIsSaving(false);

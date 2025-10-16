@@ -19,7 +19,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  return (
+  return (  
     <html lang="en">
       <body className={`font-sans ${GeistSans.variable} ${GeistMono.variable} ${POPPINS.variable}`}>
         <ToastProvider>

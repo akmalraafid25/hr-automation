@@ -116,7 +116,7 @@ export default function ProfilePage() {
       } else {
         alert("Failed to update profile")
       }
-    } catch (err) {
+    } catch {
       alert("Error updating profile")
     } finally {
       setIsSaving(false)
@@ -307,14 +307,14 @@ export default function ProfilePage() {
                 <Bookmark className="h-8 w-8" />
                 Saved Jobs ({savedJobs.length})
               </h2>
-              <p className="text-muted-foreground mt-2">Jobs you've saved for later</p>
+              <p className="text-muted-foreground mt-2">Jobs you&apos;ve saved for later</p>
             </div>
             
             {savedJobs.length === 0 ? (
               <div className="text-center py-12">
                 <Bookmark className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
                 <h3 className="text-xl font-semibold mb-2">No saved jobs yet</h3>
-                <p className="text-muted-foreground mb-4">Start saving jobs you're interested in</p>
+                <p className="text-muted-foreground mb-4">Start saving jobs you&apos;re interested in</p>
                 <Button onClick={() => router.push("/jobs")}>
                   Browse Jobs
                 </Button>
