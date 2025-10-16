@@ -3,6 +3,14 @@ import jwt from "jsonwebtoken";
 import { cookies } from "next/headers";
 import snowflake from "snowflake-sdk";
 
+interface AccountRow {
+  ID: string
+  USERNAME: string
+  EMAIL: string
+  NAME: string
+  PHONE?: string
+}
+
 export async function GET() {
   console.log("🔍 /api/account/me hit");
 
@@ -43,7 +51,7 @@ export async function GET() {
       });
     });
 
-    const rows: any = await new Promise((resolve, reject) => {
+    const rows: AccountRow[] = await new Promise((resolve, reject) => {
       connection.execute({
         sqlText: `SELECT * FROM ACCOUNT WHERE USERNAME = ?`,
         binds: [decoded.username],
