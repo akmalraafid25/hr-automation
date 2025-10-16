@@ -30,7 +30,7 @@ export async function GET() {
       console.log("✅ Connected to Snowflake, running query...");
 
       connection.execute({
-        sqlText: "SELECT A.APPLICANT_ID as APPLICANT_ID, A.CV_URL, A.NAME, J.JOB_NAME as JOB_NAME, J.JOB_ID, A.EMAIL, A.PHONE, A.LINKEDIN, A.SKILLS, A.CERTIFICATION, A.WORK_EXPERIENCE, A.EDUCATION, A.STATUS, analysis.SIMILARITY FROM APPLICANT A LEFT JOIN JOB_POST j on A.job_id = j.job_id JOIN ANALYSIS analysis on A.APPLICANT_ID = analysis.applicant_id",
+        sqlText: "SELECT A.NAME, A.APPLICANT_ID as APPLICANT_ID, A.CV_URL, A.EMAIL, A.PHONE, A.LINKEDIN, A.SKILLS, A.CERTIFICATION, A.WORK_EXPERIENCE, A.EDUCATION, A.STATUS, analysis.SIMILARITY, J.JOB_ID, J.JOB_NAME FROM APPLICANT A LEFT JOIN ANALYSIS analysis on A.APPLICANT_ID = analysis.applicant_id LEFT Join JOB_POST J on A.JOB_ID = J.JOB_ID LEFT JOIN SHORTLIST S ON A.APPLICANT_ID = S.APPLICANT_ID",
         complete: (err, stmt, rows) => {
           console.log("➡️ Query callback fired");
 
