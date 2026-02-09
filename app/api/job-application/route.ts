@@ -31,6 +31,9 @@ export async function POST(req: NextRequest) {
     // Send to webhook
     const webhookUrl = process.env.JOB_APPLICATION_WEBHOOK_URL || "https://hr-automation.duckdns.org/webhook/b7725152-c75b-47ec-abe3-a091babc9f3d"
     
+    // Bypass SSL verification for expired certificates
+    process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
+    
     await fetch(webhookUrl, {
       method: "POST",
       body: webhookFormData
