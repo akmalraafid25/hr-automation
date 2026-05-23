@@ -13,10 +13,27 @@ import Image from "next/image"
 export function LoginForm({ className, ...props }: React.ComponentProps<"div">) {
   const [loading, setLoading] = useState(false)
   const [showRegister, setShowRegister] = useState(false)
+  const [error, setError] = useState("")
 
   function handleSubmit(e: FormEvent<HTMLFormElement>) {
     setLoading(true)
-    // Let the form submit naturally to avoid client-side routing issues
+    setError("")
+    
+    const formData = new FormData(e.currentTarget)
+    
+    const res = await fetch("/api/login", {
+      method: "POST",
+      body: formData,
+      credentials: "include", // make sure cookie is set
+    })
+  
+    if (res.ok || res.status === 303 || res.status === 307) {
+      // 🔹 Force full page navigation so middleware sees cookie
+      window.location.href = "/"  // <--- this triggers real browser navigation
+    } else {
+      setLoading(false)
+      setError("Credentials are incorrect. Please try again.")
+    }
   }
 
 
@@ -55,6 +72,11 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
                   required
                 />
               </div>
+              {error && (
+                <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded text-sm">
+                  {error}
+                </div>
+              )}
               <Button type="submit" className="w-full" disabled={loading}>
                 {loading ? "Logging in..." : "Login"}
               </Button>
