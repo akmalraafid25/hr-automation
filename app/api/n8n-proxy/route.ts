@@ -1,5 +1,10 @@
 import { NextRequest, NextResponse } from "next/server"
 
+// Disable SSL verification globally for development
+if (process.env.NODE_ENV === 'development') {
+  process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
+}
+
 export async function POST(req: NextRequest) {
   try {
     const body = await req.text()
@@ -12,6 +17,13 @@ export async function POST(req: NextRequest) {
       body: body
     })
     
+    if (!response.ok) {
+      console.error(`Webhook responded with status: ${response.status}`)
+      const errorText = await response.text()
+      console.error('Webhook error response:', errorText)
+      return NextResponse.json({ error: `Webhook error: ${response.status}` }, { status: response.status })
+    }
+    
     const data = await response.text()
     
     return new NextResponse(data, {
@@ -23,7 +35,8 @@ export async function POST(req: NextRequest) {
       }
     })
   } catch (error) {
-    return NextResponse.json({ error: 'Proxy failed' }, { status: 500 })
+    console.error('Proxy error:', error)
+    return NextResponse.json({ error: `Proxy failed: ${error instanceof Error ? error.message : 'Unknown error'}` }, { status: 500 })
   }
 }
 

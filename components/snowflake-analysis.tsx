@@ -175,14 +175,138 @@ export default function SnowflakeAnalysis() {
                 <TableHead className="cursor-pointer hover:bg-muted" onClick={() => handleSort('JOB_NAME')}>Job Applied {sortField === 'JOB_NAME' && (sortDirection === 'asc' ? '↑' : '↓')}</TableHead>
                 <TableHead className="cursor-pointer hover:bg-muted" onClick={() => handleSort('SIMILARITY')}>Match {sortField === 'SIMILARITY' && (sortDirection === 'asc' ? '↑' : '↓')}</TableHead>
                 <TableHead className="cursor-pointer hover:bg-muted" onClick={() => handleSort('STATUS')}>Status {sortField === 'STATUS' && (sortDirection === 'asc' ? '↑' : '↓')}</TableHead>
-                <TableHead>Details</TableHead>
+                <TableHead>Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {currentData.map((row, index) => (
                 <TableRow key={index}>
                   <TableCell>{startIndex + index + 1}</TableCell>
-                  <TableCell>{row.NAME}</TableCell>
+                  <TableCell>
+                    <Dialog>
+                      <DialogTrigger asChild>
+                        <span className="text-blue-600 underline cursor-pointer hover:text-blue-800">
+                          {row.NAME}
+                        </span>
+                      </DialogTrigger>
+                      <DialogContent className="sm:max-w-6xl max-h-[90vh] overflow-y-auto p-0" onClick={(e) => e.stopPropagation()}>
+                        <DialogHeader className="sr-only">
+                          <DialogTitle>{row.NAME} - Details</DialogTitle>
+                        </DialogHeader>
+                        <div className="bg-black text-white p-8 relative">
+                          <div className="flex items-center gap-6 mb-6">
+                            <div className="w-20 h-20 bg-gradient-to-br from-white to-gray-200 rounded-xl flex items-center justify-center shadow-lg">
+                              <span className="text-3xl font-bold text-slate-900">{row.NAME?.charAt(0)}</span>
+                            </div>
+                            <div>
+                              <h1 className="text-3xl font-bold mb-2">{row.NAME}</h1>
+                              <div className="flex items-center gap-2">
+                                <div className={`w-3 h-3 rounded-full ${
+                                  row.SIMILARITY >= 90 ? 'bg-green-400' :
+                                  row.SIMILARITY >= 80 ? 'bg-yellow-400' : 'bg-red-400'
+                                }`}></div>
+                                <span className="text-lg font-medium">{row.SIMILARITY}% Match</span>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                            <div className="bg-white/15 backdrop-blur rounded-xl p-4 border border-white/20 col-span-2">
+                              <div className="text-white text-xs uppercase tracking-wide">Position</div>
+                              <div className="font-semibold text-base mt-1">{row.JOB_NAME}</div>
+                            </div>
+                            <div className="bg-white/15 backdrop-blur rounded-xl p-4 border border-white/20">
+                              <div className="text-white text-xs uppercase tracking-wide">Status</div>
+                              <div className="font-semibold text-base mt-1">{row.STATUS || 'Pending'}</div>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="p-8 flex flex-col gap-8">
+                          <div>
+                            <div className="mb-6">
+                              <div className="flex items-center gap-3 mb-3">
+                                <div className="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center">
+                                  <span className="text-white text-sm font-bold">📊</span>
+                                </div>
+                                <h2 className="text-2xl font-bold text-gray-800">AI Analysis</h2>
+                              </div>
+                              <div className="w-16 h-1 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full"></div>
+                            </div>
+                            <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-8 border border-blue-200 shadow-sm">
+                              <div className="max-h-64 overflow-y-auto">
+                                <div className="whitespace-pre-wrap break-words">
+                                  <ReactMarkdown>{row.ANALYSIS}</ReactMarkdown>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="flex flex-col gap-8">
+                            <div>
+                              <div className="mb-6">
+                                <div className="flex items-center gap-3 mb-3">
+                                  <div className="w-8 h-8 bg-green-500 rounded-lg flex items-center justify-center">
+                                    <span className="text-white text-sm font-bold">✓</span>
+                                  </div>
+                                  <h2 className="text-2xl font-bold text-gray-800">Strengths</h2>
+                                </div>
+                                <div className="w-16 h-1 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full"></div>
+                              </div>
+                              <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-2xl p-6 border border-green-200 shadow-sm w-full">
+                                <div className="overflow-y-auto w-full">
+                                  <div className="w-full" style={{wordBreak: 'break-word', whiteSpace: 'pre-wrap'}}>
+                                    {row.PROS || 'Not specified'}
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div>
+                              <div className="mb-6">
+                                <div className="flex items-center gap-3 mb-3">
+                                  <div className="w-8 h-8 bg-red-500 rounded-lg flex items-center justify-center">
+                                    <span className="text-white text-sm font-bold">⚠</span>
+                                  </div>
+                                  <h2 className="text-2xl font-bold text-gray-800">Areas for Growth</h2>
+                                </div>
+                                <div className="w-16 h-1 bg-gradient-to-r from-red-500 to-rose-500 rounded-full"></div>
+                              </div>
+                              <div className="bg-gradient-to-br from-red-50 to-rose-50 rounded-2xl p-6 border border-red-200 shadow-sm w-full">
+                                <div className="max-h-64 overflow-y-auto w-full">
+                                  <div className="w-full" style={{wordBreak: 'break-word', whiteSpace: 'pre-wrap'}}>
+                                    {row.CONS || 'Not specified'}
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div>
+                            <div className="mb-4">
+                              <h2 className="text-xl font-bold text-gray-800 mb-2">Candidate Profile</h2>
+                              <div className="w-12 h-1 bg-slate-900 rounded"></div>
+                            </div>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                              <div className="bg-gray-50 rounded-xl p-6 border overflow-hidden">
+                                <h3 className="font-semibold mb-3">Skills</h3>
+                                <p className="text-gray-700 break-all whitespace-pre-wrap">{row.SKILLS || 'Not specified'}</p>
+                              </div>
+                              <div className="bg-gray-50 rounded-xl p-6 border overflow-hidden">
+                                <h3 className="font-semibold mb-3">Education</h3>
+                                <p className="text-gray-700 whitespace-pre-wrap break-words">{row.EDUCATION || 'Not specified'}</p>
+                              </div>
+                              <div className="bg-gray-50 rounded-xl p-6 border md:col-span-2 overflow-hidden">
+                                <h3 className="font-semibold mb-3">Work Experience</h3>
+                                <p className="text-gray-700 whitespace-pre-wrap break-words">{row.WORK_EXPERIENCE || 'Not specified'}</p>
+                              </div>
+                              <div className="bg-gray-50 rounded-xl p-6 border md:col-span-2 overflow-hidden">
+                                <h3 className="font-semibold mb-3">Certifications</h3>
+                                <div className="text-gray-700 break-words whitespace-pre-wrap">
+                                  <ReactMarkdown>{row.CERTIFICATION || 'Not specified'}</ReactMarkdown>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </DialogContent>
+                    </Dialog>
+                  </TableCell>
                   <TableCell>{row.JOB_NAME}</TableCell>
                   <TableCell>{row.SIMILARITY ? row.SIMILARITY +"%" : "-" }</TableCell>
                   <TableCell>
@@ -204,146 +328,7 @@ export default function SnowflakeAnalysis() {
                       </SelectContent>
                     </Select>
                   </TableCell>
-                  <TableCell className="max-w-[250px] grid grid-cols-2 truncate">
-                      <div className="relative">
-                        <Button onClick={() => {
-                          const modal = document.getElementById(`candidate-modal-${row.APPLICANT_ID}`)
-                          if (modal) {
-                            modal.classList.remove('hidden')
-                            document.body.style.overflow = 'hidden'
-                          }
-                        }}>Details</Button>
-                        <div id={`candidate-modal-${row.APPLICANT_ID}`} className="hidden fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4" onClick={(e) => {
-                          if (e.target === e.currentTarget) {
-                            const modal = document.getElementById(`candidate-modal-${row.APPLICANT_ID}`)
-                            if (modal) {
-                              modal.classList.add('hidden')
-                              document.body.style.overflow = 'auto'
-                            }
-                          }
-                        }}>
-                          <div className="bg-white rounded-xl w-[95vw] max-h-[90vh] overflow-y-auto shadow-2xl border" onClick={(e) => e.stopPropagation()}>
-                            <div className="bg-black text-white p-8 relative">
-                              <Button variant="ghost" size="sm" className="absolute top-4 right-4 text-white hover:bg-white/20 rounded-full" onClick={() => {
-                                const modal = document.getElementById(`candidate-modal-${row.APPLICANT_ID}`)
-                                if (modal) {
-                                  modal.classList.add('hidden')
-                                  document.body.style.overflow = 'auto'
-                                }
-                              }}>×</Button>
-                              <div className="flex items-center gap-6 mb-6">
-                                <div className="w-20 h-20 bg-gradient-to-br from-white to-gray-200 rounded-xl flex items-center justify-center shadow-lg">
-                                  <span className="text-3xl font-bold text-slate-900">{row.NAME?.charAt(0)}</span>
-                                </div>
-                                <div>
-                                  <h1 className="text-4xl font-bold mb-2">{row.NAME}</h1>
-                                  <div className="flex items-center gap-2">
-                                    <div className={`w-3 h-3 rounded-full ${
-                                      row.SIMILARITY >= 90 ? 'bg-green-400' :
-                                      row.SIMILARITY >= 80 ? 'bg-yellow-400' : 'bg-red-400'
-                                    }`}></div>
-                                    <span className="text-lg font-medium">{row.SIMILARITY}% Match</span>
-                                  </div>
-                                </div>
-                              </div>
-                              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
-                                <div className="bg-white/15 backdrop-blur rounded-xl p-4 border border-white/20 col-span-2">
-                                  <div className="text-white text-xs uppercase tracking-wide">Position</div>
-                                  <div className="font-semibold text-base mt-1">{row.JOB_NAME}</div>
-                                </div>
-                                <div className="bg-white/15 backdrop-blur rounded-xl p-4 border border-white/20">
-                                  <div className="text-white text-xs uppercase tracking-wide">Status</div>
-                                  <div className="font-semibold text-base mt-1">{row.STATUS || 'Pending'}</div>
-                                </div>
-                              </div>
-                            </div>
-                            <div className="p-8 flex flex-col gap-8">
-                              <div>
-                                <div className="mb-6">
-                                  <div className="flex items-center gap-3 mb-3">
-                                    <div className="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center">
-                                      <span className="text-white text-sm font-bold">📊</span>
-                                    </div>
-                                    <h2 className="text-2xl font-bold text-gray-800">AI Analysis</h2>
-                                  </div>
-                                  <div className="w-16 h-1 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full"></div>
-                                </div>
-                                <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-8 border border-blue-200 shadow-sm">
-                                  <div className="max-h-64 overflow-y-auto">
-                                    <div className="whitespace-pre-wrap break-words">
-                                      <ReactMarkdown>{row.ANALYSIS}</ReactMarkdown>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                              <div className="flex flex-col gap-8">
-                                <div>
-                                  <div className="mb-6">
-                                    <div className="flex items-center gap-3 mb-3">
-                                      <div className="w-8 h-8 bg-green-500 rounded-lg flex items-center justify-center">
-                                        <span className="text-white text-sm font-bold">✓</span>
-                                      </div>
-                                      <h2 className="text-2xl font-bold text-gray-800">Strengths</h2>
-                                    </div>
-                                    <div className="w-16 h-1 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full"></div>
-                                  </div>
-                                  <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-2xl p-6 border border-green-200 shadow-sm w-full">
-                                    <div className="overflow-y-auto w-full">
-                                      <div className="w-full" style={{width: '100%', wordBreak: 'break-words', whiteSpace: 'pre-wrap'}}>
-                                        {row.PROS || 'Not specified'}
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                                <div>
-                                  <div className="mb-6">
-                                    <div className="flex items-center gap-3 mb-3">
-                                      <div className="w-8 h-8 bg-red-500 rounded-lg flex items-center justify-center">
-                                        <span className="text-white text-sm font-bold">⚠</span>
-                                      </div>
-                                      <h2 className="text-2xl font-bold text-gray-800">Areas for Growth</h2>
-                                    </div>
-                                    <div className="w-16 h-1 bg-gradient-to-r from-red-500 to-rose-500 rounded-full"></div>
-                                  </div>
-                                  <div className="bg-gradient-to-br from-red-50 to-rose-50 rounded-2xl p-6 border border-red-200 shadow-sm w-full">
-                                    <div className="max-h-64 overflow-y-auto w-full" style={{width: '100%', maxWidth: '100%'}}>
-                                      <div className="w-full" style={{width: '100%', wordBreak: 'break-word', whiteSpace: 'pre-wrap'}}>
-                                        {row.CONS || 'Not specified'}
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                              <div>
-                                <div className="mb-4">
-                                  <h2 className="text-xl font-bold text-gray-800 mb-2">Candidate Profile</h2>
-                                  <div className="w-12 h-1 bg-slate-900 rounded"></div>
-                                </div>
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                  <div className="bg-gray-50 rounded-xl p-6 border overflow-hidden">
-                                    <h3 className="font-semibold mb-3">Skills</h3>
-                                    <p className="text-gray-700 break-all whitespace-pre-wrap">{row.SKILLS || 'Not specified'}</p>
-                                  </div>
-                                  <div className="bg-gray-50 rounded-xl p-6 border overflow-hidden">
-                                    <h3 className="font-semibold mb-3">Education</h3>
-                                    <p className="text-gray-700 whitespace-pre-wrap break-words">{row.EDUCATION || 'Not specified'}</p>
-                                  </div>
-                                  <div className="bg-gray-50 rounded-xl p-6 border md:col-span-2 overflow-hidden">
-                                    <h3 className="font-semibold mb-3">Work Experience</h3>
-                                    <p className="text-gray-700 whitespace-pre-wrap break-words">{row.WORK_EXPERIENCE || 'Not specified'}</p>
-                                  </div>
-                                  <div className="bg-gray-50 h-32 rounded-xl p-6 border md:col-span-2 overflow-hidden">
-                                    <h3 className="font-semibold mb-3">Certifications</h3>
-                                    <div className="text-gray-700 break-words whitespace-pre-wrap">
-                                      <ReactMarkdown>{row.CERTIFICATION || 'Not specified'}</ReactMarkdown>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
+                  <TableCell>
                       <Button 
                         size="sm"
                         variant="ghost"
