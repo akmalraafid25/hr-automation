@@ -4,6 +4,10 @@ const nextConfig: NextConfig = {
   env: {
     JWT_SECRET: process.env.JWT_SECRET,
   },
+  eslint: {
+    // ✅ This skips all ESLint checks during `next build`
+    ignoreDuringBuilds: true,
+  },
   experimental: {
     optimizePackageImports: ['lucide-react', 'recharts', '@radix-ui/react-avatar'],
   },

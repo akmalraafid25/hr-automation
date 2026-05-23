@@ -21,16 +21,16 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: "Job ID required" }, { status: 400 })
   }
 
-  return new Promise((resolve) => {
+  return new Promise<NextResponse>((resolve) => {
     const connection = snowflake.createConnection({
-      account: process.env.SNOWFLAKE_ACCOUNT,
-      username: process.env.SNOWFLAKE_USER,
+      account: process.env.SNOWFLAKE_ACCOUNT!,
+      username: process.env.SNOWFLAKE_USER!,
       authenticator: 'SNOWFLAKE_JWT',
-      role: process.env.SNOWFLAKE_ROLE,
+      role: process.env.SNOWFLAKE_ROLE!,
       privateKey: process.env.SNOWFLAKE_PRIVATE_KEY?.replace(/\\n/g, "\n"),
-      database: process.env.SNOWFLAKE_DATABASE,
-      schema: process.env.SNOWFLAKE_SCHEMA,
-      warehouse: process.env.SNOWFLAKE_WAREHOUSE,
+      database: process.env.SNOWFLAKE_DATABASE!,
+      schema: process.env.SNOWFLAKE_SCHEMA!,
+      warehouse: process.env.SNOWFLAKE_WAREHOUSE!,
     })
 
     connection.connect((err) => {
@@ -46,11 +46,11 @@ export async function GET(req: NextRequest) {
           if (err) {
             resolve(NextResponse.json({ error: err.message }, { status: 500 }))
           } else {
-            const hasApplied = rows.length > 0
-            const status = hasApplied ? rows[0].STATUS : null
+            const hasApplied = rows && rows.length > 0
+            const status = hasApplied && rows ? rows[0].STATUS : null
             resolve(NextResponse.json({ hasApplied, status }))
           }
-          connection.destroy()
+          connection.destroy(() => {})
         },
       })
     })

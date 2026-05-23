@@ -9,8 +9,8 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.text()
     
-    const response = await fetch('https://hr-automationv2sone.app.n8n.cloud/webhook/a7fd14ea-2802-42e7-9115-53e211b7263e/chat', {
-      method: 'POST',
+    const response = await fetch('https://hr-automation.duckdns.org/webhook/a7fd14ea-2802-42e7-9115-53e211b7263e/chat', {
+      method: 'POST',             
       headers: {
         'Content-Type': 'application/json',
       },

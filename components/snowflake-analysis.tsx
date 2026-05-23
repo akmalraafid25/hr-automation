@@ -28,8 +28,9 @@ import {
 import ReactMarkdown from "react-markdown";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "./ui/button";
-import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
+import { ChevronLeftIcon, ChevronRightIcon, Search } from "lucide-react";
 import { Card, CardDescription, CardHeader, CardTitle } from "./ui/card";
+import { Input } from "@/components/ui/input";
 
 export default function SnowflakeAnalysis() {
   const [data, setData] = useState<any[]>([]);
@@ -37,6 +38,7 @@ export default function SnowflakeAnalysis() {
   const [currentPage, setCurrentPage] = useState(1);
   const [sortField, setSortField] = useState<string>('');
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
+  const [searchTerm, setSearchTerm] = useState('');
   const rowsPerPage = 5; // 👈 change this number as needed
   const { addToast } = useToast();
 
@@ -109,6 +111,8 @@ export default function SnowflakeAnalysis() {
 
   useEffect(() => {
     fetchData();
+    const interval = setInterval(fetchData, 10000); // Refresh every 10 seconds
+    return () => clearInterval(interval);
   }, []);
 
   // Listen for shortlist updates
@@ -119,14 +123,18 @@ export default function SnowflakeAnalysis() {
     };
     window.addEventListener('shortlistUpdated', handleShortlistUpdate);
     return () => window.removeEventListener('shortlistUpdated', handleShortlistUpdate);
-  }, [fetchData]);
+  }, []);
 
   if (loading) return <p>Loading...</p>;
 
-  // Filter data to show only candidates with match >= 80%
+  // Filter data based on search term
   const filteredData = data.filter(row => {
-    const similarity = parseInt(row.SIMILARITY);
-    return similarity > 0;
+    const matchesSearch = !searchTerm || 
+      row.NAME?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      row.JOB_NAME?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      row.STATUS?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      row.SIMILARITY?.toString().includes(searchTerm);
+    return matchesSearch;
   });
 
   // Pagination logic
@@ -165,6 +173,19 @@ export default function SnowflakeAnalysis() {
         <CardDescription>Analysis based on resume.</CardDescription>
       </CardHeader>
       <div className="p-6">
+        {/* Search Bar */}
+        <div className="relative mb-4">
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+          <Input
+            placeholder="Search by name, job, status, or match percentage..."
+            value={searchTerm}
+            onChange={(e) => {
+              setSearchTerm(e.target.value);
+              setCurrentPage(1); // Reset to first page when searching
+            }}
+            className="pl-10"
+          />
+        </div>
         {/* Table Container */}
         <div className="overflow-hidden">
           <Table>
