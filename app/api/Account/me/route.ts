@@ -43,7 +43,7 @@ export async function GET() {
       });
     });
 
-    const rows: any = await new Promise((resolve, reject) => {
+    const rows = await new Promise<any[]>((resolve, reject) => {
       connection.execute({
         sqlText: `SELECT * FROM ACCOUNT WHERE USERNAME = ?`,
         binds: [decoded.username],
@@ -53,7 +53,7 @@ export async function GET() {
             reject(err);
           } else {
             console.log("📦 Query result:", result);
-            resolve(result);
+            resolve(result || []);
           }
         },
       });
