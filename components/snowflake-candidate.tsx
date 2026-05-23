@@ -26,38 +26,35 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
 
+interface Candidate {
+  APPLICANT_ID: string;
+  CV_URL: string;
+  NAME: string;
+  JOB_NAME: string;
+  JOB_ID: string;
+  EMAIL: string;
+  PHONE: string;
+  LINKEDIN: string;
+  SKILLS: string;
+  CERTIFICATION: string;
+  WORK_EXPERIENCE: string;
+  EDUCATION: string;
+  STATUS: string;
+  SIMILARITY: number;
+  [key: string]: any;
+}
+
 export default function SnowflakeTable() {
-  const [data, setData] = useState<any[]>([]);
+  const [data, setData] = useState<Candidate[]>([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [sortField, setSortField] = useState<string>('');
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
   const [searchTerm, setSearchTerm] = useState('');
-  const rowsPerPage = 5; // 👈 change this number as needed
+  const rowsPerPage = 10; // 👈 change this number as needed
   const { addToast } = useToast();
 
-  const moveToShortlist = async (applicantId: string, jobId: string) => {
-    try {
-      const response = await fetch("/api/shortlist", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ applicantId, jobId }),
-      });
-      
-      if (response.ok) {
-        console.log("Shortlist success, dispatching event");
-        window.dispatchEvent(new CustomEvent('shortlistUpdated'));
-        addToast({ title: "Success", description: "Candidate moved to shortlist successfully!", variant: "success" });
-      } else {
-        addToast({ title: "Error", description: "Failed to move candidate to shortlist", variant: "destructive" });
-      }
-    } catch (error) {
-      console.error("Failed to shortlist candidate:", error);
-      addToast({ title: "Error", description: "Error occurred while shortlisting candidate", variant: "destructive" });
-    }
-  };
-
-  useEffect(() => {
+  const fetchData = () => {
     fetch("/api/query/candidates")
       .then((res) => res.json())
       .then((d) => {
@@ -82,6 +79,33 @@ export default function SnowflakeTable() {
         setData([]);
       })
       .finally(() => setLoading(false));
+  };
+
+  const moveToShortlist = async (applicantId: string, jobId: string) => {
+    try {
+      const response = await fetch("/api/shortlist", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ applicantId, jobId }),
+      });
+      
+      if (response.ok) {
+        console.log("Shortlist success, dispatching event");
+        window.dispatchEvent(new CustomEvent('shortlistUpdated'));
+        addToast({ title: "Success", description: "Candidate moved to shortlist successfully!", variant: "success" });
+      } else {
+        addToast({ title: "Error", description: "Failed to move candidate to shortlist", variant: "destructive" });
+      }
+    } catch (error) {
+      console.error("Failed to shortlist candidate:", error);
+      addToast({ title: "Error", description: "Error occurred while shortlisting candidate", variant: "destructive" });
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+    const interval = setInterval(fetchData, 10000); // Refresh every 10 seconds
+    return () => clearInterval(interval);
   }, []);
 
   const handleSort = (field: string) => {

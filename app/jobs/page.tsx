@@ -13,7 +13,7 @@ import { JobSearch } from "@/components/job-search"
 import { SavedJobs } from "@/components/saved-jobs"
 import { JobStats } from "@/components/job-stats"
 import { JobAlerts } from "@/components/job-alerts"
-import { JobRecommendations } from "@/components/job-recommendations"
+
 import { QuickApply } from "@/components/quick-apply"
 import { useRouter } from "next/navigation"
 import { debounce } from "@/lib/utils"
@@ -83,9 +83,7 @@ export default function JobsPage() {
           <h1 className="text-secondary text-2xl md:text-4xl font-bold">Open Positions</h1>
           <p className="text-secondary mt-2">Find your next career opportunity</p>
         </div>
-        <div className="mb-6">
-          <JobRecommendations />
-        </div>
+
         <div className="mb-6">
           <JobSearch onSearch={handleSearch} />
         </div>

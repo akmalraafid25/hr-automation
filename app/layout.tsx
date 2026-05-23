@@ -8,9 +8,10 @@ import { SessionTimeout } from "@/components/session-timeout"
 import "./globals.css"
 
 export const metadata: Metadata = {
-  title: "Dashboard",
-  description: "Modern comprehensive dashboard interface",
+  title: "HR-Automation",
+  description: "Modern comprehensive HR Automation interface",
   generator: "v0.app",
+
 }
 
 export default function RootLayout({
@@ -18,7 +19,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  return (
+  return (  
     <html lang="en">
       <body className={`font-sans ${GeistSans.variable} ${GeistMono.variable} ${POPPINS.variable}`}>
         <ToastProvider>
