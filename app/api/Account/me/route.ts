@@ -61,7 +61,7 @@ export async function GET() {
             reject(err);
           } else {
             console.log("📦 Query result:", result);
-            resolve(result);
+            resolve(result || []);
           }
         },
       });
