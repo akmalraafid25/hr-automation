@@ -202,8 +202,8 @@ export default function SnowflakeTable() {
                                 {row.SIMILARITY && (
                                   <>
                                     <div className={`w-3 h-3 rounded-full ${
-                                      parseInt(row.SIMILARITY) >= 90 ? 'bg-green-400' :
-                                      parseInt(row.SIMILARITY) >= 80 ? 'bg-yellow-400' : 'bg-red-400'
+                                      Number(row.SIMILARITY) >= 90 ? 'bg-green-400' :
+                                      Number(row.SIMILARITY) >= 80 ? 'bg-yellow-400' : 'bg-red-400'
                                     }`}></div>
                                     <span className="text-lg font-medium">{row.SIMILARITY}% Match</span>
                                   </>

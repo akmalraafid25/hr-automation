@@ -15,7 +15,8 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
   const [showRegister, setShowRegister] = useState(false)
   const [error, setError] = useState("")
 
-  function handleSubmit(e: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault()
     setLoading(true)
     setError("")
     
